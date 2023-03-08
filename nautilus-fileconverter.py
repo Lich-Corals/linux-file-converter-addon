@@ -4,6 +4,7 @@ from PIL import Image
 from urllib.parse import urlparse, unquote
 import os
 
+print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
 class ExampleMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     READ_FORMATS_IMAGE = ('image/jpeg', 'image/png', 'image/bmp', 'application/postscript', 'image/gif',
