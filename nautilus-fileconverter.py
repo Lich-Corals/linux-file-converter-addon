@@ -124,16 +124,10 @@ class ExampleMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     def convert_image(self, menu, mime_output, files):
         print(mime_output)
         for file in files:
-            if (mime_output['name']) is 'JPEG':
-                file_path = unquote(urlparse(file.get_uri()).path)
-                image = Image.open(file_path)
-                image_rgb = image.convert('RGB')
-                file_path_split = os.path.splitext(file_path)
-                file_path_no_ext = file_path_split[0]
-                image_rgb.save(f"{file_path_no_ext}." + (mime_output['name'].lower()), format=(mime_output['name']))
-                return
             file_path = unquote(urlparse(file.get_uri()).path)
             image = Image.open(file_path)
+            if (mime_output['name']) == 'JPEG':
+                image = image.convert('RGB')
             file_path_split = os.path.splitext(file_path)
             file_path_no_ext = file_path_split[0]
             image.save(f"{file_path_no_ext}" + "." + (mime_output['name'].lower()), format=(mime_output['name']))
