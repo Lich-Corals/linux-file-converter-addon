@@ -2,7 +2,8 @@ from gi.repository import Nautilus, GObject
 from typing import List
 from PIL import Image
 from urllib.parse import urlparse, unquote
-import os
+from pathlib import Path
+import os, shlex
 
 print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
@@ -135,28 +136,11 @@ class ExampleMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     def convert_audio(self, menu, mime_output, files):
         print(mime_output)
         for file in files:
-            file_path = unquote(urlparse(file.get_uri()).path)
-            file_path = file_path.replace("(", "\(")
-            file_path = file_path.replace(")", "\)")
-            file_path = file_path.replace("[", "\[")
-            file_path = file_path.replace("]", "\]")
-            file_path = file_path.replace("}", "\}")
-            file_path = file_path.replace("{", "\{")
-            file_path = file_path.replace(" ", "\ ")
-            file_path_split = os.path.splitext(file_path)
-            file_path_no_ext = file_path_split[0]
-            os.system("ffmpeg -i " + file_path + " -strict experimental " + file_path_no_ext + '.' + mime_output['name'].lower())
+            from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+            to_file_path = from_file_path.with_suffix(
+                f".{mime_output['name']}")
+            os.system(
+                f"ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental {shlex.quote(str(to_file_path))}")
     def convert_video(self, menu, mime_output, files):
-        print(mime_output)
-        for file in files:
-            file_path = unquote(urlparse(file.get_uri()).path)
-            file_path = file_path.replace("(", "\(")
-            file_path = file_path.replace(")", "\)")
-            file_path = file_path.replace("[", "\[")
-            file_path = file_path.replace("]", "\]")
-            file_path = file_path.replace("}", "\}")
-            file_path = file_path.replace("{", "\{")
-            file_path = file_path.replace(" ", "\ ")
-            file_path_split = os.path.splitext(file_path)
-            file_path_no_ext = file_path_split[0]
-            os.system("ffmpeg -i " + file_path + " -strict experimental " + file_path_no_ext + '.' + mime_output['name'].lower())
+        # use same ffmpeg backend
+        self.convert_audio(menu, mime_output, files)
