@@ -147,16 +147,5 @@ class ExampleMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             file_path_no_ext = file_path_split[0]
             os.system("ffmpeg -i " + file_path + " -strict experimental " + file_path_no_ext + '.' + mime_output['name'].lower())
     def convert_video(self, menu, mime_output, files):
-        print(mime_output)
-        for file in files:
-            file_path = unquote(urlparse(file.get_uri()).path)
-            file_path = file_path.replace("(", "\(")
-            file_path = file_path.replace(")", "\)")
-            file_path = file_path.replace("[", "\[")
-            file_path = file_path.replace("]", "\]")
-            file_path = file_path.replace("}", "\}")
-            file_path = file_path.replace("{", "\{")
-            file_path = file_path.replace(" ", "\ ")
-            file_path_split = os.path.splitext(file_path)
-            file_path_no_ext = file_path_split[0]
-            os.system("ffmpeg -i " + file_path + " -strict experimental " + file_path_no_ext + '.' + mime_output['name'].lower())
+        # use same ffmpeg backend
+        self.convert_audio(menu, mime_output, files)
