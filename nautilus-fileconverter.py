@@ -52,7 +52,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 return self.__submenu_builder(self.WRITE_FORMATS_AUDIO,
                                               callback=self.convert_audio,
                                               files=files)
-            if file_mime in self.READ_FORMATS_IMAGE:
+            if file_mime in self.READ_FORMATS_VIDEO:
                 return self.__submenu_builder(self.WRITE_FORMATS_VIDEO,
                                               callback=self.convert_video,
                                               files=files)
