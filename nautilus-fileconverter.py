@@ -5,7 +5,7 @@ from urllib.parse import urlparse, unquote
 from pathlib import Path
 import os, shlex
 
-print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
+#print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
 class ExampleMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     READ_FORMATS_IMAGE = ('image/jpeg', 'image/png', 'image/bmp', 'application/postscript', 'image/gif',
@@ -126,13 +126,12 @@ class ExampleMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     def convert_image(self, menu, mime_output, files):
         print(mime_output)
         for file in files:
-            file_path = unquote(urlparse(file.get_uri()).path)
+            file_path = Path(unquote(urlparse(file.get_uri()).path))
             image = Image.open(file_path)
             if (mime_output['name']) == 'JPEG':
                 image = image.convert('RGB')
-            file_path_split = os.path.splitext(file_path)
-            file_path_no_ext = file_path_split[0]
-            image.save(f"{file_path_no_ext}" + "." + (mime_output['name'].lower()), format=(mime_output['name']))
+            image.save(file_path.with_suffix('.' + mime_output['name'].lower()),
+                       format=(mime_output['name']))
     def convert_audio(self, menu, mime_output, files):
         print(mime_output)
         for file in files:
