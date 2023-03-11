@@ -140,7 +140,7 @@ class ExampleMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             to_file_path = from_file_path.with_suffix(
                 f".{mime_output['name']}")
             os.system(
-                f"ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental {shlex.quote(str(to_file_path))}")
+                f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental {shlex.quote(str(to_file_path))} | tee &")
     def convert_video(self, menu, mime_output, files):
         # use same ffmpeg backend
         self.convert_audio(menu, mime_output, files)
