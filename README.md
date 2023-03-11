@@ -99,3 +99,7 @@ If you experience any issues with the extension, please report it on the [issues
 ## Authors
 
 - [Linus Tibert](https://github.com/Lich-Corals)
+
+## Pull requests
+
+- [derVedro](https://github.com/derVedro)
