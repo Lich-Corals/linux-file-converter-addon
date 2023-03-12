@@ -5,7 +5,7 @@ from urllib.parse import urlparse, unquote
 from pathlib import Path
 import os, shlex
 
-#print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
+print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     READ_FORMATS_IMAGE = ('image/jpeg', 'image/png', 'image/bmp', 'application/postscript', 'image/gif',
