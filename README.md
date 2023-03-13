@@ -92,7 +92,7 @@ note: The extension is only tested on Fedora Linux 37 (Workstation Edition). I c
 
 Just right click on an supported file and choose the "Convert to..." option. In this sub menu you can select any file type you want to convert to.
 
-Converting a file can take some time. There is no indicator when the process is done, the context menu just freezes. If Gnome says that Nautilus is not responding while converting a large file, click 'wait', the process should continue.
+Converting a file can take some time. There is no indicator when the process is done.
 
 If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/nautilus-fileconverter/issues) page.
 
