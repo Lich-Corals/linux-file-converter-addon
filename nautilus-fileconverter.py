@@ -1,11 +1,11 @@
 from gi.repository import Nautilus, GObject
 from typing import List
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
 from pathlib import Path
 import os, shlex
 
-#print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
+print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     READ_FORMATS_IMAGE = ('image/jpeg', 'image/png', 'image/bmp', 'application/postscript', 'image/gif',
@@ -79,11 +79,16 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         print(mime_output)
         for file in files:
             file_path = Path(unquote(urlparse(file.get_uri()).path))
-            image = Image.open(file_path)
-            if (mime_output['name']) == 'JPEG':
-                image = image.convert('RGB')
-            image.save(file_path.with_suffix('.' + mime_output['name'].lower()),
-                       format=(mime_output['name']))
+            try:
+                image = Image.open(file_path)
+                if (mime_output['name']) == 'JPEG':
+                    image = image.convert('RGB')
+                image.save(file_path.with_suffix('.' + mime_output['name'].lower()),
+                           format=(mime_output['name']))
+            except UnidentifiedImageError:
+                 pass
+
+
     def convert_audio(self, menu, mime_output, files):
         print(mime_output)
         for file in files:
