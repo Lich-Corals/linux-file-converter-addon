@@ -19,7 +19,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'audio/flac', 'audio/x-vorbis+ogg')
     READ_FORMATS_VIDEO = ('video/mp4', 'video/webm', 'video/x-matroska', 'video/avi', 'video/msvideo',
                           'video/x-msvideo')
-    WRITE_FORMATS_IMAGE = [{'name': 'JPEG', 'mimes': ['image/jpeg']},
+    WRITE_FORMATS_IMAGE = [{'name': 'JPEG', 'mimes': ['image/jpeg'], 'extension': 'jpg'},
                            {'name': 'PNG', 'mimes': ['image/png']},
                            {'name': 'BMP', 'mimes': ['image/bmp']},
                            {'name': 'GIF', 'mimes': ['image/gif']},
@@ -75,28 +75,33 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         return [top_menuitem]
 
 
-    def convert_image(self, menu, mime_output, files):
-        print(mime_output)
+    def __get_extension(self, format):
+        return f".{format.get('extension', format['name'])}".lower()
+
+
+    def convert_image(self, menu, format, files):
+        print(format)
         for file in files:
             file_path = Path(unquote(urlparse(file.get_uri()).path))
             try:
                 image = Image.open(file_path)
-                if (mime_output['name']) == 'JPEG':
+                if (format['name']) == 'JPEG':
                     image = image.convert('RGB')
-                image.save(file_path.with_suffix('.' + mime_output['name'].lower()),
-                           format=(mime_output['name']))
+                image.save(file_path.with_suffix(self.__get_extension(format)),
+                           format=(format['name']))
             except UnidentifiedImageError:
-                 pass
+                pass
 
 
-    def convert_audio(self, menu, mime_output, files):
-        print(mime_output)
+    def convert_audio(self, menu, format, files):
+        print(format)
         for file in files:
             from_file_path = Path(unquote(urlparse(file.get_uri()).path))
-            to_file_path = from_file_path.with_suffix(
-                f".{mime_output['name']}")
+            to_file_path = from_file_path.with_suffix(self.__get_extension(format))
             os.system(
                 f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental {shlex.quote(str(to_file_path))} | tee &")
-    def convert_video(self, menu, mime_output, files):
+
+
+    def convert_video(self, menu, format, files):
         # use same ffmpeg backend
-        self.convert_audio(menu, mime_output, files)
+        self.convert_audio(menu, format, files)
