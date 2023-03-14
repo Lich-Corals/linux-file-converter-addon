@@ -97,7 +97,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         print(format)
         for file in files:
             from_file_path = Path(unquote(urlparse(file.get_uri()).path))
-            to_file_path = from_file_path.with_suffix(self.__get_extension(format))
+            to_file_path = from_file_path.with_suffix(self.__get_extension(format).lower())
             os.system(
                 f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental {shlex.quote(str(to_file_path))} | tee &")
 
