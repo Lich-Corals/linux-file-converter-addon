@@ -5,7 +5,7 @@ from urllib.parse import urlparse, unquote
 from pathlib import Path
 import os, shlex
 
-print=lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
+print = lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     READ_FORMATS_IMAGE = ('image/jpeg', 'image/png', 'image/bmp', 'application/postscript', 'image/gif',
@@ -19,25 +19,25 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'audio/flac', 'audio/x-vorbis+ogg')
     READ_FORMATS_VIDEO = ('video/mp4', 'video/webm', 'video/x-matroska', 'video/avi', 'video/msvideo',
                           'video/x-msvideo')
-    WRITE_FORMATS_IMAGE = [{'name': 'JPEG', 'mimes': ['image/jpeg'], 'extension': 'jpg'},
-                           {'name': 'PNG', 'mimes': ['image/png']},
-                           {'name': 'BMP', 'mimes': ['image/bmp']},
-                           {'name': 'GIF', 'mimes': ['image/gif']},
-                           {'name': 'WebP', 'mimes': ['image/webp']}]
-    WRITE_FORMATS_AUDIO = [{'name': 'MP3', 'mimes': ['audio/mpeg', 'audio/mpeg3', 'video/x-mpeg', 'audio/x-mpeg-3']},
-                           {'name': 'WAV', 'mimes': ['audio/x-wav', 'audio/wav', 'audio/wave', 'audio/x-pn-wave', 'audio/vnd.wave']},
-                           {'name': 'AAC', 'mimes': ['audio/aac', 'audio/aacp', 'audio/3gpp', 'audio/3gpp2']},
-                           {'name': 'FLAC', 'mimes': ['audio/flac']},
-                           {'name': 'M4A', 'mimes': ['audio/mp4', 'audio/mp4a-latm', 'audio/mpeg4-generic']},
-                           {'name': 'OGG', 'mimes': ['audio/ogg']},
-                           {'name': 'OPUS', 'mimes': ['audio/opus']}]
-    WRITE_FORMATS_VIDEO = [{'name': 'MP4', 'mimes': ['video/mp4']},
-                           {'name': 'WebM', 'mimes': ['video/webm']},
-                           {'name': 'MKV', 'mimes': ['video/x-matroska']},
-                           {'name': 'AVI', 'mimes': ['video/avi', 'video/msvideo', 'video/x-msvideo']},
-                           {'name': 'GIF', 'mimes': ['image/gif']},
-                           {'name': 'MP3', 'mimes': ['audio/mpeg3']},
-                           {'name': 'WAV', 'mimes': ['audio/x-wav']}]
+    WRITE_FORMATS_IMAGE = [{'name': 'JPEG', 'extension': 'jpg'},
+                           {'name': 'PNG'},
+                           {'name': 'BMP'},
+                           {'name': 'GIF'},
+                           {'name': 'WebP'}]
+    WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
+                           {'name': 'WAV'},
+                           {'name': 'AAC'},
+                           {'name': 'FLAC'},
+                           {'name': 'M4A'},
+                           {'name': 'OGG'},
+                           {'name': 'OPUS'}]
+    WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
+                           {'name': 'WebM'},
+                           {'name': 'MKV'},
+                           {'name': 'AVI'},
+                           {'name': 'GIF'},
+                           {'name': 'MP3'},
+                           {'name': 'WAV'}]
 
 
     def get_file_items(self, files) -> List[Nautilus.MenuItem]:
