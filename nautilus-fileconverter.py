@@ -3,6 +3,7 @@ from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
 from pathlib import Path
+import pathlib
 import os, shlex
 
 print = lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
@@ -138,6 +139,13 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         for file in files:
             from_file_path = Path(unquote(urlparse(file.get_uri()).path))
             to_file_path = from_file_path.with_suffix(self.__get_extension(format).lower())
+            count = 0
+            to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}")
+            while to_file_path_mod.exists() or to_file_path.exists():
+                count = count + 1
+                to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}({count}){self.__get_extension(format).lower()}")
+                print(shlex.quote(str(from_file_path)))
+                to_file_path = to_file_path_mod
             os.system(
                 f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental {shlex.quote(str(to_file_path))} | tee &")
 
