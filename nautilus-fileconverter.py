@@ -8,22 +8,61 @@ import os, shlex
 print = lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
-    READ_FORMATS_IMAGE = ('image/jpeg', 'image/png', 'image/bmp', 'application/postscript', 'image/gif',
-                          'image/x-icon', 'image/x-pcx', 'image/x-portable-pixmap', 'image/tiff', 'image/x-xbm',
-                          'image/x-xbitmap', 'video/fli', 'image/vnd.fpx', 'image/vnd.net-fpx',
-                          'application/octet-stream', 'windows/metafile', 'image/x-xpixmap', 'image/webp')
-    READ_FORMATS_AUDIO = ('audio/mpeg', 'audio/mpeg3', 'video/x-mpeg', 'audio/x-mpeg-3',
-                          'audio/x-wav', 'audio/wav', 'audio/wave', 'audio/x-pn-wave', 'audio/vnd.wave', 'audio/x-mpegurl',
-                          'audio/mp4', 'audio/mp4a-latm', 'audio/mpeg4-generic', 'audio/x-matroska',
-                          'audio/aac', 'audio/aacp', 'audio/3gpp', 'audio/3gpp2', 'audio/ogg', 'audio/opus',
-                          'audio/flac', 'audio/x-vorbis+ogg')
-    READ_FORMATS_VIDEO = ('video/mp4', 'video/webm', 'video/x-matroska', 'video/avi', 'video/msvideo',
+    READ_FORMATS_IMAGE = ('image/jpeg',
+                          'image/png',
+                          'image/bmp',
+                          'application/postscript',
+                          'image/gif',
+                          'image/x-icon',
+                          'image/x-pcx',
+                          'image/x-portable-pixmap',
+                          'image/tiff',
+                          'image/x-xbm',
+                          'image/x-xbitmap',
+                          'video/fli',
+                          'image/vnd.fpx',
+                          'image/vnd.net-fpx',
+                          'application/octet-stream',
+                          'windows/metafile',
+                          'image/x-xpixmap',
+                          'image/webp')
+
+    READ_FORMATS_AUDIO = ('audio/mpeg',
+                          'audio/mpeg3',
+                          'video/x-mpeg',
+                          'audio/x-mpeg-3',
+                          'audio/x-wav',
+                          'audio/wav',
+                          'audio/wave',
+                          'audio/x-pn-wave',
+                          'audio/vnd.wave',
+                          'audio/x-mpegurl',
+                          'audio/mp4',
+                          'audio/mp4a-latm',
+                          'audio/mpeg4-generic',
+                          'audio/x-matroska',
+                          'audio/aac',
+                          'audio/aacp',
+                          'audio/3gpp',
+                          'audio/3gpp2',
+                          'audio/ogg',
+                          'audio/opus',
+                          'audio/flac',
+                          'audio/x-vorbis+ogg')
+
+    READ_FORMATS_VIDEO = ('video/mp4',
+                          'video/webm',
+                          'video/x-matroska',
+                          'video/avi',
+                          'video/msvideo',
                           'video/x-msvideo')
+
     WRITE_FORMATS_IMAGE = [{'name': 'JPEG', 'extension': 'jpg'},
                            {'name': 'PNG'},
                            {'name': 'BMP'},
                            {'name': 'GIF'},
                            {'name': 'WebP'}]
+
     WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
                            {'name': 'WAV'},
                            {'name': 'AAC'},
@@ -31,6 +70,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'M4A'},
                            {'name': 'OGG'},
                            {'name': 'OPUS'}]
+
     WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
                            {'name': 'WebM'},
                            {'name': 'MKV'},
@@ -75,7 +115,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         return [top_menuitem]
 
 
-    def __get_extension(self, format):
+    def __get_extension(format):
         return f".{format.get('extension', format['name'])}".lower()
 
 
