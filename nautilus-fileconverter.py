@@ -115,7 +115,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         return [top_menuitem]
 
 
-    def __get_extension(format):
+    def __get_extension(self, format):
         return f".{format.get('extension', format['name'])}".lower()
 
 
