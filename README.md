@@ -86,6 +86,12 @@ GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautil
 note: The extension is only tested on Fedora Linux 37 (Workstation Edition). I can't guarantee that it's working for everyone.
 ## Install the extension
 - Download the '[nautilus-fileconverter.py](https://github.com/Lich-Corals/nautilus-fileconverter/blob/main/nautilus-fileconverter.py)' file from Github.
+    - Git users can also get the repository with these commands:
+        ```bash
+            git clone https://github.com/Lich-Corals/Nautilus-fileconverter-43
+            
+            cd ./Nautilus-fileconverter-43
+        ```
 - For a systemwide installation move the file to '/usr/share/nautilus-python/extensions/' using this command in the dictonary with the file:
     ```bash
         sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
