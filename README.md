@@ -38,7 +38,7 @@ The extension has a few dependencies which have to be installed.
 
 ```bash
    Debian based distros:
-    sudo apt install nautilus-python
+    sudo apt install python3-nautilus
 
    Fedora based distros:
     sudo dnf install nautilus-python
@@ -48,9 +48,21 @@ The extension has a few dependencies which have to be installed.
 ```
 ###
 
-[python-pillow](https://python-pillow.org/) is needed to convert images. It can be installed using [pip](https://pypi.org/project/pip/):
 
+[pip](https://pypi.org/project/pip/) is a pre-dependency for pillow, it can be installed with the following commands:
 
+```bash
+   Debian based distros:
+    sudo apt install python3-pip
+
+   Fedora based distros:
+    sudo dnf install python3-pip
+
+   Arch based distros:
+    pacman -S python-pip
+```
+
+[python-pillow](https://python-pillow.org/) is needed to convert images. It can be installed using pip:
 ```bash
     pip install Pillow
 ```
