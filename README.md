@@ -3,8 +3,7 @@
 
 A python script to extend Nautilus using nautilus-python.
 
-
-
+![Screenshot from 2023-03-20 21-59-41](https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png)
 
 ## Features
 This programm can convert images, audio files and videos with the help of the default context menu in Nautilus. It works with a single Python script and has few depnendncy programms.
