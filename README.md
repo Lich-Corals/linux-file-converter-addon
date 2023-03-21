@@ -1,5 +1,6 @@
 
 # nautilus-fileconverter
+[![Donate](https://img.shields.io/badge/rate%20at-gnome%20look-%2324C3FF)](https://www.gnome-look.org/s/Gnome/p/1965601)
 
 A python script to extend Nautilus using nautilus-python.
 
