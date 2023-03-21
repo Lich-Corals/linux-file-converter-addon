@@ -80,7 +80,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'WAV'}]
 
 
-    def get_file_items(self, files) -> List[Nautilus.MenuItem]:
+    def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
+        files = [-1]                # legacy support for stuff earlier than G43
         for file in files:
             print(file.get_mime_type())
             file_mime = file.get_mime_type()
