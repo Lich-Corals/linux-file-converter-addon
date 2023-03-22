@@ -76,7 +76,6 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'WebM'},
                            {'name': 'MKV'},
                            {'name': 'AVI'},
-                           {'name': 'GIF'},
                            {'name': 'MP3'},
                            {'name': 'WAV'}]
 
@@ -148,9 +147,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 print(shlex.quote(str(from_file_path)))
                 to_file_path = to_file_path_mod
             os.system(
-                f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental {shlex.quote(str(to_file_path))} | tee &")
-
-
+                f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
     def convert_video(self, menu, format, files):
         # use same ffmpeg backend
         self.convert_audio(menu, format, files)
