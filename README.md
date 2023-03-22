@@ -28,7 +28,6 @@ This programm can convert images, audio files and videos with the help of the de
     - WebM
     - MKV
     - AVI
-    - GIF (bad quality)
     - MP3
     - WAV
 ## Install dependencies
