@@ -56,7 +56,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'video/x-matroska',
                           'video/avi',
                           'video/msvideo',
-                          'video/x-msvideo')
+                          'video/x-msvideo',
+                          'video/quicktime')
 
     WRITE_FORMATS_IMAGE = [{'name': 'JPEG', 'extension': 'jpg'},
                            {'name': 'PNG'},
