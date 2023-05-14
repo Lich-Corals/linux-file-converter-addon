@@ -1,6 +1,6 @@
 
 # nautilus-fileconverter
-[![](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Flichcorals.netlify.app%2Fgnome_look.json)](https://www.gnome-look.org/s/Gnome/p/1965601) [![](https://img.shields.io/github/downloads/Lich-Corals/Nautilus-fileconverter-43/total?color=blue&logo=github&logoColor=white&style=for-the-badge)](https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases)
+[![](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Flichcorals.netlify.app%2Fgnome_look.json)](https://www.gnome-look.org/s/Gnome/p/1965601)
 
 A python script to extend Nautilus using nautilus-python.
 
@@ -28,7 +28,6 @@ This programm can convert images, audio files and videos with the help of the de
     - WebM
     - MKV
     - AVI
-    - GIF (bad quality)
     - MP3
     - WAV
 ## Install dependencies
