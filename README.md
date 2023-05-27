@@ -74,28 +74,7 @@ This programm can convert images, audio files and videos with the help of the de
     C --> T
     C --> U
 ```
-
-### Supported image types (convert to)
-    - JPEG
-    - PNG
-    - BMP
-    - GIF
-    - WebP
-### Supported audio types (convert to)
-    - MP3
-    - WAV
-    - AAC
-    - FLAC
-    - M4A
-    - OGG
-    - OPUS
-### Supported video types (convert to)
-    - MP4
-    - WebM
-    - MKV
-    - AVI
-    - MP3
-    - WAV
+# Installation
 ## Install dependencies
 The extension has a few dependencies which have to be installed.
 ###
