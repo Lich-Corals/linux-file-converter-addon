@@ -26,7 +26,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'application/octet-stream',
                           'windows/metafile',
                           'image/x-xpixmap',
-                          'image/webp')
+                          'image/webp',
+                          'image/avif')
 
     READ_FORMATS_AUDIO = ('audio/mpeg',
                           'audio/mpeg3',
