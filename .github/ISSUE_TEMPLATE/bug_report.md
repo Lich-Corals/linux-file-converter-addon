@@ -1,12 +1,3 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
-
----
-
 **Describe the bug**
 A clear and concise description of what the bug is.
 
@@ -29,6 +20,8 @@ Basic information about the used os
  - Package manager: [e.g. apt]
  - Gnome version: [e.g. GNOME 43.4.1]
  - Nautilus version (`nautilus --version`): [e.g. GNOME nautilus 43.3]
+ - Python version (`python3 --version`): [e.g. Python 3.11.2]
+ - pip version (`pip --version`): [e.g. pip 23.2.1]
 
 **Nautilus errors**
 If existing, please provide the error(s) whan running the `nautilus` command in the terminal.
