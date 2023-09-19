@@ -6,6 +6,14 @@ from pathlib import Path
 import pathlib
 import os, shlex
 
+pyheifImported = True
+
+try:
+    import pyheif
+except ImportError:
+    print(f"WARNING(Nautilus-file-converter): \"pyheif\" not found, if you want to convert from heif format, install the package using \"pip install pyheif\"." )
+    pyheifImported = False
+
 print = lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
@@ -27,7 +35,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'windows/metafile',
                           'image/x-xpixmap',
                           'image/webp',
-                          'image/avif')
+                          'image/avif',
+                          'image/heif')
 
     READ_FORMATS_AUDIO = ('audio/mpeg',
                           'audio/mpeg3',
@@ -132,6 +141,21 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 image.save(file_path.with_suffix(self.__get_extension(format)),
                            format=(format['name']))
             except UnidentifiedImageError:
+                try:
+                    heif_file = pyheif.read(file_path)
+                    heif_image = Image.frombytes(
+                        heif_file.mode,
+                        heif_file.size,
+                        heif_file.data,
+                        "raw",
+                        heif_file.mode,
+                        heif_file.stride,
+                    )
+                    if (format['name']) == 'JPEG':
+                        heif_image = heif_image.convert("RGB")
+                    heif_image.save(file_path.with_suffix(self.__get_extension(format)), format['name'])
+                except UnidentifiedImageError:
+                    pass
                 pass
 
 

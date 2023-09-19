@@ -124,8 +124,14 @@ The extension has a few dependencies which have to be installed.
    Arch based distros:
     sudo pacman -S ffmpeg
 ```
+[pyheif](https://pypi.org/project/pyheif/) is needed if you want to convert from heif or avif format.
+
+```bash
+    pip install pyheif
+```
+
 ###
-GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautilus/) should be installed, otehrwise it will be hard to install extension to it. 
+GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautilus/) should be installed, otehrwise it will be hard to install extension to it.
 ###
 note: The extension is only tested on Fedora Linux 37 (Workstation Edition). I can't guarantee that it's working for everyone.
 ## Install the extension
