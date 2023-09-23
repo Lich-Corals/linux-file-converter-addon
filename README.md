@@ -152,10 +152,15 @@ note: The extension is only tested on Fedora Linux 37 (Workstation Edition). I c
     ```
 - Now you only have to restart Nautilus using the following commands:
     ```bash
+        #Quit nautilus
         nautilus -q 
 
+        #start it again, you can also use the normal launcher.
         nohup nautilus & disown
     ```
+## Updating
+To update the script, you can just run the same commands you've used for the installation.
+Be sure to update the right location.
 ## Usage
 
 Just right click on an supported file and choose the "Convert to..." option. In this sub menu you can select any file type you want to convert to.
