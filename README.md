@@ -32,7 +32,7 @@ This programm can convert images, audio files and videos with the help of the de
     T[MP3]
     U[WAV]
     
-    A["Supported Image Files:<br/>JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF"]
+    A["Supported Image Files:<br/>JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF<br/>HEIC"]
     B["Supported Audio Files:<br/>MP3<br/>MPGA<br/>MPG<br/>MPEG<br/>WAV<br/>M3U<br/>M3U8<br/>M4A<br/>MKA<br/>AAC<br/>3GP<br/>3G2<br/>OGG<br/>OPUS"]
     C["Supported Video Files:<br/>MP4<br/>WebM<br/>MKV<br/>AVI<br/>MOV<br/>QT"]
    
