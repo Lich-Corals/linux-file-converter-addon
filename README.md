@@ -124,16 +124,17 @@ The extension has a few dependencies which have to be installed.
    Arch based distros:
     sudo pacman -S ffmpeg
 ```
-[pyheif](https://pypi.org/project/pyheif/) is needed if you want to convert from heif or avif format.
+
+###
+GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautilus/) should be installed, otehrwise it will be hard to install extension to it.
+
+### Optional dependencies
+[pyheif](https://pypi.org/project/pyheif/) is needed if you want to convert from **heif** or **avif** format.
 
 ```bash
     pip install pyheif
 ```
 
-###
-GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautilus/) should be installed, otehrwise it will be hard to install extension to it.
-###
-note: The extension is only tested on Fedora Linux 37 (Workstation Edition). I can't guarantee that it's working for everyone.
 ## Install the extension
 - Download the nautilus-fileconverter.py file from the [release page](https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases).
     - Git users can also get the repository with these commands:
@@ -142,14 +143,14 @@ note: The extension is only tested on Fedora Linux 37 (Workstation Edition). I c
             
             cd ./Nautilus-fileconverter-43
         ```
-- For a systemwide installation move the file to '/usr/share/nautilus-python/extensions/' using this command in the dictonary with the file:
+- For a system-wide installation move the file to '/usr/share/nautilus-python/extensions/' using this command in the dictonary with the file:
     ```bash
         sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
     ```
-- For a user spesific installation move the file to '~/.local/share/nautilus-python/extensions/' using this command in the dictonary with the file:
-    ```bash
-        mv nautilus-fileconverter.py ~/.local/share/nautilus-python/extensions/nautilus-fileconverter.py
-    ```
+  - For a user specific installation move the file to '~/.local/share/nautilus-python/extensions/' using this command in the dictonary with the file:
+      ```bash
+          mv nautilus-fileconverter.py ~/.local/share/nautilus-python/extensions/nautilus-fileconverter.py
+      ```
 - Now you only have to restart Nautilus using the following commands:
     ```bash
         #Quit nautilus
@@ -158,9 +159,19 @@ note: The extension is only tested on Fedora Linux 37 (Workstation Edition). I c
         #start it again, you can also use the normal launcher.
         nohup nautilus & disown
     ```
+## Configuration
+### Automatic updates
+If you've installed the script at the system-wide location, you may turn off automatic updates. Automatic updates are only working in the home dictionary.
+
+To turn off automatic updates, open the file with a text editor and set the `automaticUpdates` variable to 'False'.
+### Manual update trigger
+To manually trigger a self-update, just open the file with a text editor and change the value of the `converterVersion` variable.
+
+Then close nautilus with `nautilus -q` in your terminal and open it again.
 ## Updating
-To update the script, you can just run the same commands you've used for the installation.
-Be sure to update the right location.
+If the script is installed in the home folder (~/.local/share/nautilus-python/extensions/), it will update automatically as long as the automatic updates aren't disabled.
+
+If automatic updates are disabled or the script is installed in the root folder, you can run the installation commands again.
 ## Usage
 
 Just right click on an supported file and choose the "Convert to..." option. In this sub menu you can select any file type you want to convert to.

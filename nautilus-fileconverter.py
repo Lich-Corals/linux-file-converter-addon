@@ -1,3 +1,6 @@
+converterVersion = "001000006" # Change the number if you want to trigger an update.
+automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
+
 from gi.repository import Nautilus, GObject
 from typing import List
 from PIL import Image, UnidentifiedImageError
@@ -5,6 +8,7 @@ from urllib.parse import urlparse, unquote
 from pathlib import Path
 import pathlib
 import os, shlex
+import urllib.request
 
 pyheifImported = True
 
@@ -13,6 +17,20 @@ try:
 except ImportError:
     print(f"WARNING(Nautilus-file-converter): \"pyheif\" not found, if you want to convert from heif format, install the package using \"pip install pyheif\"." )
     pyheifImported = False
+
+if automaticUpdates:
+    with urllib.request.urlopen(
+            "https://raw.githubusercontent.com/Lich-Corals/Nautilus-fileconverter-43/main/nautilus-fileconverter.py") as f:
+        onlineFile = f.read().decode().strip()
+    if converterVersion not in onlineFile:
+        print("Updating...")
+        currentPath = str(pathlib.Path(__file__).parent.resolve())
+        if "/home/" in currentPath:
+            fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
+            with open(fileUpdatePath, 'w') as file:
+                file.write(onlineFile)
+        else:
+            print("updating only supported in home!")
 
 print = lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
 
@@ -91,7 +109,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'WAV'}]
 
     def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
-        files = args[-1]            # legacy support for stuff earlier than G43
+        files = args[-1]
         for file in files:
             print(file.get_mime_type())
             file_mime = file.get_mime_type()
@@ -107,7 +125,6 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 return self.__submenu_builder(self.WRITE_FORMATS_VIDEO,
                                               callback=self.convert_video,
                                               files=files)
-
 
     def __submenu_builder(self, formats, callback, files):
         top_menuitem = Nautilus.MenuItem(
