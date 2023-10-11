@@ -9,70 +9,28 @@ A python script to extend Nautilus using nautilus-python.
 ## Features
 This programm can convert images, audio files and videos with the help of the default context menu in Nautilus. It works with a single Python script and has few depnendncy programms. It should work with every version of nautilus.
 ```mermaid
-    graph LR
+    flowchart TD
     A[Supported Image Files]
     B[Supported Audio Files]
     C[Supported Video Files]
-    D[JPEG]
-    E[PNG]
-    F[BMP]
-    G[GIF]
-    H[WebP]
-    I[MP3]
-    J[WAV]
-    K[AAC]
-    L[FLAC]
-    M[M4A]
-    N[OGG]
-    O[OPUS]
-    P[MP4]
-    Q[WebM]
-    R[MKV]
-    S[AVI]
-    T[MP3]
-    U[WAV]
+    D[image]
+    E[audio]
+    F[video]
     
-    A["Supported Image Files:<br/>JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF<br/>HEIC"]
-    B["Supported Audio Files:<br/>MP3<br/>MPGA<br/>MPG<br/>MPEG<br/>WAV<br/>M3U<br/>M3U8<br/>M4A<br/>MKA<br/>AAC<br/>3GP<br/>3G2<br/>OGG<br/>OPUS"]
-    C["Supported Video Files:<br/>MP4<br/>WebM<br/>MKV<br/>AVI<br/>MOV<br/>QT"]
-   
-    D[JPEG]
-    E[PNG]
-    F[BMP]
-    G[GIF]
-    H[WebP]
-    I[MP3]
-    J[WAV]
-    K[AAC]
-    L[FLAC]
-    M[M4A]
-    N[OGG]
-    O[OPUS]
-    P[MP4]
-    Q[WebM]
-    R[MKV]
-    S[AVI]
-    T[MP3]
-    U[WAV]
+    A["JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF<br/>HEIC"]
+    B["MP3<br/>MPGA<br/>MPG<br/>MPEG<br/>WAV<br/>M3U<br/>M3U8<br/>M4A<br/>MKA<br/>AAC<br/>3GP<br/>3G2<br/>OGG<br/>OPUS"]
+    C["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MOV<br/>QT"]
+
+    D["JPEG<br/>PNG<br/>BMP<br/>GIF<br/>WEBP"]
+    E["MP3<br/>WAV<br/>ACC<br/>FLAC<br/>M4A<br/>OGG<br/>OPUS"]
+    F["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MP3<br/>WAV"]
+
+
     
     A --> D
-    A --> E
-    A --> F
-    A --> G
-    A --> H
-    B --> I
-    B --> J
-    B --> K
-    B --> L
-    B --> M
-    B --> N
-    B --> O
-    C --> P
-    C --> Q
-    C --> R
-    C --> S
-    C --> T
-    C --> U
+    B --> E
+    C --> F
+
 ```
 # Installation
 ## Install dependencies
