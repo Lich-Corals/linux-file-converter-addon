@@ -138,6 +138,13 @@ Converting a file can take some time. There is no indicator when the process is 
 
 If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/nautilus-fileconverter/issues) page.
 
+## Any questions?
+If anything is not clear...
+<br/>If you have a problem...
+<br/>If you need a specific feature...
+<br/>If any of your files is not supported...
+<br/><b>...feel free to write a [GitHub issue](https://github.com/Lich-Corals/Nautilus-fileconverter-43/issues/new/choose)!</b>
+
 ## Authors
 
 - [Linus Tibert](https://github.com/Lich-Corals)
