@@ -1,4 +1,4 @@
-converterVersion = "001000006" # Change the number if you want to trigger an update.
+converterVersion = "001000007" # Change the number if you want to trigger an update.
 automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
 
 from gi.repository import Nautilus, GObject
@@ -10,13 +10,16 @@ import pathlib
 import os, shlex
 import urllib.request
 
-pyheifImported = True
-
 try:
     import pyheif
 except ImportError:
-    print(f"WARNING(Nautilus-file-converter): \"pyheif\" not found, if you want to convert from heif format, install the package using \"pip install pyheif\"." )
-    pyheifImported = False
+    print(f"WARNING(Nautilus-file-converter): \"pyheif\" not found, if you want to convert from heif format, install the package using \"pip install pyheif\". See the readme on GitHub for more information." )
+
+try:
+    import jxlpy
+    from jxlpy import JXLImagePlugin
+except ImportError:
+    print(f"WARNING(Nautilus-file-converter): \"jxlpy\" not found, if you want to convert from jxl format, install the package using \"pip install jxlpy\". See the readme on GitHub for more information.")
 
 if automaticUpdates:
     with urllib.request.urlopen(
@@ -54,7 +57,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'image/x-xpixmap',
                           'image/webp',
                           'image/avif',
-                          'image/heif')
+                          'image/heif',
+                          'image/jxl')
 
     READ_FORMATS_AUDIO = ('audio/mpeg',
                           'audio/mpeg3',

@@ -1,5 +1,5 @@
 
-# nautilus-fileconverter
+# nautilus-fileconverter-43
 [![](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Flichcorals.netlify.app%2Fgnome_look.json)](https://www.gnome-look.org/s/Gnome/p/1965601)
 
 A python script to extend Nautilus using nautilus-python.
@@ -17,7 +17,7 @@ This programm can convert images, audio files and videos with the help of the de
     E[audio]
     F[video]
     
-    A["JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF<br/>HEIC"]
+    A["JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF<br/>HEIC<br/>JXL"]
     B["MP3<br/>MPGA<br/>MPG<br/>MPEG<br/>WAV<br/>M3U<br/>M3U8<br/>M4A<br/>MKA<br/>AAC<br/>3GP<br/>3G2<br/>OGG<br/>OPUS"]
     C["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MOV<br/>QT"]
 
@@ -86,16 +86,26 @@ The extension has a few dependencies which have to be installed.
 ###
 GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautilus/) should be installed, otehrwise it will be hard to install extension to it.
 
-### Optional dependencies
+## Optional dependencies
+### pyheif (HEIC, AVIF)
 [pyheif](https://pypi.org/project/pyheif/) is needed if you want to convert from **heif** or **avif** format.
-
+<br/> Install it using this command:
 ```bash
     pip install pyheif
 ```
 
+### jxlpy (JXL)
+[jxlpy](https://github.com/olokelo/jxlpy) is needed if you want to convert from **jxl** format.
+<br/> Install it using this command:
+```bash
+    pip install jxlpy
+```
+Note: jxlpy is in a very early state, you may have issues while installing it using pip.
+You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-yourself).
+
 ## Install the extension
 - Download the nautilus-fileconverter.py file from the [release page](https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases).
-    - Git users can also get the repository with these commands:
+    - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
         ```bash
             git clone https://github.com/Lich-Corals/Nautilus-fileconverter-43
             
