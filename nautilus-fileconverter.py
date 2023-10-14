@@ -1,4 +1,4 @@
-converterVersion = "001000007" # Change the number if you want to trigger an update.
+converterVersion = "001000008" # Change the number if you want to trigger an update.
 automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
 
 from gi.repository import Nautilus, GObject
@@ -19,7 +19,7 @@ try:
     import jxlpy
     from jxlpy import JXLImagePlugin
 except ImportError:
-    print(f"WARNING(Nautilus-file-converter): \"jxlpy\" not found, if you want to convert from jxl format, install the package using \"pip install jxlpy\". See the readme on GitHub for more information.")
+    print(f"WARNING(Nautilus-file-converter): \"jxlpy\" not found, if you want to convert from- or to jxl format, install the package using \"pip install jxlpy\". See the readme on GitHub for more information.")
 
 if automaticUpdates:
     with urllib.request.urlopen(
@@ -95,7 +95,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'PNG'},
                            {'name': 'BMP'},
                            {'name': 'GIF'},
-                           {'name': 'WebP'}]
+                           {'name': 'WebP'},
+                           {'name': 'JXL'}]
 
     WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
                            {'name': 'WAV'},
