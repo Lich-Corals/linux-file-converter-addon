@@ -6,7 +6,21 @@ A python script to extend Nautilus using nautilus-python.
 
 <img src="https://github.com/Lich-Corals/Nautilus-fileconverter-43/assets/111392332/c0c88546-fa62-4ff4-89d5-909854f63a95" alt="drawing" width="250"/> <img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="250"/>
 
-## 1. Features
+## 0. ReadMe Contents
+1. [Features]()
+2. [Installation]()
+   1. [Install dependencies]()
+   2. [Optional dependencies]()
+   3. [Install the extension]()
+3. [Configuration]()
+   1. [Automatic updates]()
+   2. [Manual update trigger]()
+4. [Updating]()
+5. [Usage]()
+6. [Any questions?]()
+7. [Credits]()
+
+# 1. Features
 This programm can convert images, audio files and videos with the help of the default context menu in Nautilus. It works with a single Python script and has few depnendncy programms. It should work with every version of nautilus.
 ```mermaid
     flowchart TD
@@ -126,20 +140,20 @@ You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-
         #start it again, you can also use the normal launcher.
         nohup nautilus & disown
     ```
-# 4. Configuration
-## 4.1 Automatic updates
+# 3. Configuration
+## 3.1 Automatic updates
 If you've installed the script at the system-wide location, you may turn off automatic updates. Automatic updates are only working in the home dictionary.
 
 To turn off automatic updates, open the file with a text editor and set the `automaticUpdates` variable to 'False'.
-## 4.2 Manual update trigger
+## 3.2 Manual update trigger
 To manually trigger a self-update, just open the file with a text editor and change the value of the `converterVersion` variable.
 
 Then close nautilus with `nautilus -q` in your terminal and open it again.
-# 5. Updating
+# 4. Updating
 If the script is installed in the home folder (~/.local/share/nautilus-python/extensions/), it will update automatically as long as the automatic updates aren't disabled.
 
 If automatic updates are disabled or the script is installed in the root folder, you can run the installation commands again.
-# 6. Usage
+# 5. Usage
 
 Just right click on an supported file and choose the "Convert to..." option. In this sub menu you can select any file type you want to convert to.
 
@@ -147,14 +161,14 @@ Converting a file can take some time. There is no indicator when the process is 
 
 If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/nautilus-fileconverter/issues) page.
 
-# 7. Any questions?
+# 6. Any questions?
 If anything is not clear...
 <br/>If you have a problem...
 <br/>If you need a specific feature...
 <br/>If any of your files is not supported...
 <br/><b>...feel free to write a [GitHub issue](https://github.com/Lich-Corals/Nautilus-fileconverter-43/issues/new/choose)!</b>
 
-# 8. Credits
+# 7. Credits
 ## Authors
 
 - [Linus Tibert](https://github.com/Lich-Corals)
