@@ -7,18 +7,18 @@ A python script to extend Nautilus using nautilus-python.
 <img src="https://github.com/Lich-Corals/Nautilus-fileconverter-43/assets/111392332/c0c88546-fa62-4ff4-89d5-909854f63a95" alt="drawing" width="250"/> <img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="250"/>
 
 ## 0. ReadMe Contents
-1. [Features]()
-2. [Installation]()
-   1. [Install dependencies]()
-   2. [Optional dependencies]()
-   3. [Install the extension]()
-3. [Configuration]()
-   1. [Automatic updates]()
-   2. [Manual update trigger]()
-4. [Updating]()
-5. [Usage]()
-6. [Any questions?]()
-7. [Credits]()
+1. [Features](#1-features)
+2. [Installation](#2-installation)
+   1. [Install dependencies](#21-install-dependencies)
+   2. [Optional dependencies](#22-optional-dependencies)
+   3. [Install the extension](#23-install-the-extension)
+3. [Configuration](#3-configuration)
+   1. [Automatic updates](#31-automatic-updates)
+   2. [Manual update trigger](#32-manual-update-trigger)
+4. [Updating](#4-updating)
+5. [Usage](#5-usage)
+6. [Any questions?](#6-any-questions)
+7. [Credits](#7-credits)
 
 # 1. Features
 This programm can convert images, audio files and videos with the help of the default context menu in Nautilus. It works with a single Python script and has few depnendncy programms. It should work with every version of nautilus.
