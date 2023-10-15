@@ -35,7 +35,7 @@ This programm can convert images, audio files and videos with the help of the de
     B["MP3<br/>MPGA<br/>MPG<br/>MPEG<br/>WAV<br/>M3U<br/>M3U8<br/>M4A<br/>MKA<br/>AAC<br/>3GP<br/>3G2<br/>OGG<br/>OPUS"]
     C["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MOV<br/>QT"]
 
-    D["JPEG<br/>PNG<br/>BMP<br/>GIF<br/>WEBP<br/>JXL*²"]
+    D["JPEG<br/>PNG<br/>BMP<br/>GIF<br/>WEBP<br/>JXL*²<br/>TIFF<br/>Different square sizes"]
     E["MP3<br/>WAV<br/>ACC<br/>FLAC<br/>M4A<br/>OGG<br/>OPUS"]
     F["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MP3<br/>WAV"]
 

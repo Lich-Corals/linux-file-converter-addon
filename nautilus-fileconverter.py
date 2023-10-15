@@ -1,4 +1,4 @@
-converterVersion = "001000008" # Change the number if you want to trigger an update.
+converterVersion = "001000009" # Change the number if you want to trigger an update.
 automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
 
 from gi.repository import Nautilus, GObject
@@ -96,7 +96,16 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'BMP'},
                            {'name': 'GIF'},
                            {'name': 'WebP'},
-                           {'name': 'JXL'}]
+                           {'name': 'JXL'},
+                           {'name': 'TIFF'}]
+
+    WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16'},
+                            {'name': 'PNG: 32x32', 'extension': 'png', 'square': '32'},
+                            {'name': 'PNG: 64x64', 'extension': 'png', 'square': '64'},
+                            {'name': 'PNG: 128x128', 'extension': 'png', 'square': '128'},
+                            {'name': 'PNG: 256x256', 'extension': 'png', 'square': '256'},
+                            {'name': 'PNG: 512x512', 'extension': 'png', 'square': '512'},
+                            {'name': 'PNG: 1024x1024', 'extension': 'png', 'square': '1024'}]
 
     WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
                            {'name': 'WAV'},
@@ -138,6 +147,23 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         )
         submenu = Nautilus.Menu()
         top_menuitem.set_submenu(submenu)
+
+        if formats[0]['name'] == 'JPEG':
+            top_menuitemSquare = Nautilus.MenuItem(
+                name="FileConverterMenuProvider::square_png",
+                label="Convert to square...",
+            )
+            submenuSquare = Nautilus.Menu()
+            top_menuitemSquare.set_submenu(submenuSquare)
+            for formatSquare in self.WRITE_FORMATS_SQUARE:
+                sub_menuitemSquare = Nautilus.MenuItem(
+                    name='squarePngSubmenu_' + formatSquare['name'],
+                    label=(formatSquare['name']),
+                )
+                sub_menuitemSquare.connect('activate', callback, formatSquare, files)
+                submenuSquare.append_item(sub_menuitemSquare)
+            submenu.append_item(top_menuitemSquare)
+
         for format in formats:
             sub_menuitem = Nautilus.MenuItem(
                 name='ConvertToSubmenu_' + format['name'],
@@ -158,10 +184,14 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             file_path = Path(unquote(urlparse(file.get_uri()).path))
             try:
                 image = Image.open(file_path)
+                if 'square' in format:
+                    image = image.resize((int(format['square']), int(format['square'])))
                 if (format['name']) == 'JPEG':
                     image = image.convert('RGB')
+                if 'extension' not in format:
+                    format['extension'] = format['name']
                 image.save(file_path.with_suffix(self.__get_extension(format)),
-                           format=(format['name']))
+                           format=(format['extension']))
             except UnidentifiedImageError:
                 try:
                     heif_file = pyheif.read(file_path)
