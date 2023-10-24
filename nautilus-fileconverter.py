@@ -27,6 +27,7 @@ if automaticUpdates:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
         print("Updating...")
+        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
         currentPath = str(pathlib.Path(__file__).parent.resolve())
         if "/home/" in currentPath:
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
