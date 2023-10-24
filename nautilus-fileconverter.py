@@ -212,13 +212,13 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 submenuWallpaper.append_item(sub_menuitemWallpaper)
             submenu.append_item(top_menuitemWallpaper)
 
-            sub_menuitem_patchNotes = Nautilus.MenuItem(
-                name="patchNotes",
-                label=f"View patch notes ({converterVersion})",
-            )
-            callback = self.openPatchNotes
-            sub_menuitem_patchNotes.connect('activate', callback,)
-            submenu.append_item(sub_menuitem_patchNotes)
+        sub_menuitem_patchNotes = Nautilus.MenuItem(
+            name="patchNotes",
+            label=f"View patch notes ({converterVersion})",
+        )
+        callback = self.openPatchNotes
+        sub_menuitem_patchNotes.connect('activate', callback,)
+        submenu.append_item(sub_menuitem_patchNotes)
 
         return [top_menuitem]
 
