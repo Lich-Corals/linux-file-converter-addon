@@ -1,4 +1,4 @@
-converterVersion = "001000009" # Change the number if you want to trigger an update.
+converterVersion = "001000010" # Change the number if you want to trigger an update.
 automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
 
 from gi.repository import Nautilus, GObject
@@ -91,7 +91,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'video/x-msvideo',
                           'video/quicktime')
 
-    WRITE_FORMATS_IMAGE = [{'name': 'JPEG', 'extension': 'jpg'},
+    WRITE_FORMATS_IMAGE = [{'name': 'JPEG'},
                            {'name': 'PNG'},
                            {'name': 'BMP'},
                            {'name': 'GIF'},
@@ -179,18 +179,27 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
 
 
     def convert_image(self, menu, format, files):
+        global file_path_to
         print(format)
         for file in files:
+            if 'extension' not in format:
+                format['extension'] = format['name']
             file_path = Path(unquote(urlparse(file.get_uri()).path))
+            count = 0
+            to_file_path_mod = file_path.with_name(f"{file_path.stem}")
+            while os.path.exists(shlex.quote(f"{to_file_path_mod}.{format['extension'].lower()}")):
+                count += 1
+                to_file_path_mod = file_path.with_name(
+                    f"{file_path.stem}-{count}")
+                file_path_to = to_file_path_mod
             try:
                 image = Image.open(file_path)
                 if 'square' in format:
                     image = image.resize((int(format['square']), int(format['square'])))
                 if (format['name']) == 'JPEG':
                     image = image.convert('RGB')
-                if 'extension' not in format:
-                    format['extension'] = format['name']
-                image.save(file_path.with_suffix(self.__get_extension(format)),
+                file_path_to = f"{to_file_path_mod}.{format['extension'].lower()}"
+                image.save(file_path_to,
                            format=(format['extension']))
             except UnidentifiedImageError:
                 try:
@@ -203,9 +212,9 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                         heif_file.mode,
                         heif_file.stride,
                     )
-                    if (format['name']) == 'JPEG':
+                    if (format['extension']) == 'JPEG':
                         heif_image = heif_image.convert("RGB")
-                    heif_image.save(file_path.with_suffix(self.__get_extension(format)), format['name'])
+                    heif_image.save(file_path.with_suffix(self.__get_extension(format)), format['extension'])
                 except UnidentifiedImageError:
                     pass
                 pass
@@ -219,7 +228,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             count = 0
             to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}")
             while to_file_path_mod.exists() or to_file_path.exists():
-                count = count + 1
+                count += 1
                 to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}({count}){self.__get_extension(format).lower()}")
                 print(shlex.quote(str(from_file_path)))
                 to_file_path = to_file_path_mod
