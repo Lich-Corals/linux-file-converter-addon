@@ -1,4 +1,4 @@
-converterVersion = "001000010" # Change the number if you want to trigger an update.
+converterVersion = "001000011" # Change the number if you want to trigger an update.
 automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
 
 from gi.repository import Nautilus, GObject
@@ -106,7 +106,14 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                             {'name': 'PNG: 128x128', 'extension': 'png', 'square': '128'},
                             {'name': 'PNG: 256x256', 'extension': 'png', 'square': '256'},
                             {'name': 'PNG: 512x512', 'extension': 'png', 'square': '512'},
-                            {'name': 'PNG: 1024x1024', 'extension': 'png', 'square': '1024'}]
+                            {'name': 'PNG: 1024x1024', 'extension': 'png', 'square': '1024'},
+                            {'name': 'JPEG: 16x16', 'extension': 'JPEG', 'square': '16'},
+                            {'name': 'JPEG: 32x32', 'extension': 'JPEG', 'square': '32'},
+                            {'name': 'JPEG: 64x64', 'extension': 'JPEG', 'square': '64'},
+                            {'name': 'JPEG: 128x128', 'extension': 'JPEG', 'square': '128'},
+                            {'name': 'JPEG: 256x256', 'extension': 'JPEG', 'square': '256'},
+                            {'name': 'JPEG: 512x512', 'extension': 'JPEG', 'square': '512'},
+                            {'name': 'JPEG: 1024x1024', 'extension': 'JPEG', 'square': '1024'}]
 
     WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
                            {'name': 'WAV'},
@@ -195,10 +202,10 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 file_path_to = to_file_path_mod
             try:
                 image = Image.open(file_path)
-                if 'square' in format:
-                    image = image.resize((int(format['square']), int(format['square'])))
                 if (format['name']) == 'JPEG':
                     image = image.convert('RGB')
+                if 'square' in format:
+                    image = image.resize((int(format['square']), int(format['square'])))
                 file_path_to = f"{to_file_path_mod}.{format['extension'].lower()}"
                 image.save(file_path_to,
                            format=(format['extension']))
