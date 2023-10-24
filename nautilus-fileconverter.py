@@ -1,4 +1,4 @@
-converterVersion = "001000011" # Change the number if you want to trigger an update.
+converterVersion = "001000012" # Change the number if you want to trigger an update.
 automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
 
 from gi.repository import Nautilus, GObject
@@ -115,6 +115,23 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                             {'name': 'JPEG: 512x512', 'extension': 'JPEG', 'square': '512'},
                             {'name': 'JPEG: 1024x1024', 'extension': 'JPEG', 'square': '1024'}]
 
+    WRITE_FORMATS_WALLPAPER = [{'name': 'SD P | 480x640', 'extension': 'png', 'w': '480', 'h': '640'},
+                               {'name': 'SD L | 640x480', 'extension': 'png', 'w': '640', 'h': '480'},
+                               {'name': 'HD P | 720x1280', 'extension': 'png', 'w': '720', 'h': '1280'},
+                               {'name': 'HD L | 1280x720', 'extension': 'png', 'w': '1280', 'h': '720'},
+                               {'name': 'FHD P | 1080x1920', 'extension': 'png', 'w': '1080', 'h': '1920'},
+                               {'name': 'FHD L | 1920x1080', 'extension': 'png', 'w': '1920', 'h': '1080'},
+                               {'name': 'QHD P | 1440x2560', 'extension': 'png', 'w': '1440', 'h': '2560'},
+                               {'name': 'QHD L | 2560x1440', 'extension': 'png', 'w': '2560', 'h': '1440'},
+                               {'name': '4K-UHD P | 2160x3840', 'extension': 'png', 'w': '2160', 'h': '3840'},
+                               {'name': '4K-UHD L | 3840x2160', 'extension': 'png', 'w': '3840', 'h': '2160'},
+                               {'name': '8K-UHD P | 4320x7680', 'extension': 'png', 'w': '4320', 'h': '7680'},
+                               {'name': '8K-UHD L | 7680x4320', 'extension': 'png', 'w': '7680', 'h': '4320'},
+                               {'name': 'Galaxy S7 P | 1440x2960', 'extension': 'png', 'w': '1440', 'h': '2960'},
+                               {'name': 'Galaxy S7 L | 1440x2960', 'extension': 'png', 'w': '2960', 'h': '1440'},
+                               {'name': 'iPad Pro P | 2048x2732', 'extension': 'png', 'w': '2048', 'h': '2732'},
+                               {'name': 'iPad Pro L | 2048x2732', 'extension': 'png', 'w': '2732', 'h': '2048'}]
+
     WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
                            {'name': 'WAV'},
                            {'name': 'AAC'},
@@ -156,10 +173,18 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         submenu = Nautilus.Menu()
         top_menuitem.set_submenu(submenu)
 
+        for format in formats:
+            sub_menuitem = Nautilus.MenuItem(
+                name='ConvertToSubmenu_' + format['name'],
+                label=(format['name']),
+            )
+            sub_menuitem.connect('activate', callback, format, files)
+            submenu.append_item(sub_menuitem)
+
         if formats[0]['name'] == 'JPEG':
             top_menuitemSquare = Nautilus.MenuItem(
                 name="FileConverterMenuProvider::square_png",
-                label="Convert to square...",
+                label="Square...",
             )
             submenuSquare = Nautilus.Menu()
             top_menuitemSquare.set_submenu(submenuSquare)
@@ -172,15 +197,33 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 submenuSquare.append_item(sub_menuitemSquare)
             submenu.append_item(top_menuitemSquare)
 
-        for format in formats:
-            sub_menuitem = Nautilus.MenuItem(
-                name='ConvertToSubmenu_' + format['name'],
-                label=(format['name']),
+            top_menuitemWallpaper = Nautilus.MenuItem(
+                name="FileConverterMenuProvider::wallpaper",
+                label="Wallpaper...",
             )
-            sub_menuitem.connect('activate', callback, format, files)
-            submenu.append_item(sub_menuitem)
+            submenuWallpaper = Nautilus.Menu()
+            top_menuitemWallpaper.set_submenu(submenuWallpaper)
+            for formatWallpaper in self.WRITE_FORMATS_WALLPAPER:
+                sub_menuitemWallpaper = Nautilus.MenuItem(
+                    name='WallpaperPngSubmenu_' + formatWallpaper['name'],
+                    label=(formatWallpaper['name']),
+                )
+                sub_menuitemWallpaper.connect('activate', callback, formatWallpaper, files)
+                submenuWallpaper.append_item(sub_menuitemWallpaper)
+            submenu.append_item(top_menuitemWallpaper)
+
+            sub_menuitem_patchNotes = Nautilus.MenuItem(
+                name="patchNotes",
+                label=f"View patch notes ({converterVersion})",
+            )
+            callback = self.openPatchNotes
+            sub_menuitem_patchNotes.connect('activate', callback,)
+            submenu.append_item(sub_menuitem_patchNotes)
+
         return [top_menuitem]
 
+    def openPatchNotes(self, menu):
+        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
 
     def __get_extension(self, format):
         return f".{format.get('extension', format['name'])}".lower()
@@ -206,6 +249,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                     image = image.convert('RGB')
                 if 'square' in format:
                     image = image.resize((int(format['square']), int(format['square'])))
+                if 'w' in format:
+                    image = image.resize((int(format['w']), int(format['h'])))
                 file_path_to = f"{to_file_path_mod}.{format['extension'].lower()}"
                 image.save(file_path_to,
                            format=(format['extension']))
