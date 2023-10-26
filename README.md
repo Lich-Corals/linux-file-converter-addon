@@ -15,6 +15,8 @@ A python script to extend Nautilus using nautilus-python.
 3. [Configuration](#3-configuration)
    1. [Automatic updates](#31-automatic-updates)
    2. [Manual update trigger](#32-manual-update-trigger)
+   3. [Shown menu items](#33-shown-menu-items)
+   4. [Patch note popup](#34-patch-note-popup)
 4. [Updating](#4-updating)
 5. [Usage](#5-usage)
 6. [Any questions?](#6-any-questions)
