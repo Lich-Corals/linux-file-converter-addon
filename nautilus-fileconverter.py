@@ -1,6 +1,6 @@
 # Updates and patch notes
-converterVersion = "001000012" # Change the number if you want to trigger an update.
-automaticUpdates = False # Replace the "True" with "False" if you don't want automatic updates.
+converterVersion = "001000013" # Change the number if you want to trigger an update.
+automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
 showPatchNotes = True # Replace the "True" with "False" if you don't want to see patch notes.
 showPatchNoteButton = True # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
 
