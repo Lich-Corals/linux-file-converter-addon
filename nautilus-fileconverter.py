@@ -1,5 +1,12 @@
+# Updates and patch notes
 converterVersion = "001000012" # Change the number if you want to trigger an update.
-automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
+automaticUpdates = False # Replace the "True" with "False" if you don't want automatic updates.
+showPatchNotes = True # Replace the "True" with "False" if you don't want to see patch notes.
+showPatchNoteButton = True # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
+
+# Conversion formats
+convertToSquares = True # Replace the "True" with "False" if you don't want to convert to square formats.
+convertToWallpapers = True # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
 
 from gi.repository import Nautilus, GObject
 from typing import List
@@ -9,16 +16,22 @@ from pathlib import Path
 import pathlib
 import os, shlex
 import urllib.request
+pyheifInstalled = False
+jxlpyInstalled = False
 
 try:
     import pyheif
+    pyheifInstalled = True
 except ImportError:
+    pyheifInstalled = False
     print(f"WARNING(Nautilus-file-converter): \"pyheif\" not found, if you want to convert from heif format, install the package using \"pip install pyheif\". See the readme on GitHub for more information." )
 
 try:
     import jxlpy
     from jxlpy import JXLImagePlugin
+    jxlpyInstalled = True
 except ImportError:
+    jxlpyInstalled = False
     print(f"WARNING(Nautilus-file-converter): \"jxlpy\" not found, if you want to convert from- or to jxl format, install the package using \"pip install jxlpy\". See the readme on GitHub for more information.")
 
 if automaticUpdates:
@@ -27,7 +40,8 @@ if automaticUpdates:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
         print("Updating...")
-        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
+        if showPatchNotes:
+            os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
         currentPath = str(pathlib.Path(__file__).parent.resolve())
         if "/home/" in currentPath:
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
@@ -56,10 +70,12 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                           'application/octet-stream',
                           'windows/metafile',
                           'image/x-xpixmap',
-                          'image/webp',
-                          'image/avif',
-                          'image/heif',
-                          'image/jxl')
+                          'image/webp',)
+
+    pyheifReadFormats = ('image/avif',
+                         'image/heif')
+
+    jxlpyReadFormats = ('image/jxl')
 
     READ_FORMATS_AUDIO = ('audio/mpeg',
                           'audio/mpeg3',
@@ -97,8 +113,9 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'BMP'},
                            {'name': 'GIF'},
                            {'name': 'WebP'},
-                           {'name': 'JXL'},
                            {'name': 'TIFF'}]
+
+    jxlpyWriteFormats = [{'name': 'JXL'}]
 
     WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16'},
                             {'name': 'PNG: 32x32', 'extension': 'png', 'square': '32'},
@@ -147,6 +164,13 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                            {'name': 'MP3'},
                            {'name': 'WAV'}]
 
+    if pyheifInstalled:
+        READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + pyheifReadFormats
+
+    if jxlpyInstalled:
+        READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + (jxlpyReadFormats,)
+        WRITE_FORMATS_IMAGE.extend(jxlpyWriteFormats)
+
     def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
         files = args[-1]
         for file in files:
@@ -182,43 +206,46 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             submenu.append_item(sub_menuitem)
 
         if formats[0]['name'] == 'JPEG':
-            top_menuitemSquare = Nautilus.MenuItem(
-                name="FileConverterMenuProvider::square_png",
-                label="Square...",
-            )
-            submenuSquare = Nautilus.Menu()
-            top_menuitemSquare.set_submenu(submenuSquare)
-            for formatSquare in self.WRITE_FORMATS_SQUARE:
-                sub_menuitemSquare = Nautilus.MenuItem(
-                    name='squarePngSubmenu_' + formatSquare['name'],
-                    label=(formatSquare['name']),
+            if convertToSquares:
+                top_menuitemSquare = Nautilus.MenuItem(
+                    name="FileConverterMenuProvider::square_png",
+                    label="Square...",
                 )
-                sub_menuitemSquare.connect('activate', callback, formatSquare, files)
-                submenuSquare.append_item(sub_menuitemSquare)
-            submenu.append_item(top_menuitemSquare)
+                submenuSquare = Nautilus.Menu()
+                top_menuitemSquare.set_submenu(submenuSquare)
+                for formatSquare in self.WRITE_FORMATS_SQUARE:
+                    sub_menuitemSquare = Nautilus.MenuItem(
+                        name='squarePngSubmenu_' + formatSquare['name'],
+                        label=(formatSquare['name']),
+                    )
+                    sub_menuitemSquare.connect('activate', callback, formatSquare, files)
+                    submenuSquare.append_item(sub_menuitemSquare)
+                submenu.append_item(top_menuitemSquare)
 
-            top_menuitemWallpaper = Nautilus.MenuItem(
-                name="FileConverterMenuProvider::wallpaper",
-                label="Wallpaper...",
-            )
-            submenuWallpaper = Nautilus.Menu()
-            top_menuitemWallpaper.set_submenu(submenuWallpaper)
-            for formatWallpaper in self.WRITE_FORMATS_WALLPAPER:
-                sub_menuitemWallpaper = Nautilus.MenuItem(
-                    name='WallpaperPngSubmenu_' + formatWallpaper['name'],
-                    label=(formatWallpaper['name']),
+            if convertToWallpapers:
+                top_menuitemWallpaper = Nautilus.MenuItem(
+                    name="FileConverterMenuProvider::wallpaper",
+                    label="Wallpaper...",
                 )
-                sub_menuitemWallpaper.connect('activate', callback, formatWallpaper, files)
-                submenuWallpaper.append_item(sub_menuitemWallpaper)
-            submenu.append_item(top_menuitemWallpaper)
+                submenuWallpaper = Nautilus.Menu()
+                top_menuitemWallpaper.set_submenu(submenuWallpaper)
+                for formatWallpaper in self.WRITE_FORMATS_WALLPAPER:
+                    sub_menuitemWallpaper = Nautilus.MenuItem(
+                        name='WallpaperPngSubmenu_' + formatWallpaper['name'],
+                        label=(formatWallpaper['name']),
+                    )
+                    sub_menuitemWallpaper.connect('activate', callback, formatWallpaper, files)
+                    submenuWallpaper.append_item(sub_menuitemWallpaper)
+                submenu.append_item(top_menuitemWallpaper)
 
-        sub_menuitem_patchNotes = Nautilus.MenuItem(
-            name="patchNotes",
-            label=f"View patch notes ({converterVersion})",
-        )
-        callback = self.openPatchNotes
-        sub_menuitem_patchNotes.connect('activate', callback,)
-        submenu.append_item(sub_menuitem_patchNotes)
+        if showPatchNoteButton:
+            sub_menuitem_patchNotes = Nautilus.MenuItem(
+                name="patchNotes",
+                label=f"View patch notes ({converterVersion})",
+            )
+            callback = self.openPatchNotes
+            sub_menuitem_patchNotes.connect('activate', callback,)
+            submenu.append_item(sub_menuitem_patchNotes)
 
         return [top_menuitem]
 

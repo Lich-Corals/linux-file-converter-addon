@@ -141,14 +141,29 @@ You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-
         nohup nautilus & disown
     ```
 # 3. Configuration
+<b>Don't forget to restart nautilus after making changes to the script!</b>
+```bash
+    #Quit nautilus
+    nautilus -q 
+
+    #start it again, you can also use the normal launcher.
+    nohup nautilus & disown
+```
 ## 3.1 Automatic updates
 If you've installed the script at the system-wide location, you may turn off automatic updates. Automatic updates are only working in the home dictionary.
+<br/><br/>To <b>turn off automatic updates</b>, open the file with a text editor and set the `automaticUpdates` variable to 'False'.
 
-To turn off automatic updates, open the file with a text editor and set the `automaticUpdates` variable to 'False'.
 ## 3.2 Manual update trigger
-To manually trigger a self-update, just open the file with a text editor and change the value of the `converterVersion` variable.
+To <b>manually trigger a self-update</b>, just open the file with a text editor and change the value of the `converterVersion` variable.
 
-Then close nautilus with `nautilus -q` in your terminal and open it again.
+## 3.3 Shown menu items
+To turn off the <b>patch note button</b> in the context menu, open the file with a text editor and set the `showPatchNoteButton` variable to 'False'.
+<br/><br/>To turn off the '<b>convert to square</b>', open the file with a text editor and set the `convertToSquares` variable to 'False'.
+<br/><br/>To turn off the '<b>convert to wallpaper</b>', open the file with a text editor and set the `convertToWallpapers` variable to 'False'.
+
+## 3.4 Patch note popup
+To turn off the <b>patch note popup</b>, open the file with a text editor and set the `showPatchNotes` variable to 'False'.
+
 # 4. Updating
 If the script is installed in the home folder (~/.local/share/nautilus-python/extensions/), it will update automatically as long as the automatic updates aren't disabled.
 
