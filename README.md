@@ -4,7 +4,7 @@
 
 A python script to extend Nautilus using nautilus-python.
 
-<img src="https://github.com/Lich-Corals/Nautilus-fileconverter-43/assets/111392332/c0c88546-fa62-4ff4-89d5-909854f63a95" alt="drawing" width="250"/> <img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="250"/>
+![NautilusConverter-1](https://github.com/Lich-Corals/Nautilus-fileconverter-43/assets/111392332/aa7d3d61-8e96-48dd-be10-f3c4ab47ae22) <img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="256"/>
 
 ## 0. ReadMe Contents
 1. [Features](#1-features)
