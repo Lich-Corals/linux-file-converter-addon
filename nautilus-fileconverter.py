@@ -1,13 +1,7 @@
-# Updates and patch notes
-converterVersion = "001000013" # Change the number if you want to trigger an update.
-automaticUpdates = True # Replace the "True" with "False" if you don't want automatic updates.
-showPatchNotes = True # Replace the "True" with "False" if you don't want to see patch notes.
-showPatchNoteButton = True # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
+# --- Version number ---
+converterVersion = "001000014" # Change the number if you want to trigger an update.
 
-# Conversion formats
-convertToSquares = True # Replace the "True" with "False" if you don't want to convert to square formats.
-convertToWallpapers = True # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
-
+# --- Imports ---
 from gi.repository import Nautilus, GObject
 from typing import List
 from PIL import Image, UnidentifiedImageError
@@ -16,6 +10,9 @@ from pathlib import Path
 import pathlib
 import os, shlex
 import urllib.request
+import json
+
+# --- Check if dependencies are installed and imported ---
 pyheifInstalled = False
 jxlpyInstalled = False
 
@@ -34,15 +31,28 @@ except ImportError:
     jxlpyInstalled = False
     print(f"WARNING(Nautilus-file-converter): \"jxlpy\" not found, if you want to convert from- or to jxl format, install the package using \"pip install jxlpy\". See the readme on GitHub for more information.")
 
-if automaticUpdates:
+# --- Set default configs ---
+_config = {                             # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
+    "automaticUpdates": True,       # Replace the "True" with "False" if you don't want automatic updates.
+    "showPatchNotes": True,         # Replace the "True" with "False" if you don't want to see patch notes.
+    "showPatchNoteButton": True,    # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
+    "showConfigHint": True,         # Replace the "True" with "False" if you don't want to see the config hint.
+    "convertToSquares": True,       # Replace the "True" with "False" if you don't want to convert to square formats.
+    "convertToWallpapers": True     # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
+}
+
+# --- Get the path to the script ---
+currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
+
+# --- Check for updates and update if auto-update is enabled ---
+if _config["automaticUpdates"]:
     with urllib.request.urlopen(
-            "https://raw.githubusercontent.com/Lich-Corals/Nautilus-fileconverter-43/main/nautilus-fileconverter.py") as f:
+            "https://raw.githubusercontent.com/Lich-Corals/NFC43-dev/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
         print("Updating...")
-        if showPatchNotes:
+        if _config["showPatchNotes"]:
             os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
-        currentPath = str(pathlib.Path(__file__).parent.resolve())
         if "/home/" in currentPath:
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
             with open(fileUpdatePath, 'w') as file:
@@ -50,8 +60,22 @@ if automaticUpdates:
         else:
             print("updating only supported in home!")
 
-print = lambda *wish, **verbosity: None    # comment it out, if you wish debug printing
+# --- Disable debug printing ---
+# comment it out (using '#' in front of the line) if you wish debug printing
+print = lambda *wish, **verbosity: None
 
+# --- Load or store configs json ---
+if "/home/" in currentPath:
+    if Path(f"{currentPath}/NFC43-Config.json").is_file():
+        with open(f"{currentPath}/NFC43-Config.json", 'r') as jsonFile:
+            configJson = json.load(jsonFile)
+        _config = configJson
+    else:
+        configJson = json.dumps(_config, indent=4)
+        with open(f"{currentPath}/NFC43-Config.json", "w") as jsonFile:
+            jsonFile.write(configJson)
+
+# --- Create file format tuples and write format dict-lists? ---
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     READ_FORMATS_IMAGE = ('image/jpeg',
                           'image/png',
@@ -171,6 +195,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + (jxlpyReadFormats,)
         WRITE_FORMATS_IMAGE.extend(jxlpyWriteFormats)
 
+# --- Get file mime and trigger submenu building ---
     def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
         files = args[-1]
         for file in files:
@@ -189,6 +214,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                                               callback=self.convert_video,
                                               files=files)
 
+# --- Build the context menu and submenus ---
     def __submenu_builder(self, formats, callback, files):
         top_menuitem = Nautilus.MenuItem(
             name="FileConverterMenuProvider::convert_to",
@@ -206,7 +232,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             submenu.append_item(sub_menuitem)
 
         if formats[0]['name'] == 'JPEG':
-            if convertToSquares:
+            if _config["convertToSquares"]:
                 top_menuitemSquare = Nautilus.MenuItem(
                     name="FileConverterMenuProvider::square_png",
                     label="Square...",
@@ -222,7 +248,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                     submenuSquare.append_item(sub_menuitemSquare)
                 submenu.append_item(top_menuitemSquare)
 
-            if convertToWallpapers:
+            if _config["convertToWallpapers"]:
                 top_menuitemWallpaper = Nautilus.MenuItem(
                     name="FileConverterMenuProvider::wallpaper",
                     label="Wallpaper...",
@@ -238,7 +264,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                     submenuWallpaper.append_item(sub_menuitemWallpaper)
                 submenu.append_item(top_menuitemWallpaper)
 
-        if showPatchNoteButton:
+        if _config["showPatchNoteButton"]:
             sub_menuitem_patchNotes = Nautilus.MenuItem(
                 name="patchNotes",
                 label=f"View patch notes ({converterVersion})",
@@ -247,15 +273,29 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             sub_menuitem_patchNotes.connect('activate', callback,)
             submenu.append_item(sub_menuitem_patchNotes)
 
+        if _config["showConfigHint"]:
+            sub_menuitem_configHint = Nautilus.MenuItem(
+                name="configHint",
+                label=f"Configure NFC43",
+            )
+            callback = self.openConfigHint
+            sub_menuitem_configHint.connect('activate', callback,)
+            submenu.append_item(sub_menuitem_configHint)
+
         return [top_menuitem]
 
+# --- openPatchNotes and openConfigHint functions for context menu options ---
     def openPatchNotes(self, menu):
         os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
 
+    def openConfigHint(self, menu):
+        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43?tab=readme-ov-file#3-configuration\" &")
+
+# --- Function used to get a mimetype's extension ---
     def __get_extension(self, format):
         return f".{format.get('extension', format['name'])}".lower()
 
-
+# --- Function to convert between image formats ---
     def convert_image(self, menu, format, files):
         global file_path_to
         print(format)
@@ -299,7 +339,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                     pass
                 pass
 
-
+# --- Function to convert using FFMPEG (video and audio) ---
     def convert_audio(self, menu, format, files):
         print(format)
         for file in files:
@@ -314,6 +354,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 to_file_path = to_file_path_mod
             os.system(
                 f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
+
+    # --- Convert video with the convert_audio() function ---
     def convert_video(self, menu, format, files):
         # use same ffmpeg backend
         self.convert_audio(menu, format, files)
