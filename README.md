@@ -32,7 +32,7 @@ This programm can convert images, audio files and videos with the help of the de
     D[image]
     E[audio]
     F[video]
-    
+
     A["JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF*¹<br/>HEIC*¹<br/>JXL*²"]
     B["MP3<br/>MPGA<br/>MPG<br/>MPEG<br/>WAV<br/>M3U<br/>M3U8<br/>M4A<br/>MKA<br/>AAC<br/>3GP<br/>3G2<br/>OGG<br/>OPUS"]
     C["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MOV<br/>QT"]
@@ -55,13 +55,13 @@ The extension has a few dependencies which have to be installed.
 
 ```bash
    Debian based distros:
-    sudo apt install python3-nautilus
+  sudo apt install python3-nautilus
 
-   Fedora based distros:
-    sudo dnf install nautilus-python
+  Fedora based distros:
+  sudo dnf install nautilus-python
 
-   Arch based distros:
-    sudo pacman -Sy python-nautilus
+  Arch based distros:
+  sudo pacman -Sy python-nautilus
 ```
 ###
 
@@ -70,13 +70,13 @@ The extension has a few dependencies which have to be installed.
 
 ```bash
    Debian based distros:
-    sudo apt install python3-pip
+  sudo apt install python3-pip
 
-   Fedora based distros:
-    sudo dnf install python3-pip
+  Fedora based distros:
+  sudo dnf install python3-pip
 
-   Arch based distros:
-    pacman -S python-pip
+  Arch based distros:
+  pacman -S python-pip
 ```
 
 [python-pillow](https://python-pillow.org/) is needed to convert images. It can be installed using pip:
@@ -89,13 +89,13 @@ The extension has a few dependencies which have to be installed.
 
 ```bash
    Debian based distros:
-    sudo apt install ffmpeg
+  sudo apt install ffmpeg
 
-   Fedora based distros:
-    sudo dnf install ffmpeg
+  Fedora based distros:
+  sudo dnf install ffmpeg
 
-   Arch based distros:
-    sudo pacman -S ffmpeg
+  Arch based distros:
+  sudo pacman -S ffmpeg
 ```
 
 ###
@@ -123,7 +123,7 @@ You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
         ```bash
             git clone https://github.com/Lich-Corals/Nautilus-fileconverter-43
-            
+
             cd ./Nautilus-fileconverter-43
         ```
 - For a system-wide installation move the file to '/usr/share/nautilus-python/extensions/' using this command in the dictonary with the file:
@@ -137,34 +137,38 @@ You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-
 - Now you only have to restart Nautilus using the following commands:
     ```bash
         #Quit nautilus
-        nautilus -q 
+        nautilus -q
 
         #start it again, you can also use the normal launcher.
         nohup nautilus & disown
     ```
 # 3. Configuration
-<b>Don't forget to restart nautilus after making changes to the script!</b>
+The program can be configured using the  NFC43-Config.json file, which will be created in the installation dictionary when the script is executed for the first time.
+Just modify the file, by changing the 'true' and 'false' values.
+If the program is installed in a root location, then you need to change the configuration inside the script.
+<b>Don't forget to save your changes, and restart nautilus after modifying the configuration!</b>
 ```bash
     #Quit nautilus
-    nautilus -q 
+    nautilus -q
 
     #start it again, you can also use the normal launcher.
     nohup nautilus & disown
 ```
 ## 3.1 Automatic updates
-If you've installed the script at the system-wide location, you may turn off automatic updates. Automatic updates are only working in the home dictionary.
-<br/><br/>To <b>turn off automatic updates</b>, open the file with a text editor and set the `automaticUpdates` variable to 'False'.
+Automatic updates are only working in the home dictionary. If you've installed the script at the system-wide location, you may turn off automatic updates.
+<br/><br/>To <b>turn off automatic updates</b>, open the config file with a text editor and set the `automaticUpdates` variable to 'false'.
 
 ## 3.2 Manual update trigger
-To <b>manually trigger a self-update</b>, just open the file with a text editor and change the value of the `converterVersion` variable.
+To <b>manually trigger a self-update</b>, just open the .py file with a text editor and change the value of the `converterVersion` variable.
 
 ## 3.3 Shown menu items
-To turn off the <b>patch note button</b> in the context menu, open the file with a text editor and set the `showPatchNoteButton` variable to 'False'.
-<br/><br/>To turn off the '<b>convert to square</b>', open the file with a text editor and set the `convertToSquares` variable to 'False'.
-<br/><br/>To turn off the '<b>convert to wallpaper</b>', open the file with a text editor and set the `convertToWallpapers` variable to 'False'.
+To turn off the <b>patch note button</b> in the context menu, open the config file with a text editor and set the `showPatchNoteButton` variable to 'false'.
+<br/><br/>To turn off the <b>Configure NFC43 button</b> in the context menu, open the config file with a text editor and set the `showConfigHint` variable to 'false'.
+<br/><br/>To turn off the '<b>convert to square</b>' option, open the config file with a text editor and set the `convertToSquares` variable to 'false'.
+<br/><br/>To turn off the '<b>convert to wallpaper</b>' function, open the config file with a text editor and set the `convertToWallpapers` variable to 'false'.
 
-## 3.4 Patch note popup
-To turn off the <b>patch note popup</b>, open the file with a text editor and set the `showPatchNotes` variable to 'False'.
+## 3.4 Patch note pop-up
+To turn off the <b>patch note pop-up</b>, open the config file with a text editor and set the `showPatchNotes` variable to 'false'.
 
 # 4. Updating
 If the script is installed in the home folder (~/.local/share/nautilus-python/extensions/), it will update automatically as long as the automatic updates aren't disabled.
