@@ -1,5 +1,5 @@
 # --- Version number ---
-converterVersion = "001000014" # Change the number if you want to trigger an update.
+converterVersion = "001002000" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 from gi.repository import Nautilus, GObject
