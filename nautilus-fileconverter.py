@@ -1,5 +1,5 @@
 # --- Version number ---
-converterVersion = "001002000" # Change the number if you want to trigger an update.
+converterVersion = "001002001" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 from gi.repository import Nautilus, GObject
@@ -12,6 +12,10 @@ import os, shlex
 import urllib.request
 import json
 
+# --- Get the path to the script and if it's writeable ---
+currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
+scriptUpdateable = os.access(f"{currentPath}/{os.path.basename(__file__)}", os.W_OK)
+
 # --- Check if dependencies are installed and imported ---
 pyheifInstalled = False
 jxlpyInstalled = False
@@ -21,7 +25,7 @@ try:
     pyheifInstalled = True
 except ImportError:
     pyheifInstalled = False
-    print(f"WARNING(Nautilus-file-converter): \"pyheif\" not found, if you want to convert from heif format, install the package using \"pip install pyheif\". See the readme on GitHub for more information." )
+    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information." )
 
 try:
     import jxlpy
@@ -29,20 +33,42 @@ try:
     jxlpyInstalled = True
 except ImportError:
     jxlpyInstalled = False
-    print(f"WARNING(Nautilus-file-converter): \"jxlpy\" not found, if you want to convert from- or to jxl format, install the package using \"pip install jxlpy\". See the readme on GitHub for more information.")
+    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+
+if not scriptUpdateable:
+    print(f"WARNING(Nautilus-file-converter)(002): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+
+if not os.access(currentPath, os.W_OK):
+    print(f"WARNING(Nautilus-file-converter)(003): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Set default configs ---
-_config = {                             # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
-    "automaticUpdates": True,       # Replace the "True" with "False" if you don't want automatic updates.
-    "showPatchNotes": True,         # Replace the "True" with "False" if you don't want to see patch notes.
-    "showPatchNoteButton": True,    # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
-    "showConfigHint": True,         # Replace the "True" with "False" if you don't want to see the config hint.
-    "convertToSquares": True,       # Replace the "True" with "False" if you don't want to convert to square formats.
-    "convertToWallpapers": True     # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
+_configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
+    "automaticUpdates": True,           # Replace the "True" with "False" if you don't want automatic updates.
+    "showPatchNotes": True,             # Replace the "True" with "False" if you don't want to see patch notes.
+    "showPatchNoteButton": True,        # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
+    "showConfigHint": True,             # Replace the "True" with "False" if you don't want to see the config hint.
+    "convertToSquares": True,           # Replace the "True" with "False" if you don't want to convert to square formats.
+    "convertToWallpapers": True,        # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
+    "checkForDoubleInstallation": True  # Replace the "True" with "False" if you don't the script to check if there is a second installation in another dictionary.
 }
 
-# --- Get the path to the script ---
-currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
+# --- Load or store configs json ---
+if scriptUpdateable:
+    if Path(f"{currentPath}/NFC43-Config.json").is_file():
+        with open(f"{currentPath}/NFC43-Config.json", 'r') as jsonFile:
+            try:
+                configJson = json.load(jsonFile)
+            except json.decoder.JSONDecodeError:
+                configJson = _configPreset
+            _config = configJson
+        for _setting in _configPreset:
+            if _setting not in _config:
+                _config[_setting] = _configPreset[_setting]
+        configJson = json.dumps(_config, indent=4)
+    else:
+        configJson = json.dumps(_configPreset, indent=4)
+    with open(f"{currentPath}/NFC43-Config.json", "w") as jsonFile:
+        jsonFile.write(configJson)
 
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:
@@ -53,27 +79,18 @@ if _config["automaticUpdates"]:
         print("Updating...")
         if _config["showPatchNotes"]:
             os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
-        if "/home/" in currentPath:
+        if scriptUpdateable:
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
             with open(fileUpdatePath, 'w') as file:
                 file.write(onlineFile)
-        else:
-            print("updating only supported in home!")
+
+# --- Check for duplicate script if enabled ---
+if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
+    print(f"WARNING(Nautilus-file-converter)(004): Double script installation detected. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
 print = lambda *wish, **verbosity: None
-
-# --- Load or store configs json ---
-if "/home/" in currentPath:
-    if Path(f"{currentPath}/NFC43-Config.json").is_file():
-        with open(f"{currentPath}/NFC43-Config.json", 'r') as jsonFile:
-            configJson = json.load(jsonFile)
-        _config = configJson
-    else:
-        configJson = json.dumps(_config, indent=4)
-        with open(f"{currentPath}/NFC43-Config.json", "w") as jsonFile:
-            jsonFile.write(configJson)
 
 # --- Create file format tuples and write format dict-lists? ---
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
