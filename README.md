@@ -108,6 +108,10 @@ GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautil
 ```bash
     pip install pyheif
 ```
+You may need to install some dependencies before installing pyheif. Otherwise you could get an error installing it.
+```bash
+   yum install libffi libheif-devel libde265-devel
+```
 
 ### jxlpy (JXL)
 [jxlpy](https://github.com/olokelo/jxlpy) is needed if you want to convert from **jxl** format.
