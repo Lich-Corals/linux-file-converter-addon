@@ -227,7 +227,7 @@ To fix this, the script needs the permissions to write inside the folder, where 
 <br/>To use the configuration file, the user, who is executing the script (by starting nautilus) needs permissions create and edit files inside the installation dictionary.
 <br/><br/>To prevent the settings from being reset, you can add a config file to the dictionary. Note that the file will not be update if new configurations are added.
 
-### (004): Attempting to update
+### (004): Double script installation detected
 <b>Causes:</b><br/>
 The script is installed in a home location and finds another script with the same name in the root installation folder ("/usr/share/nautilus-python/extensions/").
 <br/><br/><b>Possible Effects:</b><br/>
@@ -235,7 +235,7 @@ The context menu may appear two times.
 <br/><br/><b>How to solve?</b><br/>
 To solve this issue, you have to remove one of the files (in "/usr/share/nautilus-python/extensions/" or in "~/.local/share/nautilus-python/extensions/")
 
-### (005): Double script installation detected
+### (005): Attempting to update
 <b>Causes:</b><br/>
 Automatic updates are enabled and there are updates available.
 This is not an error, just information to make problems easier to solve.
