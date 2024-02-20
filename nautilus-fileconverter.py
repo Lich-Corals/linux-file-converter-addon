@@ -1,5 +1,5 @@
 # --- Version number ---
-converterVersion = "001002001" # Change the number if you want to trigger an update.
+converterVersion = "001002002" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 from gi.repository import Nautilus, GObject
@@ -76,11 +76,13 @@ if _config["automaticUpdates"]:
             "https://raw.githubusercontent.com/Lich-Corals/Nautilus-fileconverter-43/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
-        print("Updating...")
-        if _config["showPatchNotes"]:
-            os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
+        print(f"UPDATES(Nautilus-file-converter)(005): Current Version: {converterVersion}\n"
+              f"                                       Attempting to update...")
         if scriptUpdateable:
+            print("Updating...")
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
+            if _config["showPatchNotes"]:
+                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
             with open(fileUpdatePath, 'w') as file:
                 file.write(onlineFile)
 

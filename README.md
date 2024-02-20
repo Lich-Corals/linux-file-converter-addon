@@ -235,6 +235,11 @@ The context menu may appear two times.
 <br/><br/><b>How to solve?</b><br/>
 To solve this issue, you have to remove one of the files (in "/usr/share/nautilus-python/extensions/" or in "~/.local/share/nautilus-python/extensions/")
 
+### (005): Double script installation detected
+<b>Causes:</b><br/>
+Automatic updates are enabled and there are updates available.
+This is not an error, just information to make problems easier to solve.
+
 # 7. Any questions?
 If anything is not clear...
 <br/>If you have a problem...
