@@ -54,14 +54,14 @@ The extension has a few dependencies which have to be installed.
 [nautilus-python](https://github.com/GNOME/nautilus-python) needs to be installed to install extensions:
 
 ```bash
-   Debian based distros:
-  sudo apt install python3-nautilus
+Debian based distros:
+sudo apt install python3-nautilus
 
-  Fedora based distros:
-  sudo dnf install nautilus-python
+Fedora based distros:
+sudo dnf install nautilus-python
 
-  Arch based distros:
-  sudo pacman -Sy python-nautilus
+Arch based distros:
+sudo pacman -Sy python-nautilus
 ```
 ###
 
@@ -69,33 +69,33 @@ The extension has a few dependencies which have to be installed.
 [pip](https://pypi.org/project/pip/) is a pre-dependency for pillow, it can be installed with the following commands:
 
 ```bash
-   Debian based distros:
-  sudo apt install python3-pip
+Debian based distros:
+sudo apt install python3-pip
 
-  Fedora based distros:
-  sudo dnf install python3-pip
+Fedora based distros:
+sudo dnf install python3-pip
 
-  Arch based distros:
-  pacman -S python-pip
+Arch based distros:
+pacman -S python-pip
 ```
 
 [python-pillow](https://python-pillow.org/) is needed to convert images. It can be installed using pip:
 ```bash
-    pip install Pillow
+pip install Pillow
 ```
 ###
 
 [ffmpeg](https://ffmpeg.org/download.html#build-linux) is needed to convert audio and video.
 
 ```bash
-   Debian based distros:
-  sudo apt install ffmpeg
+Debian based distros:
+sudo apt install ffmpeg
 
-  Fedora based distros:
-  sudo dnf install ffmpeg
+Fedora based distros:
+sudo dnf install ffmpeg
 
-  Arch based distros:
-  sudo pacman -S ffmpeg
+Arch based distros:
+sudo pacman -S ffmpeg
 ```
 
 ###
@@ -106,18 +106,18 @@ GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautil
 [pyheif](https://pypi.org/project/pyheif/) is needed if you want to convert from **heif** or **avif** format.
 <br/> Install it using this command:
 ```bash
-    pip install pyheif
+pip install pyheif
 ```
 You may need to install some dependencies before installing pyheif. Otherwise you could get an error installing it.
 ```bash
-   yum install libffi libheif-devel libde265-devel
+yum install libffi libheif-devel libde265-devel
 ```
 
 ### jxlpy (JXL)
 [jxlpy](https://github.com/olokelo/jxlpy) is needed if you want to convert from **jxl** format.
 <br/> Install it using this command:
 ```bash
-    pip install jxlpy
+pip install jxlpy
 ```
 Note: jxlpy is in a very early state, you may have issues while installing it using pip.
 You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-yourself).
@@ -126,25 +126,25 @@ You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-
 - Download the nautilus-fileconverter.py file from the [release page](https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
         ```bash
-            git clone https://github.com/Lich-Corals/Nautilus-fileconverter-43
+        git clone https://github.com/Lich-Corals/Nautilus-fileconverter-43
 
-            cd ./Nautilus-fileconverter-43
+        cd ./Nautilus-fileconverter-43
         ```
 - For a system-wide installation move the file to '/usr/share/nautilus-python/extensions/' using this command in the dictonary with the file:
     ```bash
-        sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
+    sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
     ```
   - For a user specific installation move the file to '~/.local/share/nautilus-python/extensions/' using this command in the dictonary with the file:
       ```bash
-          mv nautilus-fileconverter.py ~/.local/share/nautilus-python/extensions/nautilus-fileconverter.py
+      mv nautilus-fileconverter.py ~/.local/share/nautilus-python/extensions/nautilus-fileconverter.py
       ```
 - Now you only have to restart Nautilus using the following commands:
     ```bash
-        #Quit nautilus
-        nautilus -q
-
-        #start it again, you can also use the normal launcher.
-        nohup nautilus & disown
+   #Quit nautilus
+   nautilus -q
+   
+   #start it again, you can also use the normal launcher.
+   nohup nautilus & disown
     ```
 # 3. Configuration
 The program can be configured using the  NFC43-Config.json file, which will be created in the installation dictionary when the script is executed for the first time.
@@ -152,11 +152,11 @@ Just modify the file, by changing the 'true' and 'false' values.
 If the program is installed in a root location, you need to change the configuration inside the script.
 <b>Don't forget to save your changes, and restart nautilus after modifying the configuration!</b>
 ```bash
-    #Quit nautilus
-    nautilus -q
+#Quit nautilus
+nautilus -q
 
-    #start it again, you can also use the normal launcher.
-    nohup nautilus & disown
+#start it again, you can also use the normal launcher.
+nohup nautilus & disown
 ```
 ## 3.1 Automatic updates
 Automatic updates are only working in the home dictionary. If you've installed the script at the system-wide location, you may turn off automatic updates.
