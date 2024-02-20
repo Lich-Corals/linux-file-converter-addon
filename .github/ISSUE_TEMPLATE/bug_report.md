@@ -23,7 +23,7 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**OS**
+**System information**
 Basic information about the used OS
  - OS Name: [e.g. Zorin OS 16.2]
  - Package manager: [e.g. apt]
@@ -31,6 +31,7 @@ Basic information about the used OS
  - Nautilus version (`nautilus --version`): [e.g. GNOME nautilus 45.2.1]
  - Python version (`python3 --version`): [e.g. Python 3.11.2]
  - pip version (`pip --version`): [e.g. pip 23.2.1]
+ - File converter version (specified at the start of the script): [001002001]
 
 **Nautilus errors**
 If possible, please provide the error(s) when running the `nautilus` command in the terminal.
