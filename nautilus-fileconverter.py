@@ -2,7 +2,11 @@
 converterVersion = "001002002" # Change the number if you want to trigger an update.
 
 # --- Imports ---
-from gi.repository import Nautilus, GObject
+try:
+    from gi.repository import Nautilus, GObject
+except ImportError:
+    pass
+
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
