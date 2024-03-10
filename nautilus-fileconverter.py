@@ -106,150 +106,216 @@ if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile
 print = lambda *wish, **verbosity: None
 
 # --- Create file format tuples and write format dict-lists? ---
+READ_FORMATS_IMAGE = ('image/jpeg',
+                      'image/png',
+                      'image/bmp',
+                      'application/postscript',
+                      'image/gif',
+                      'image/x-icon',
+                      'image/x-pcx',
+                      'image/x-portable-pixmap',
+                      'image/tiff',
+                      'image/x-xbm',
+                      'image/x-xbitmap',
+                      'video/fli',
+                      'image/vnd.fpx',
+                      'image/vnd.net-fpx',
+                      'application/octet-stream',
+                      'windows/metafile',
+                      'image/x-xpixmap',
+                      'image/webp')
+
+pyheifReadFormats = ('image/avif',
+                     'image/heif')
+
+jxlpyReadFormats = ('image/jxl')
+
+READ_FORMATS_AUDIO = ('audio/mpeg',
+                      'audio/mpeg3',
+                      'video/x-mpeg',
+                      'audio/x-mpeg-3',
+                      'audio/x-wav',
+                      'audio/wav',
+                      'audio/wave',
+                      'audio/x-pn-wave',
+                      'audio/vnd.wave',
+                      'audio/x-mpegurl',
+                      'audio/mp4',
+                      'audio/mp4a-latm',
+                      'audio/mpeg4-generic',
+                      'audio/x-matroska',
+                      'audio/aac',
+                      'audio/aacp',
+                      'audio/3gpp',
+                      'audio/3gpp2',
+                      'audio/ogg',
+                      'audio/opus',
+                      'audio/flac',
+                      'audio/x-vorbis+ogg')
+
+READ_FORMATS_VIDEO = ('video/mp4',
+                      'video/webm',
+                      'video/x-matroska',
+                      'video/avi',
+                      'video/msvideo',
+                      'video/x-msvideo',
+                      'video/quicktime')
+
+WRITE_FORMATS_IMAGE = [{'name': 'JPEG'},
+                       {'name': 'PNG'},
+                       {'name': 'BMP'},
+                       {'name': 'GIF'},
+                       {'name': 'WebP'},
+                       {'name': 'TIFF'}]
+
+jxlpyWriteFormats = [{'name': 'JXL'}]
+
+pillow_avif_pluginWriteFormats = [{ 'name': 'AVIF'}]
+
+WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16'},
+                        {'name': 'PNG: 32x32', 'extension': 'png', 'square': '32'},
+                        {'name': 'PNG: 64x64', 'extension': 'png', 'square': '64'},
+                        {'name': 'PNG: 128x128', 'extension': 'png', 'square': '128'},
+                        {'name': 'PNG: 256x256', 'extension': 'png', 'square': '256'},
+                        {'name': 'PNG: 512x512', 'extension': 'png', 'square': '512'},
+                        {'name': 'PNG: 1024x1024', 'extension': 'png', 'square': '1024'},
+                        {'name': 'JPEG: 16x16', 'extension': 'JPEG', 'square': '16'},
+                        {'name': 'JPEG: 32x32', 'extension': 'JPEG', 'square': '32'},
+                        {'name': 'JPEG: 64x64', 'extension': 'JPEG', 'square': '64'},
+                        {'name': 'JPEG: 128x128', 'extension': 'JPEG', 'square': '128'},
+                        {'name': 'JPEG: 256x256', 'extension': 'JPEG', 'square': '256'},
+                        {'name': 'JPEG: 512x512', 'extension': 'JPEG', 'square': '512'},
+                        {'name': 'JPEG: 1024x1024', 'extension': 'JPEG', 'square': '1024'}]
+
+WRITE_FORMATS_WALLPAPER = [{'name': 'SD P | 480x640', 'extension': 'png', 'w': '480', 'h': '640'},
+                           {'name': 'SD L | 640x480', 'extension': 'png', 'w': '640', 'h': '480'},
+                           {'name': 'HD P | 720x1280', 'extension': 'png', 'w': '720', 'h': '1280'},
+                           {'name': 'HD L | 1280x720', 'extension': 'png', 'w': '1280', 'h': '720'},
+                           {'name': 'FHD P | 1080x1920', 'extension': 'png', 'w': '1080', 'h': '1920'},
+                           {'name': 'FHD L | 1920x1080', 'extension': 'png', 'w': '1920', 'h': '1080'},
+                           {'name': 'QHD P | 1440x2560', 'extension': 'png', 'w': '1440', 'h': '2560'},
+                           {'name': 'QHD L | 2560x1440', 'extension': 'png', 'w': '2560', 'h': '1440'},
+                           {'name': '4K-UHD P | 2160x3840', 'extension': 'png', 'w': '2160', 'h': '3840'},
+                           {'name': '4K-UHD L | 3840x2160', 'extension': 'png', 'w': '3840', 'h': '2160'},
+                           {'name': '8K-UHD P | 4320x7680', 'extension': 'png', 'w': '4320', 'h': '7680'},
+                           {'name': '8K-UHD L | 7680x4320', 'extension': 'png', 'w': '7680', 'h': '4320'},
+                           {'name': 'Galaxy S7 P | 1440x2960', 'extension': 'png', 'w': '1440', 'h': '2960'},
+                           {'name': 'Galaxy S7 L | 1440x2960', 'extension': 'png', 'w': '2960', 'h': '1440'},
+                           {'name': 'iPad Pro P | 2048x2732', 'extension': 'png', 'w': '2048', 'h': '2732'},
+                           {'name': 'iPad Pro L | 2048x2732', 'extension': 'png', 'w': '2732', 'h': '2048'}]
+
+WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
+                       {'name': 'WAV'},
+                       {'name': 'AAC'},
+                       {'name': 'FLAC'},
+                       {'name': 'M4A'},
+                       {'name': 'OGG'},
+                       {'name': 'OPUS'}]
+
+WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
+                       {'name': 'WebM'},
+                       {'name': 'MKV'},
+                       {'name': 'AVI'},
+                       {'name': 'MP3'},
+                       {'name': 'WAV'}]
+
+if pyheifInstalled:
+    READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + pyheifReadFormats
+
+if jxlpyInstalled:
+    READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + (jxlpyReadFormats,)
+    WRITE_FORMATS_IMAGE.extend(jxlpyWriteFormats)
+
+if pillow_avif_pluginInstalled:
+    WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
+
+
+# --- Function used to get a mimetype's extension ---
+def __get_extension(format):
+    return f".{format.get('extension', format['name'])}".lower()
+
+# --- Function to convert between image formats ---
+def convert_image(menu, format, files):
+    global file_path_to
+    print(format)
+    for file in files:
+        if 'extension' not in format:
+            format['extension'] = format['name']
+        file_path = Path(unquote(urlparse(file.get_uri()).path))
+        count = 0
+        to_file_path_mod = file_path.with_name(f"{file_path.stem}")
+        while os.path.exists(shlex.quote(f"{to_file_path_mod}.{format['extension'].lower()}")):
+            count += 1
+            to_file_path_mod = file_path.with_name(
+                f"{file_path.stem}-{count}")
+            file_path_to = to_file_path_mod
+        try:
+            image = Image.open(file_path)
+            if (format['name']) == 'JPEG':
+                image = image.convert('RGB')
+            if 'square' in format:
+                image = image.resize((int(format['square']), int(format['square'])))
+            if 'w' in format:
+                image = image.resize((int(format['w']), int(format['h'])))
+            file_path_to = f"{to_file_path_mod}.{format['extension'].lower()}"
+            image.save(file_path_to,
+                       format=(format['extension']))
+        except UnidentifiedImageError:
+            try:
+                heif_file = pyheif.read(file_path)
+                heif_image = Image.frombytes(
+                    heif_file.mode,
+                    heif_file.size,
+                    heif_file.data,
+                    "raw",
+                    heif_file.mode,
+                    heif_file.stride,
+                )
+                if (format['extension']) == 'JPEG':
+                    heif_image = heif_image.convert("RGB")
+                heif_image.save(file_path.with_suffix(__get_extension(format)), format['extension'])
+            except UnidentifiedImageError:
+                pass
+            pass
+
+
+# --- Function to convert using FFMPEG (video and audio) ---
+def convert_audio(menu, format, files):
+    print(format)
+    for file in files:
+        from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+        to_file_path = from_file_path.with_suffix(__get_extension(format).lower())
+        count = 0
+        to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}")
+        while to_file_path_mod.exists() or to_file_path.exists():
+            count += 1
+            to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}({count}){__get_extension(format).lower()}")
+            print(shlex.quote(str(from_file_path)))
+            to_file_path = to_file_path_mod
+        os.system(
+            f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
+
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
-    READ_FORMATS_IMAGE = ('image/jpeg',
-                          'image/png',
-                          'image/bmp',
-                          'application/postscript',
-                          'image/gif',
-                          'image/x-icon',
-                          'image/x-pcx',
-                          'image/x-portable-pixmap',
-                          'image/tiff',
-                          'image/x-xbm',
-                          'image/x-xbitmap',
-                          'video/fli',
-                          'image/vnd.fpx',
-                          'image/vnd.net-fpx',
-                          'application/octet-stream',
-                          'windows/metafile',
-                          'image/x-xpixmap',
-                          'image/webp')
-
-    pyheifReadFormats = ('image/avif',
-                         'image/heif')
-
-    jxlpyReadFormats = ('image/jxl')
-
-    READ_FORMATS_AUDIO = ('audio/mpeg',
-                          'audio/mpeg3',
-                          'video/x-mpeg',
-                          'audio/x-mpeg-3',
-                          'audio/x-wav',
-                          'audio/wav',
-                          'audio/wave',
-                          'audio/x-pn-wave',
-                          'audio/vnd.wave',
-                          'audio/x-mpegurl',
-                          'audio/mp4',
-                          'audio/mp4a-latm',
-                          'audio/mpeg4-generic',
-                          'audio/x-matroska',
-                          'audio/aac',
-                          'audio/aacp',
-                          'audio/3gpp',
-                          'audio/3gpp2',
-                          'audio/ogg',
-                          'audio/opus',
-                          'audio/flac',
-                          'audio/x-vorbis+ogg')
-
-    READ_FORMATS_VIDEO = ('video/mp4',
-                          'video/webm',
-                          'video/x-matroska',
-                          'video/avi',
-                          'video/msvideo',
-                          'video/x-msvideo',
-                          'video/quicktime')
-
-    WRITE_FORMATS_IMAGE = [{'name': 'JPEG'},
-                           {'name': 'PNG'},
-                           {'name': 'BMP'},
-                           {'name': 'GIF'},
-                           {'name': 'WebP'},
-                           {'name': 'TIFF'}]
-
-    jxlpyWriteFormats = [{'name': 'JXL'}]
-
-    pillow_avif_pluginWriteFormats = [{ 'name': 'AVIF'}]
-
-    WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16'},
-                            {'name': 'PNG: 32x32', 'extension': 'png', 'square': '32'},
-                            {'name': 'PNG: 64x64', 'extension': 'png', 'square': '64'},
-                            {'name': 'PNG: 128x128', 'extension': 'png', 'square': '128'},
-                            {'name': 'PNG: 256x256', 'extension': 'png', 'square': '256'},
-                            {'name': 'PNG: 512x512', 'extension': 'png', 'square': '512'},
-                            {'name': 'PNG: 1024x1024', 'extension': 'png', 'square': '1024'},
-                            {'name': 'JPEG: 16x16', 'extension': 'JPEG', 'square': '16'},
-                            {'name': 'JPEG: 32x32', 'extension': 'JPEG', 'square': '32'},
-                            {'name': 'JPEG: 64x64', 'extension': 'JPEG', 'square': '64'},
-                            {'name': 'JPEG: 128x128', 'extension': 'JPEG', 'square': '128'},
-                            {'name': 'JPEG: 256x256', 'extension': 'JPEG', 'square': '256'},
-                            {'name': 'JPEG: 512x512', 'extension': 'JPEG', 'square': '512'},
-                            {'name': 'JPEG: 1024x1024', 'extension': 'JPEG', 'square': '1024'}]
-
-    WRITE_FORMATS_WALLPAPER = [{'name': 'SD P | 480x640', 'extension': 'png', 'w': '480', 'h': '640'},
-                               {'name': 'SD L | 640x480', 'extension': 'png', 'w': '640', 'h': '480'},
-                               {'name': 'HD P | 720x1280', 'extension': 'png', 'w': '720', 'h': '1280'},
-                               {'name': 'HD L | 1280x720', 'extension': 'png', 'w': '1280', 'h': '720'},
-                               {'name': 'FHD P | 1080x1920', 'extension': 'png', 'w': '1080', 'h': '1920'},
-                               {'name': 'FHD L | 1920x1080', 'extension': 'png', 'w': '1920', 'h': '1080'},
-                               {'name': 'QHD P | 1440x2560', 'extension': 'png', 'w': '1440', 'h': '2560'},
-                               {'name': 'QHD L | 2560x1440', 'extension': 'png', 'w': '2560', 'h': '1440'},
-                               {'name': '4K-UHD P | 2160x3840', 'extension': 'png', 'w': '2160', 'h': '3840'},
-                               {'name': '4K-UHD L | 3840x2160', 'extension': 'png', 'w': '3840', 'h': '2160'},
-                               {'name': '8K-UHD P | 4320x7680', 'extension': 'png', 'w': '4320', 'h': '7680'},
-                               {'name': '8K-UHD L | 7680x4320', 'extension': 'png', 'w': '7680', 'h': '4320'},
-                               {'name': 'Galaxy S7 P | 1440x2960', 'extension': 'png', 'w': '1440', 'h': '2960'},
-                               {'name': 'Galaxy S7 L | 1440x2960', 'extension': 'png', 'w': '2960', 'h': '1440'},
-                               {'name': 'iPad Pro P | 2048x2732', 'extension': 'png', 'w': '2048', 'h': '2732'},
-                               {'name': 'iPad Pro L | 2048x2732', 'extension': 'png', 'w': '2732', 'h': '2048'}]
-
-    WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
-                           {'name': 'WAV'},
-                           {'name': 'AAC'},
-                           {'name': 'FLAC'},
-                           {'name': 'M4A'},
-                           {'name': 'OGG'},
-                           {'name': 'OPUS'}]
-
-    WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
-                           {'name': 'WebM'},
-                           {'name': 'MKV'},
-                           {'name': 'AVI'},
-                           {'name': 'MP3'},
-                           {'name': 'WAV'}]
-
-    if pyheifInstalled:
-        READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + pyheifReadFormats
-
-    if jxlpyInstalled:
-        READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + (jxlpyReadFormats,)
-        WRITE_FORMATS_IMAGE.extend(jxlpyWriteFormats)
-
-    if pillow_avif_pluginInstalled:
-        WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
-
-# --- Get file mime and trigger submenu building ---
+    # --- Get file mime and trigger submenu building ---
     def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
         files = args[-1]
         for file in files:
             print(file.get_mime_type())
             file_mime = file.get_mime_type()
-            if file_mime in self.READ_FORMATS_IMAGE:
-                return self.__submenu_builder(self.WRITE_FORMATS_IMAGE,
-                                              callback=self.convert_image,
+            if file_mime in READ_FORMATS_IMAGE:
+                return self.__submenu_builder(WRITE_FORMATS_IMAGE,
+                                              callback=convert_image,
                                               files=files)
-            if file_mime in self.READ_FORMATS_AUDIO:
-                return self.__submenu_builder(self.WRITE_FORMATS_AUDIO,
-                                              callback=self.convert_audio,
+            if file_mime in READ_FORMATS_AUDIO:
+                return self.__submenu_builder(WRITE_FORMATS_AUDIO,
+                                              callback=convert_audio,
                                               files=files)
-            if file_mime in self.READ_FORMATS_VIDEO:
-                return self.__submenu_builder(self.WRITE_FORMATS_VIDEO,
-                                              callback=self.convert_video,
+            if file_mime in READ_FORMATS_VIDEO:
+                return self.__submenu_builder(WRITE_FORMATS_VIDEO,
+                                              callback=convert_audio,
                                               files=files)
 
-# --- Build the context menu and submenus ---
+    # --- Build the context menu and submenus ---
     def __submenu_builder(self, formats, callback, files):
         top_menuitem = Nautilus.MenuItem(
             name="FileConverterMenuProvider::convert_to",
@@ -274,7 +340,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 )
                 submenuSquare = Nautilus.Menu()
                 top_menuitemSquare.set_submenu(submenuSquare)
-                for formatSquare in self.WRITE_FORMATS_SQUARE:
+                for formatSquare in WRITE_FORMATS_SQUARE:
                     sub_menuitemSquare = Nautilus.MenuItem(
                         name='squarePngSubmenu_' + formatSquare['name'],
                         label=(formatSquare['name']),
@@ -290,7 +356,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                 )
                 submenuWallpaper = Nautilus.Menu()
                 top_menuitemWallpaper.set_submenu(submenuWallpaper)
-                for formatWallpaper in self.WRITE_FORMATS_WALLPAPER:
+                for formatWallpaper in WRITE_FORMATS_WALLPAPER:
                     sub_menuitemWallpaper = Nautilus.MenuItem(
                         name='WallpaperPngSubmenu_' + formatWallpaper['name'],
                         label=(formatWallpaper['name']),
@@ -319,78 +385,9 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
 
         return [top_menuitem]
 
-# --- openPatchNotes and openConfigHint functions for context menu options ---
+    # --- openPatchNotes and openConfigHint functions for context menu options ---
     def openPatchNotes(self, menu):
         os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
 
     def openConfigHint(self, menu):
         os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43?tab=readme-ov-file#3-configuration\" &")
-
-# --- Function used to get a mimetype's extension ---
-    def __get_extension(self, format):
-        return f".{format.get('extension', format['name'])}".lower()
-
-# --- Function to convert between image formats ---
-    def convert_image(self, menu, format, files):
-        global file_path_to
-        print(format)
-        for file in files:
-            if 'extension' not in format:
-                format['extension'] = format['name']
-            file_path = Path(unquote(urlparse(file.get_uri()).path))
-            count = 0
-            to_file_path_mod = file_path.with_name(f"{file_path.stem}")
-            while os.path.exists(shlex.quote(f"{to_file_path_mod}.{format['extension'].lower()}")):
-                count += 1
-                to_file_path_mod = file_path.with_name(
-                    f"{file_path.stem}-{count}")
-                file_path_to = to_file_path_mod
-            try:
-                image = Image.open(file_path)
-                if (format['name']) == 'JPEG':
-                    image = image.convert('RGB')
-                if 'square' in format:
-                    image = image.resize((int(format['square']), int(format['square'])))
-                if 'w' in format:
-                    image = image.resize((int(format['w']), int(format['h'])))
-                file_path_to = f"{to_file_path_mod}.{format['extension'].lower()}"
-                image.save(file_path_to,
-                           format=(format['extension']))
-            except UnidentifiedImageError:
-                try:
-                    heif_file = pyheif.read(file_path)
-                    heif_image = Image.frombytes(
-                        heif_file.mode,
-                        heif_file.size,
-                        heif_file.data,
-                        "raw",
-                        heif_file.mode,
-                        heif_file.stride,
-                    )
-                    if (format['extension']) == 'JPEG':
-                        heif_image = heif_image.convert("RGB")
-                    heif_image.save(file_path.with_suffix(self.__get_extension(format)), format['extension'])
-                except UnidentifiedImageError:
-                    pass
-                pass
-
-# --- Function to convert using FFMPEG (video and audio) ---
-    def convert_audio(self, menu, format, files):
-        print(format)
-        for file in files:
-            from_file_path = Path(unquote(urlparse(file.get_uri()).path))
-            to_file_path = from_file_path.with_suffix(self.__get_extension(format).lower())
-            count = 0
-            to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}")
-            while to_file_path_mod.exists() or to_file_path.exists():
-                count += 1
-                to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}({count}){self.__get_extension(format).lower()}")
-                print(shlex.quote(str(from_file_path)))
-                to_file_path = to_file_path_mod
-            os.system(
-                f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
-
-    # --- Convert video with the convert_audio() function ---
-    def convert_video(self, menu, format, files):
-        # use same ffmpeg backend
-        self.convert_audio(menu, format, files)
