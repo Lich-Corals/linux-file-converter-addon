@@ -1,5 +1,5 @@
 # --- Version number ---
-converterVersion = "001002002" # Change the number if you want to trigger an update.
+converterVersion = "001002003" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 try:
