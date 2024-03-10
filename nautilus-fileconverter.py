@@ -19,6 +19,7 @@ scriptUpdateable = os.access(f"{currentPath}/{os.path.basename(__file__)}", os.W
 # --- Check if dependencies are installed and imported ---
 pyheifInstalled = False
 jxlpyInstalled = False
+pillow_avif_pluginInstalled = False
 
 try:
     import pyheif
@@ -35,11 +36,17 @@ except ImportError:
     jxlpyInstalled = False
     print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
 
+try:
+    import pillow_avif
+    pillow_avif_pluginInstalled = True
+except ImportError:
+        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+
 if not scriptUpdateable:
-    print(f"WARNING(Nautilus-file-converter)(002): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
 
 if not os.access(currentPath, os.W_OK):
-    print(f"WARNING(Nautilus-file-converter)(003): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
@@ -76,7 +83,7 @@ if _config["automaticUpdates"]:
             "https://raw.githubusercontent.com/Lich-Corals/Nautilus-fileconverter-43/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
-        print(f"UPDATES(Nautilus-file-converter)(005): Current Version: {converterVersion}\n"
+        print(f"UPDATES(Nautilus-file-converter)(006): Current Version: {converterVersion}\n"
               f"                                       Attempting to update...")
         if scriptUpdateable:
             print("Updating...")
@@ -88,7 +95,7 @@ if _config["automaticUpdates"]:
 
 # --- Check for duplicate script if enabled ---
 if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
-    print(f"WARNING(Nautilus-file-converter)(004): Double script installation detected. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
@@ -160,6 +167,8 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
 
     jxlpyWriteFormats = [{'name': 'JXL'}]
 
+    pillow_avif_pluginWriteFormats = [{ 'name': 'AVIF'}]
+
     WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16'},
                             {'name': 'PNG: 32x32', 'extension': 'png', 'square': '32'},
                             {'name': 'PNG: 64x64', 'extension': 'png', 'square': '64'},
@@ -213,6 +222,9 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     if jxlpyInstalled:
         READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + (jxlpyReadFormats,)
         WRITE_FORMATS_IMAGE.extend(jxlpyWriteFormats)
+
+    if pillow_avif_pluginInstalled:
+        WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
 
 # --- Get file mime and trigger submenu building ---
     def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
