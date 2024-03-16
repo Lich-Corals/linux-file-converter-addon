@@ -115,7 +115,7 @@ if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
-#print = lambda *wish, **verbosity: None
+print = lambda *wish, **verbosity: None
 
 # --- Create file format tuples and write format dict-lists? ---
 READ_FORMATS_IMAGE = ('image/jpeg',
