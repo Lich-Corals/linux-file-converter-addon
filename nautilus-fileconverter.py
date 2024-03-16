@@ -55,11 +55,6 @@ if not scriptUpdateable:
 if not os.access(currentPath, os.W_OK):
     print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
 
-# --- Check for nemo-args ---
-_nemoArgs = sys.argv[1:len(sys.argv)]
-if len(sys.argv) > 1:
-    print(f"{str(_nemoArgs)}")
-
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
     "automaticUpdates": True,           # Replace the "True" with "False" if you don't want automatic updates.
@@ -128,7 +123,7 @@ READ_FORMATS_IMAGE = ('image/jpeg',
                       'video/fli',
                       'image/vnd.fpx',
                       'image/vnd.net-fpx',
-                      'application/octet-stream',
+#                      'application/octet-stream', <-- Didn't make any problems in nautilus, but Nemo takes all files in it (.zip, .doc, .pdf, etc.) instead of only the image types.
                       'windows/metafile',
                       'image/x-xpixmap',
                       'image/webp')
@@ -236,6 +231,25 @@ if jxlpyInstalled:
 
 if pillow_avif_pluginInstalled:
     WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
+
+# --- Nemo adaption ---
+_nemoArgs = sys.argv[1:len(sys.argv)]
+if len(sys.argv) > 1:
+    print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
+    _readFormatsNemo = ""
+    _allReadFormats = READ_FORMATS_AUDIO + READ_FORMATS_VIDEO + READ_FORMATS_IMAGE
+    for _currentFormat in _allReadFormats:
+        if _currentFormat not in _readFormatsNemo:
+            _readFormatsNemo += _currentFormat + ";"
+    _nemoActionLines = ["[Nemo Action]",
+                        "Name=Convert to...",
+                        "Comment=Convert file using nautilus-fileconverter",
+                        "Exec=<nautilus-fileconverter.py %F>",
+                        "Selection=NotNone",
+                        f"Mimetypes={_readFormatsNemo}"]
+    with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
+        for _line in _nemoActionLines:
+            file.write(_line + "\n")
 
 
 # --- Function used to get a mimetype's extension ---
