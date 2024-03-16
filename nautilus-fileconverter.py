@@ -9,14 +9,15 @@ import gi
 giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
 gi.require_versions({
     'Nautilus': '3.0' if giVersion == 3 else '4.0',
-    'Gdk': '3.0' if giVersion == 3 else '4.0',
-    'Gtk': '3.0' if giVersion == 3 else '4.0'
+    'Gdk': '3.0',
+    'Gtk': '3.0'
 })
 from gi.repository import Nautilus, GObject, Gdk, Gtk
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
 from pathlib import Path
+import mimetypes
 import pathlib
 import os, shlex
 import urllib.request
@@ -236,24 +237,6 @@ if jxlpyInstalled:
 if pillow_avif_pluginInstalled:
     WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
 
-# --- Nemo adaption ---
-_nemoArgs = sys.argv[1:len(sys.argv)]
-if len(sys.argv) > 1:
-    print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
-    _readFormatsNemo = ""
-    _allReadFormats = READ_FORMATS_AUDIO + READ_FORMATS_VIDEO + READ_FORMATS_IMAGE
-    for _currentFormat in _allReadFormats:
-        if _currentFormat not in _readFormatsNemo:
-            _readFormatsNemo += _currentFormat + ";"
-    _nemoActionLines = ["[Nemo Action]",
-                        "Name=Convert to...",
-                        "Comment=Convert file using nautilus-fileconverter",
-                        "Exec=<nautilus-fileconverter.py %F>",
-                        "Selection=NotNone",
-                        f"Mimetypes={_readFormatsNemo}"]
-    with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
-        for _line in _nemoActionLines:
-            file.write(_line + "\n")
 
 
 # --- Function used to get a mimetype's extension ---
@@ -321,6 +304,84 @@ def convert_audio(menu, format, files):
         os.system(
             f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
 
+# --- Nemo adaption ---
+class nautilusFileConverterPopup(Gtk.Window):
+    def __init__(self):
+        super().__init__(title="Convert file")
+        self.set_border_width(15)
+
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        extensions = Gtk.ListStore(str, str, str, str)
+        _allImages = True
+        _allAudios = True
+        _allVideos = True
+        for _arg in _nemoArgs:
+            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_IMAGE:
+                _allImages = False
+            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_AUDIO:
+                _allAudios = False
+            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_VIDEO:
+                _allVideos = False
+
+        if _allImages:
+            for writeFormat in WRITE_FORMATS_IMAGE:
+                extensions.append([writeFormat['name'], "n", "n", "n"])
+            if _config["convertToSquares"]:
+                for writeFormat in WRITE_FORMATS_SQUARE:
+                    extensions.append([writeFormat['name'], writeFormat['extension'], writeFormat['square'], "sq"])
+            if _config["convertToWallpapers"]:
+                for writeFormat in WRITE_FORMATS_WALLPAPER:
+                    extensions.append([writeFormat['name'], writeFormat['extension'], writeFormat['w'], writeFormat['h']])
+        if _allAudios:
+            for writeFormat in WRITE_FORMATS_AUDIO:
+                extensions.append([writeFormat['name'], "n", "n", "n"])
+        if _allVideos:
+            for writeFormat in WRITE_FORMATS_VIDEO:
+                extensions.append([writeFormat['name'], "n", "n", "n"])
+
+        self.add(vbox)
+        combo = Gtk.ComboBox.new_with_model(extensions)
+        renderer_text = Gtk.CellRendererText()
+        combo.set_entry_text_column(0)
+        combo.pack_start(renderer_text, True)
+        combo.add_attribute(renderer_text, "text", 0)
+        combo.connect("changed", self._nemoConvert)
+        vbox.pack_start(combo, False, False, 0)
+
+    def _nemoConvert(self, combo):
+        tree_iter = combo.get_active_iter()
+        if tree_iter is not None:
+            model = combo.get_model()
+            return_name, return_extension, return_width, return_height = model[tree_iter][:4]
+            print(return_name, return_extension, return_width, return_height)
+
+_nemoArgs = sys.argv[1:len(sys.argv)]
+if len(sys.argv) > 1:
+    print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
+
+    # --- Generate nemo_action ---
+    _readFormatsNemo = ""
+    _allReadFormats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
+    for _currentFormat in _allReadFormats:
+        if _currentFormat not in _readFormatsNemo:
+            _readFormatsNemo += _currentFormat + ";"
+    _nemoActionLines = ["[Nemo Action]",
+                        "Name=Convert to...",
+                        "Comment=Convert file using nautilus-fileconverter",
+                        "Exec=<nautilus-fileconverter.py %F>",
+                        "Selection=NotNone",
+                        f"Mimetypes={_readFormatsNemo}"]
+    with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
+        for _line in _nemoActionLines:
+            file.write(_line + "\n")
+
+    _gtkPopupWindow = nautilusFileConverterPopup()
+    _gtkPopupWindow.connect("destroy", Gtk.main_quit)
+    _gtkPopupWindow.show_all()
+    Gtk.main()
+
+# --- Nautilus class ---
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     # --- Get file mime and trigger submenu building ---
     def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
