@@ -4,11 +4,15 @@
 converterVersion = "001002003" # Change the number if you want to trigger an update.
 
 # --- Imports ---
-try:
-    from gi.repository import Nautilus, GObject
-except ImportError:
-    pass
 
+import gi
+gi_version_major = 3 if 30 <= gi.version_info[1] < 40 else 4
+gi.require_versions({
+    'Nautilus': '3.0' if gi_version_major == 3 else '4.0',
+    'Gdk': '3.0' if gi_version_major == 3 else '4.0',
+    'Gtk': '3.0' if gi_version_major == 3 else '4.0'
+})
+from gi.repository import Nautilus, GObject, Gdk, Gtk
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
