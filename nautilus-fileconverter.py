@@ -319,8 +319,12 @@ class nautilusFileConverterPopup(Gtk.Window):
     def __init__(self):
         super().__init__(title="Convert file")
         self.set_border_width(15)
+        self.set_default_size(200, 20)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        label = Gtk.Label(label="Select a format:")
+        vbox.pack_start(label, False, False, 0)
 
         extensions = Gtk.ListStore(str, str, int)
         _allImages = True
