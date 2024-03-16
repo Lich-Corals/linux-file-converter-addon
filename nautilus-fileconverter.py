@@ -1,3 +1,5 @@
+#! /usr/bin/python3 -OOt
+
 # --- Version number ---
 converterVersion = "001002003" # Change the number if you want to trigger an update.
 
@@ -15,6 +17,7 @@ import pathlib
 import os, shlex
 import urllib.request
 import json
+import sys
 
 # --- Get the path to the script and if it's writeable ---
 currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
@@ -51,6 +54,11 @@ if not scriptUpdateable:
 
 if not os.access(currentPath, os.W_OK):
     print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+
+# --- Check for nemo-args ---
+_nemoArgs = sys.argv[1:len(sys.argv)]
+if len(sys.argv) > 1:
+    print(f"{str(_nemoArgs)}")
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
@@ -103,7 +111,7 @@ if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
-print = lambda *wish, **verbosity: None
+#print = lambda *wish, **verbosity: None
 
 # --- Create file format tuples and write format dict-lists? ---
 READ_FORMATS_IMAGE = ('image/jpeg',
