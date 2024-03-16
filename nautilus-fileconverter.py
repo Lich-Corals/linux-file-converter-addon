@@ -9,10 +9,13 @@ import gi
 giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
 gi.require_versions({
     'Nautilus': '3.0' if giVersion == 3 else '4.0',
-    'Gdk': '3.0',
     'Gtk': '3.0'
 })
-from gi.repository import Nautilus, GObject, Gdk, Gtk
+try:
+    from gi.repository import Nautilus
+except ImportError:
+    pass
+from gi.repository import GObject, Gtk
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
@@ -23,6 +26,7 @@ import os, shlex
 import urllib.request
 import json
 import sys
+import ast
 
 # --- Get the path to the script and if it's writeable ---
 currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
@@ -250,7 +254,10 @@ def convert_image(menu, format, files):
     for file in files:
         if 'extension' not in format:
             format['extension'] = format['name']
-        file_path = Path(unquote(urlparse(file.get_uri()).path))
+        if type(file) == "<class '__gi__.NautilusVFSFile'>":
+            file_path = Path(unquote(urlparse(file.get_uri()).path))
+        else:
+            file_path = file
         count = 0
         to_file_path_mod = file_path.with_name(f"{file_path.stem}")
         while os.path.exists(shlex.quote(f"{to_file_path_mod}.{format['extension'].lower()}")):
@@ -292,7 +299,10 @@ def convert_image(menu, format, files):
 def convert_ffmpeg(menu, format, files):
     print(format)
     for file in files:
-        from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+        if type(file) == "<class '__gi__.NautilusVFSFile'>":
+            from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+        else:
+            from_file_path = file
         to_file_path = from_file_path.with_suffix(__get_extension(format).lower())
         count = 0
         to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}")
@@ -312,7 +322,7 @@ class nautilusFileConverterPopup(Gtk.Window):
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
-        extensions = Gtk.ListStore(str, str, str, str)
+        extensions = Gtk.ListStore(str, str, int)
         _allImages = True
         _allAudios = True
         _allVideos = True
@@ -324,25 +334,21 @@ class nautilusFileConverterPopup(Gtk.Window):
             if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_VIDEO:
                 _allVideos = False
 
-        _formatType = 0
         if _allImages:
-            _formatType = 1
             for writeFormat in WRITE_FORMATS_IMAGE:
-                extensions.append([writeFormat['name'], "n", "n", "n"])
+                extensions.append([writeFormat['name'], str(writeFormat), 0])
             if _config["convertToSquares"]:
                 for writeFormat in WRITE_FORMATS_SQUARE:
-                    extensions.append([writeFormat['name'], writeFormat['extension'], writeFormat['square'], "sq"])
+                    extensions.append([writeFormat['name'], str(writeFormat), 0])
             if _config["convertToWallpapers"]:
                 for writeFormat in WRITE_FORMATS_WALLPAPER:
-                    extensions.append([writeFormat['name'], writeFormat['extension'], writeFormat['w'], writeFormat['h']])
+                    extensions.append([writeFormat['name'], str(writeFormat), 0])
         if _allAudios:
-            _formatType = 2
             for writeFormat in WRITE_FORMATS_AUDIO:
-                extensions.append([writeFormat['name'], "n", "n", "n"])
+                extensions.append([writeFormat['name'], str(writeFormat), 1])
         if _allVideos:
-            _formatType = 3
             for writeFormat in WRITE_FORMATS_VIDEO:
-                extensions.append([writeFormat['name'], "n", "n", "n"])
+                extensions.append([writeFormat['name'], str(writeFormat), 1])
 
         self.add(vbox)
         combo = Gtk.ComboBox.new_with_model(extensions)
@@ -358,8 +364,17 @@ class nautilusFileConverterPopup(Gtk.Window):
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
-            return_name, return_extension, return_width, return_height = model[tree_iter][:4]
-            print(return_name, return_extension, return_width, return_height)
+            return_name, return_format, return_type = model[tree_iter][:4]
+            print(return_name, return_format, return_type)
+            return_format = ast.literal_eval(return_format)
+            return_paths = []
+            for retun_path in _nemoArgs:
+                return_paths.append(Path(retun_path))
+            if return_type == 0:
+                convert_image(self, return_format, return_paths)
+            elif return_type == 1:
+                convert_ffmpeg(self, return_format, return_paths)
+
 
 _nemoArgs = sys.argv[1:len(sys.argv)]
 if len(sys.argv) > 1:
