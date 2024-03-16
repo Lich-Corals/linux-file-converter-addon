@@ -289,7 +289,7 @@ def convert_image(menu, format, files):
 
 
 # --- Function to convert using FFMPEG (video and audio) ---
-def convert_audio(menu, format, files):
+def convert_ffmpeg(menu, format, files):
     print(format)
     for file in files:
         from_file_path = Path(unquote(urlparse(file.get_uri()).path))
@@ -324,7 +324,9 @@ class nautilusFileConverterPopup(Gtk.Window):
             if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_VIDEO:
                 _allVideos = False
 
+        _formatType = 0
         if _allImages:
+            _formatType = 1
             for writeFormat in WRITE_FORMATS_IMAGE:
                 extensions.append([writeFormat['name'], "n", "n", "n"])
             if _config["convertToSquares"]:
@@ -334,9 +336,11 @@ class nautilusFileConverterPopup(Gtk.Window):
                 for writeFormat in WRITE_FORMATS_WALLPAPER:
                     extensions.append([writeFormat['name'], writeFormat['extension'], writeFormat['w'], writeFormat['h']])
         if _allAudios:
+            _formatType = 2
             for writeFormat in WRITE_FORMATS_AUDIO:
                 extensions.append([writeFormat['name'], "n", "n", "n"])
         if _allVideos:
+            _formatType = 3
             for writeFormat in WRITE_FORMATS_VIDEO:
                 extensions.append([writeFormat['name'], "n", "n", "n"])
 
@@ -350,6 +354,7 @@ class nautilusFileConverterPopup(Gtk.Window):
         vbox.pack_start(combo, False, False, 0)
 
     def _nemoConvert(self, combo):
+        self.hide()
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
@@ -395,11 +400,11 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                                               files=files)
             if file_mime in READ_FORMATS_AUDIO:
                 return self.__submenu_builder(WRITE_FORMATS_AUDIO,
-                                              callback=convert_audio,
+                                              callback=convert_ffmpeg,
                                               files=files)
             if file_mime in READ_FORMATS_VIDEO:
                 return self.__submenu_builder(WRITE_FORMATS_VIDEO,
-                                              callback=convert_audio,
+                                              callback=convert_ffmpeg,
                                               files=files)
 
     # --- Build the context menu and submenus ---
