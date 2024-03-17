@@ -1,20 +1,32 @@
+#! /usr/bin/python3 -OOt
+
 # --- Version number ---
-converterVersion = "001002003" # Change the number if you want to trigger an update.
+converterVersion = "001002004" # Change the number if you want to trigger an update.
 
 # --- Imports ---
+
+import gi
+giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
+gi.require_versions({
+    'Nautilus': '3.0' if giVersion == 3 else '4.0',
+    'Gtk': '3.0'
+})
 try:
-    from gi.repository import Nautilus, GObject
+    from gi.repository import Nautilus
 except ImportError:
     pass
-
+from gi.repository import GObject, Gtk
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
 from pathlib import Path
+import mimetypes
 import pathlib
 import os, shlex
 import urllib.request
 import json
+import sys
+import ast
 
 # --- Get the path to the script and if it's writeable ---
 currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
@@ -30,7 +42,7 @@ try:
     pyheifInstalled = True
 except ImportError:
     pyheifInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information." )
+    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information." )
 
 try:
     import jxlpy
@@ -38,19 +50,19 @@ try:
     jxlpyInstalled = True
 except ImportError:
     jxlpyInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 try:
     import pillow_avif
     pillow_avif_pluginInstalled = True
 except ImportError:
-        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 if not scriptUpdateable:
-    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 if not os.access(currentPath, os.W_OK):
-    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
@@ -84,7 +96,7 @@ if scriptUpdateable:
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:
     with urllib.request.urlopen(
-            "https://raw.githubusercontent.com/Lich-Corals/Nautilus-fileconverter-43/main/nautilus-fileconverter.py") as f:
+            "https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
         print(f"UPDATES(Nautilus-file-converter)(006): Current Version: {converterVersion}\n"
@@ -93,13 +105,13 @@ if _config["automaticUpdates"]:
             print("Updating...")
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
             if _config["showPatchNotes"]:
-                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
+                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
             with open(fileUpdatePath, 'w') as file:
                 file.write(onlineFile)
 
 # --- Check for duplicate script if enabled ---
 if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
-    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
@@ -120,7 +132,7 @@ READ_FORMATS_IMAGE = ('image/jpeg',
                       'video/fli',
                       'image/vnd.fpx',
                       'image/vnd.net-fpx',
-                      'application/octet-stream',
+#                      'application/octet-stream', <-- Didn't make any problems in nautilus, but Nemo takes all files in it (.zip, .doc, .pdf, etc.) instead of only the image types.
                       'windows/metafile',
                       'image/x-xpixmap',
                       'image/webp')
@@ -161,8 +173,8 @@ READ_FORMATS_VIDEO = ('video/mp4',
                       'video/x-msvideo',
                       'video/quicktime')
 
-WRITE_FORMATS_IMAGE = [{'name': 'JPEG'},
-                       {'name': 'PNG'},
+WRITE_FORMATS_IMAGE = [{'name': 'PNG'},
+                       {'name': 'JPEG'},
                        {'name': 'BMP'},
                        {'name': 'GIF'},
                        {'name': 'WebP'},
@@ -230,6 +242,7 @@ if pillow_avif_pluginInstalled:
     WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
 
 
+
 # --- Function used to get a mimetype's extension ---
 def __get_extension(format):
     return f".{format.get('extension', format['name'])}".lower()
@@ -241,7 +254,10 @@ def convert_image(menu, format, files):
     for file in files:
         if 'extension' not in format:
             format['extension'] = format['name']
-        file_path = Path(unquote(urlparse(file.get_uri()).path))
+        if type(file) == "<class '__gi__.NautilusVFSFile'>":
+            file_path = Path(unquote(urlparse(file.get_uri()).path))
+        else:
+            file_path = file
         count = 0
         to_file_path_mod = file_path.with_name(f"{file_path.stem}")
         while os.path.exists(shlex.quote(f"{to_file_path_mod}.{format['extension'].lower()}")):
@@ -280,10 +296,13 @@ def convert_image(menu, format, files):
 
 
 # --- Function to convert using FFMPEG (video and audio) ---
-def convert_audio(menu, format, files):
+def convert_ffmpeg(menu, format, files):
     print(format)
     for file in files:
-        from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+        if type(file) == "<class '__gi__.NautilusVFSFile'>":
+            from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+        else:
+            from_file_path = file
         to_file_path = from_file_path.with_suffix(__get_extension(format).lower())
         count = 0
         to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}")
@@ -295,6 +314,98 @@ def convert_audio(menu, format, files):
         os.system(
             f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
 
+# --- Nemo adaption ---
+class nautilusFileConverterPopup(Gtk.Window):
+    def __init__(self):
+        super().__init__(title="Convert file")
+        self.set_border_width(15)
+        self.set_default_size(200, 20)
+
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+        label = Gtk.Label(label="Select a format:")
+        vbox.pack_start(label, False, False, 0)
+
+        extensions = Gtk.ListStore(str, str, int)
+        _allImages = True
+        _allAudios = True
+        _allVideos = True
+        for _arg in _nemoArgs:
+            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_IMAGE:
+                _allImages = False
+            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_AUDIO:
+                _allAudios = False
+            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_VIDEO:
+                _allVideos = False
+
+        if _allImages:
+            for writeFormat in WRITE_FORMATS_IMAGE:
+                extensions.append([writeFormat['name'], str(writeFormat), 0])
+            if _config["convertToSquares"]:
+                for writeFormat in WRITE_FORMATS_SQUARE:
+                    extensions.append([writeFormat['name'], str(writeFormat), 0])
+            if _config["convertToWallpapers"]:
+                for writeFormat in WRITE_FORMATS_WALLPAPER:
+                    extensions.append([writeFormat['name'], str(writeFormat), 0])
+        if _allAudios:
+            for writeFormat in WRITE_FORMATS_AUDIO:
+                extensions.append([writeFormat['name'], str(writeFormat), 1])
+        if _allVideos:
+            for writeFormat in WRITE_FORMATS_VIDEO:
+                extensions.append([writeFormat['name'], str(writeFormat), 1])
+
+        self.add(vbox)
+        combo = Gtk.ComboBox.new_with_model(extensions)
+        renderer_text = Gtk.CellRendererText()
+        combo.set_entry_text_column(0)
+        combo.pack_start(renderer_text, True)
+        combo.add_attribute(renderer_text, "text", 0)
+        combo.connect("changed", self._nemoConvert)
+        vbox.pack_start(combo, False, False, 0)
+
+    def _nemoConvert(self, combo):
+        self.hide()
+        tree_iter = combo.get_active_iter()
+        if tree_iter is not None:
+            model = combo.get_model()
+            return_name, return_format, return_type = model[tree_iter][:4]
+            print(return_name, return_format, return_type)
+            return_format = ast.literal_eval(return_format)
+            return_paths = []
+            for retun_path in _nemoArgs:
+                return_paths.append(Path(retun_path))
+            if return_type == 0:
+                convert_image(self, return_format, return_paths)
+            elif return_type == 1:
+                convert_ffmpeg(self, return_format, return_paths)
+
+
+_nemoArgs = sys.argv[1:len(sys.argv)]
+if len(sys.argv) > 1:
+    print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
+
+    # --- Generate nemo_action ---
+    _readFormatsNemo = ""
+    _allReadFormats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
+    for _currentFormat in _allReadFormats:
+        if _currentFormat not in _readFormatsNemo:
+            _readFormatsNemo += _currentFormat + ";"
+    _nemoActionLines = ["[Nemo Action]",
+                        "Name=Convert to...",
+                        "Comment=Convert file using nautilus-fileconverter",
+                        "Exec=<nautilus-fileconverter.py %F>",
+                        "Selection=NotNone",
+                        f"Mimetypes={_readFormatsNemo}"]
+    with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
+        for _line in _nemoActionLines:
+            file.write(_line + "\n")
+
+    _gtkPopupWindow = nautilusFileConverterPopup()
+    _gtkPopupWindow.connect("destroy", Gtk.main_quit)
+    _gtkPopupWindow.show_all()
+    Gtk.main()
+
+# --- Nautilus class ---
 class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
     # --- Get file mime and trigger submenu building ---
     def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
@@ -308,11 +419,11 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
                                               files=files)
             if file_mime in READ_FORMATS_AUDIO:
                 return self.__submenu_builder(WRITE_FORMATS_AUDIO,
-                                              callback=convert_audio,
+                                              callback=convert_ffmpeg,
                                               files=files)
             if file_mime in READ_FORMATS_VIDEO:
                 return self.__submenu_builder(WRITE_FORMATS_VIDEO,
-                                              callback=convert_audio,
+                                              callback=convert_ffmpeg,
                                               files=files)
 
     # --- Build the context menu and submenus ---
@@ -387,7 +498,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
 
     # --- openPatchNotes and openConfigHint functions for context menu options ---
     def openPatchNotes(self, menu):
-        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
+        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
 
     def openConfigHint(self, menu):
-        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43?tab=readme-ov-file#3-configuration\" &")
+        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon?tab=readme-ov-file#3-configuration\" &")
