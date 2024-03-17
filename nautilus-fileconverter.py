@@ -173,8 +173,8 @@ READ_FORMATS_VIDEO = ('video/mp4',
                       'video/x-msvideo',
                       'video/quicktime')
 
-WRITE_FORMATS_IMAGE = [{'name': 'JPEG'},
-                       {'name': 'PNG'},
+WRITE_FORMATS_IMAGE = [{'name': 'PNG'},
+                       {'name': 'JPEG'},
                        {'name': 'BMP'},
                        {'name': 'GIF'},
                        {'name': 'WebP'},
