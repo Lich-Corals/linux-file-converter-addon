@@ -42,7 +42,7 @@ try:
     pyheifInstalled = True
 except ImportError:
     pyheifInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information." )
+    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information." )
 
 try:
     import jxlpy
@@ -50,19 +50,19 @@ try:
     jxlpyInstalled = True
 except ImportError:
     jxlpyInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 try:
     import pillow_avif
     pillow_avif_pluginInstalled = True
 except ImportError:
-        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 if not scriptUpdateable:
-    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 if not os.access(currentPath, os.W_OK):
-    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
@@ -96,7 +96,7 @@ if scriptUpdateable:
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:
     with urllib.request.urlopen(
-            "https://raw.githubusercontent.com/Lich-Corals/Nautilus-fileconverter-43/main/nautilus-fileconverter.py") as f:
+            "https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
         print(f"UPDATES(Nautilus-file-converter)(006): Current Version: {converterVersion}\n"
@@ -105,13 +105,13 @@ if _config["automaticUpdates"]:
             print("Updating...")
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
             if _config["showPatchNotes"]:
-                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
+                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
             with open(fileUpdatePath, 'w') as file:
                 file.write(onlineFile)
 
 # --- Check for duplicate script if enabled ---
 if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
-    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/Nautilus-fileconverter-43/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
@@ -498,7 +498,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
 
     # --- openPatchNotes and openConfigHint functions for context menu options ---
     def openPatchNotes(self, menu):
-        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43/releases\" &")
+        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
 
     def openConfigHint(self, menu):
-        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/Nautilus-fileconverter-43?tab=readme-ov-file#3-configuration\" &")
+        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon?tab=readme-ov-file#3-configuration\" &")
