@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002003" # Change the number if you want to trigger an update.
+converterVersion = "001002004" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 
