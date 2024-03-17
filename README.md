@@ -162,7 +162,7 @@ You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-
 ### Installation for Nemo
 - Download the nautilus-fileconverter.py and the nautilus-fileconverter.nemo_action file from the [release page](https://github.com/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
-        ```bash
+     ```bash
         git clone https://github.com/Lich-Corals/linux-file-converter-addon
 
         cd ./linux-file-converter-addon
@@ -171,7 +171,7 @@ You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-
      ```bash
         mv nautilus-fileconverter.py ~/.local/share/nemo/actions/nautilus-fileconverter.py
         mv nautilus-fileconverter.nemo_action ~/.local/share/nemo/actions/nautilus-fileconverter.nemo_action
-   ```
+     ```
  You may need to enable the action in Nemo's settings. To do so, you can open Nemo and go edit>Plugins (or press Alt+P) and check the checkbox labeled with "Convert to..." in the "Actions" area.
 
 # 3. Configuration
