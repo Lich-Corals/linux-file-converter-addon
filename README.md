@@ -2,7 +2,8 @@
 # linux-file-converter-addon
 [![](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Flichcorals.netlify.app%2Fgnome_look.json)](https://www.gnome-look.org/s/Gnome/p/1965601)
 
-![NautilusConverter-1](https://github.com/Lich-Corals/Nautilus-fileconverter-43/assets/111392332/aa7d3d61-8e96-48dd-be10-f3c4ab47ae22) <img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="256"/>
+![converterAddon-1](https://github.com/Lich-Corals/linux-file-converter-addon/assets/111392332/a248112e-1774-4e8d-a637-0302d9b67c77)
+<img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="256"/>
 
 ## 0. ReadMe Contents
 1. [Features](#1-features)
