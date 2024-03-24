@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002005" # Change the number if you want to trigger an update.
+converterVersion = "001002006" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 
@@ -257,7 +257,7 @@ def convert_image(menu, format, files):
     for file in files:
         if 'extension' not in format:
             format['extension'] = format['name']
-        if type(file) == "<class '__gi__.NautilusVFSFile'>":
+        if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
             file_path = Path(unquote(urlparse(file.get_uri()).path))
         else:
             file_path = file
@@ -302,7 +302,7 @@ def convert_image(menu, format, files):
 def convert_ffmpeg(menu, format, files):
     print(format)
     for file in files:
-        if type(file) == "<class '__gi__.NautilusVFSFile'>":
+        if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
             from_file_path = Path(unquote(urlparse(file.get_uri()).path))
         else:
             from_file_path = file
