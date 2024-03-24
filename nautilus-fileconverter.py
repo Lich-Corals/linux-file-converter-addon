@@ -1,16 +1,19 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002004" # Change the number if you want to trigger an update.
+converterVersion = "001002005" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 
 import gi
-giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
-gi.require_versions({
-    'Nautilus': '3.0' if giVersion == 3 else '4.0',
-    'Gtk': '3.0'
-})
+try:
+    giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
+    gi.require_versions({
+        'Nautilus': '3.0' if giVersion == 3 else '4.0',
+        'Gtk': '3.0'
+    })
+except ValueError:
+    pass
 try:
     from gi.repository import Nautilus
 except ImportError:
@@ -443,7 +446,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             sub_menuitem.connect('activate', callback, format, files)
             submenu.append_item(sub_menuitem)
 
-        if formats[0]['name'] == 'JPEG':
+        if formats[1]['name'] == 'JPEG':
             if _config["convertToSquares"]:
                 top_menuitemSquare = Nautilus.MenuItem(
                     name="FileConverterMenuProvider::square_png",
