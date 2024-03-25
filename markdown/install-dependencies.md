@@ -44,6 +44,7 @@ You may need to install some dependencies before installing pyheif. Otherwise yo
 ```bash
 yum install libffi libheif-devel libde265-devel
 ```
+### pillow-avif-plugin (to AVIF)
 In addition, to convert *to* **avif** format you will need this [plugin for Pillow](https://pypi.org/project/pillow-avif-plugin/).
 ```bash
 pip install pillow-avif-plugin
