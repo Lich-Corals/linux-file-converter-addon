@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002006" # Change the number if you want to trigger an update.
+converterVersion = "001002007" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 
@@ -45,7 +45,7 @@ try:
     pyheifInstalled = True
 except ImportError:
     pyheifInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information." )
+    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information." )
 
 try:
     import jxlpy
@@ -53,19 +53,19 @@ try:
     jxlpyInstalled = True
 except ImportError:
     jxlpyInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 try:
     import pillow_avif
     pillow_avif_pluginInstalled = True
 except ImportError:
-        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
+        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 if not scriptUpdateable:
-    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 if not os.access(currentPath, os.W_OK):
-    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
@@ -114,7 +114,7 @@ if _config["automaticUpdates"]:
 
 # --- Check for duplicate script if enabled ---
 if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
-    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md#6-warnings-and-errors for more information.")
+    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
