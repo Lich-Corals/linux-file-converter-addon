@@ -1,3 +1,4 @@
+# Install dependencies
 ## 2.1 Dependencies
 [pip](https://pypi.org/project/pip/) is a pre-dependency for pillow, it can be installed with the following commands:
 
