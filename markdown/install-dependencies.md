@@ -1,5 +1,7 @@
 # Install dependencies
-## 2.1 Dependencies
+In this section, you can see which other software is needed to use the converter script and some of its extra features.
+
+## Necessary dependencies
 [pip](https://pypi.org/project/pip/) is a pre-dependency for pillow, it can be installed with the following commands:
 
 ```bash
@@ -17,7 +19,6 @@ pacman -S python-pip
 ```bash
 pip install Pillow
 ```
-###
 
 [ffmpeg](https://ffmpeg.org/download.html#build-linux) is needed to convert audio and video.
 
@@ -32,7 +33,7 @@ Arch based distros:
 sudo pacman -S ffmpeg
 ```
 
-## 2.2 Optional dependencies
+## Optional dependencies
 ### pyheif (HEIC, AVIF)
 [pyheif](https://pypi.org/project/pyheif/) is needed if you want to convert from **heif** or **avif** format.
 <br/> Install it using this command:
@@ -56,3 +57,10 @@ pip install jxlpy
 ```
 Note: jxlpy is in a very early state, you may have issues while installing it using pip.
 You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-yourself).
+
+#### All sections
+- [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
+- [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
+- __[Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)__
+- [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
+- [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
