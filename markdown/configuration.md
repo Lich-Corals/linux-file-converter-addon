@@ -24,8 +24,9 @@ Note: This option is not available in Nemo so far.
 
 ## 3.3 Other options
 To turn off the <b>patch note pop-up</b>, open the config file with a text editor and set the `showPatchNotes` variable to 'false'.
-To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.
+<br/>To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.
 Note: This option may be a bit buggy in Nemo, I'll fix it in the future if it appears to be annoying to some users.
+<br/>To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
