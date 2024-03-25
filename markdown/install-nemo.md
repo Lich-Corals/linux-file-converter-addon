@@ -30,6 +30,7 @@ sudo pacman -S nemo
  You may need to enable the action in Nemo's settings. To do so, you can open Nemo and go edit>Plugins (or press Alt+P) and check the checkbox labelled with "Convert to..." in the "Actions" area.
 
 #### All sections
+- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
 - [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
 - [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
 - [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)

@@ -59,6 +59,7 @@ Note: jxlpy is in a very early state, you may have issues while installing it us
 You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-yourself).
 
 #### All sections
+- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
 - [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
 - [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
 - __[Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)__

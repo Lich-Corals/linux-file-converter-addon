@@ -28,6 +28,7 @@ To turn off the <b>Double script installation Warning</b>, open the config file 
 Note: This option may be a bit buggy in Nemo, I'll fix it in the future if it appears to be annoying to some users.
 
 #### All sections
+- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
 - __[Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)__
 - [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
 - [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)

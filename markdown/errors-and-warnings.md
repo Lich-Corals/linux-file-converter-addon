@@ -67,6 +67,7 @@ Automatic updates are enabled and there are updates available.
 This is not an error, just information to make problems easier to solve.
 
 #### All sections
+- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
 - [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
 - __[Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)__
 - [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)

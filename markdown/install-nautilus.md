@@ -43,6 +43,7 @@ sudo pacman -Sy python-nautilus
     ```
 
 #### All sections
+- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
 - [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
 - [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
 - [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)
