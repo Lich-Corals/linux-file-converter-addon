@@ -17,7 +17,7 @@ Arch based distros:
 sudo pacman -Sy python-nautilus
 ```
 
-### Installation
+## Installation
 - Download the nautilus-fileconverter.py file from the [release page](https://github.com/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
         ```bash
