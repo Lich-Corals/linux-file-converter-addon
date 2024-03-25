@@ -33,7 +33,7 @@ Note that the Nemo port is very new and not as well tasted as the Nautilus versi
 ```
 *¹ [Needs pyheif](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#pyheif-heic-avif).
 <br/>*² [Needs jxlpy](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#jxlpy-jxl).
-<br/>*³ [Needs pillow-avif-plugin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#pillow-avif-plugin-to-avif)
+<br/>*³ [Needs pillow-avif-plugin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#pillow-avif-plugin-to-avif).
 
 # Installation
 Please head over to the installation page for your file manager:
