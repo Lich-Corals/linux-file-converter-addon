@@ -4,7 +4,6 @@
 converterVersion = "001002007" # Change the number if you want to trigger an update.
 
 # --- Imports ---
-
 import gi
 try:
     giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
@@ -69,13 +68,14 @@ if not os.access(currentPath, os.W_OK):
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
-    "automaticUpdates": True,           # Replace the "True" with "False" if you don't want automatic updates.
-    "showPatchNotes": True,             # Replace the "True" with "False" if you don't want to see patch notes.
-    "showPatchNoteButton": True,        # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
-    "showConfigHint": True,             # Replace the "True" with "False" if you don't want to see the config hint.
-    "convertToSquares": True,           # Replace the "True" with "False" if you don't want to convert to square formats.
-    "convertToWallpapers": True,        # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
-    "checkForDoubleInstallation": True  # Replace the "True" with "False" if you don't the script to check if there is a second installation in another dictionary.
+    "automaticUpdates": True,               # Replace the "True" with "False" if you don't want automatic updates.
+    "showPatchNotes": True,                 # Replace the "True" with "False" if you don't want to see patch notes.
+    "showPatchNoteButton": True,            # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
+    "showConfigHint": True,                 # Replace the "True" with "False" if you don't want to see the config hint.
+    "convertToSquares": True,               # Replace the "True" with "False" if you don't want to convert to square formats.
+    "convertToWallpapers": True,            # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
+    "checkForDoubleInstallation": True,     # Replace the "True" with "False" if you don't the script to check if there is a second installation in another dictionary.
+    "timeInNames": True                     # Replace the "True" with "False" if you don't want the script to rename the files to contain a timestamp.
 }
 
 # --- Load or store configs json ---
