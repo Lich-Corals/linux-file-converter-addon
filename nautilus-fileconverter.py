@@ -1,10 +1,9 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002007" # Change the number if you want to trigger an update.
+converterVersion = "001002008" # Change the number if you want to trigger an update.
 
 # --- Imports ---
-
 import gi
 try:
     giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
@@ -23,6 +22,7 @@ from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
 from pathlib import Path
+from datetime import datetime
 import mimetypes
 import pathlib
 import os, shlex
@@ -30,6 +30,7 @@ import urllib.request
 import json
 import sys
 import ast
+import re
 
 # --- Get the path to the script and if it's writeable ---
 currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
@@ -69,13 +70,14 @@ if not os.access(currentPath, os.W_OK):
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
-    "automaticUpdates": True,           # Replace the "True" with "False" if you don't want automatic updates.
-    "showPatchNotes": True,             # Replace the "True" with "False" if you don't want to see patch notes.
-    "showPatchNoteButton": True,        # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
-    "showConfigHint": True,             # Replace the "True" with "False" if you don't want to see the config hint.
-    "convertToSquares": True,           # Replace the "True" with "False" if you don't want to convert to square formats.
-    "convertToWallpapers": True,        # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
-    "checkForDoubleInstallation": True  # Replace the "True" with "False" if you don't the script to check if there is a second installation in another dictionary.
+    "automaticUpdates": True,               # Replace the "True" with "False" if you don't want automatic updates.
+    "showPatchNotes": True,                 # Replace the "True" with "False" if you don't want to see patch notes.
+    "showPatchNoteButton": True,            # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
+    "showConfigHint": True,                 # Replace the "True" with "False" if you don't want to see the config hint.
+    "convertToSquares": True,               # Replace the "True" with "False" if you don't want to convert to square formats.
+    "convertToWallpapers": True,            # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
+    "checkForDoubleInstallation": True,     # Replace the "True" with "False" if you don't the script to check if there is a second installation in another dictionary.
+    "timeInNames": True                     # Replace the "True" with "False" if you don't want the script to rename the files to contain a timestamp.
 }
 
 # --- Load or store configs json ---
@@ -118,7 +120,7 @@ if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
-print = lambda *wish, **verbosity: None
+#print = lambda *wish, **verbosity: None
 
 # --- Create file format tuples and write format dict-lists? ---
 READ_FORMATS_IMAGE = ('image/jpeg',
@@ -244,11 +246,19 @@ if jxlpyInstalled:
 if pillow_avif_pluginInstalled:
     WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
 
-
+if _config["timeInNames"] == True:
+    _addToName = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
+else:
+    _addToName = ""
 
 # --- Function used to get a mimetype's extension ---
 def __get_extension(format):
     return f".{format.get('extension', format['name'])}".lower()
+
+# --- Function used to remove old timestamp ---
+def __removeTimestamp(_stem):
+    clearStem = re.sub(r'\d{4}(-\d{2}){5}', "", _stem)
+    return clearStem
 
 # --- Function to convert between image formats ---
 def convert_image(menu, format, files):
@@ -258,41 +268,27 @@ def convert_image(menu, format, files):
         if 'extension' not in format:
             format['extension'] = format['name']
         if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
-            file_path = Path(unquote(urlparse(file.get_uri()).path))
+            from_file_path = Path(unquote(urlparse(file.get_uri()).path))
         else:
-            file_path = file
-        count = 0
-        to_file_path_mod = file_path.with_name(f"{file_path.stem}")
-        while os.path.exists(shlex.quote(f"{to_file_path_mod}.{format['extension'].lower()}")):
-            count += 1
-            to_file_path_mod = file_path.with_name(
-                f"{file_path.stem}-{count}")
-            file_path_to = to_file_path_mod
+            from_file_path = file
+        print(__removeTimestamp(from_file_path.stem) + from_file_path.stem)
+        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}.{format['extension'].lower()}")
         try:
-            image = Image.open(file_path)
+            image = Image.open(from_file_path)
             if (format['name']) == 'JPEG':
                 image = image.convert('RGB')
             if 'square' in format:
                 image = image.resize((int(format['square']), int(format['square'])))
             if 'w' in format:
                 image = image.resize((int(format['w']), int(format['h'])))
-            file_path_to = f"{to_file_path_mod}.{format['extension'].lower()}"
-            image.save(file_path_to,
-                       format=(format['extension']))
+            image.save(to_file_path, format=(format['extension']))
         except UnidentifiedImageError:
             try:
-                heif_file = pyheif.read(file_path)
-                heif_image = Image.frombytes(
-                    heif_file.mode,
-                    heif_file.size,
-                    heif_file.data,
-                    "raw",
-                    heif_file.mode,
-                    heif_file.stride,
-                )
+                heif_file = pyheif.read(from_file_path)
+                heif_image = Image.frombytes(heif_file.mode, heif_file.size, heif_file.data, "raw", heif_file.mode, heif_file.stride,)
                 if (format['extension']) == 'JPEG':
                     heif_image = heif_image.convert("RGB")
-                heif_image.save(file_path.with_suffix(__get_extension(format)), format['extension'])
+                heif_image.save(to_file_path, format['extension'])
             except UnidentifiedImageError:
                 pass
             pass
@@ -306,14 +302,7 @@ def convert_ffmpeg(menu, format, files):
             from_file_path = Path(unquote(urlparse(file.get_uri()).path))
         else:
             from_file_path = file
-        to_file_path = from_file_path.with_suffix(__get_extension(format).lower())
-        count = 0
-        to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}")
-        while to_file_path_mod.exists() or to_file_path.exists():
-            count += 1
-            to_file_path_mod = from_file_path.with_name(f"{from_file_path.stem}({count}){__get_extension(format).lower()}")
-            print(shlex.quote(str(from_file_path)))
-            to_file_path = to_file_path_mod
+        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}{__get_extension(format).lower()}")
         os.system(
             f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
 
