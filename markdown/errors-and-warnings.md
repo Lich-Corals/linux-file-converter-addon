@@ -8,7 +8,7 @@ This warning is caused, because the script is not able to find your pyheif insta
 Without pyheif, the converter won't be able to convert from heif file format.
 <br/><br/><b>How to solve?</b><br/>
 To solve this warning, you need to install pyheif using pip.
-View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
+<br/>View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
 
 ### (001): "jxlpy" not found
 <b>Causes:</b><br/>

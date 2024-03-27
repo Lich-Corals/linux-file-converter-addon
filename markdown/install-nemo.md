@@ -18,14 +18,18 @@ sudo pacman -S nemo
 - Download the nautilus-fileconverter.py and the nautilus-fileconverter.nemo_action file from the [release page](https://github.com/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
      ```bash
-        git clone https://github.com/Lich-Corals/linux-file-converter-addon
+     git clone https://github.com/Lich-Corals/linux-file-converter-addon
 
-        cd ./linux-file-converter-addon
+     cd ./linux-file-converter-addon
      ```
 - Copy the files into the ~/.local/share/nemo/actions folder:
      ```bash
-        mv nautilus-fileconverter.py ~/.local/share/nemo/actions/nautilus-fileconverter.py
-        mv nautilus-fileconverter.nemo_action ~/.local/share/nemo/actions/nautilus-fileconverter.nemo_action
+     mv nautilus-fileconverter.py ~/.local/share/nemo/actions/nautilus-fileconverter.py
+     mv nautilus-fileconverter.nemo_action ~/.local/share/nemo/actions/nautilus-fileconverter.nemo_action
+     ```
+- Give the script permission to be executed as script:
+     ```bash
+     chmod +x nautilus-fileconverter.py
      ```
  You may need to enable the action in Nemo's settings. To do so, you can open Nemo and go edit>Plugins (or press Alt+P) and check the checkbox labelled with "Convert to..." in the "Actions" area.
 
