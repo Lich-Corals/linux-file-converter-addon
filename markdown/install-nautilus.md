@@ -25,14 +25,16 @@ sudo pacman -Sy python-nautilus
 
         cd ./linux-file-converter-addon
         ```
-- For a system-wide installation move the file to '/usr/share/nautilus-python/extensions/' using this command in the dictionary with the file:
-    ```bash
-    sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
-    ```
-  - For a user specific installation move the file to '~/.local/share/nautilus-python/extensions/' using this command in the dictionary with the file:
+- Move the script to the right location:
+    <br><b>Important: Only use <i>one</i> of the following commands, otherwise you will get the menu-option twice!</b>
+    - For a user specific installation move the file to '~/.local/share/nautilus-python/extensions/' using this command in the dictionary with the file:
       ```bash
       mv nautilus-fileconverter.py ~/.local/share/nautilus-python/extensions/nautilus-fileconverter.py
       ```
+    - For a system-wide installation move the file to '/usr/share/nautilus-python/extensions/' using this command in the dictionary with the file:
+        ```bash
+        sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
+        ```
 - Now you only have to restart Nautilus using the following commands:
     ```bash
    #Quit Nautilus
