@@ -14,6 +14,7 @@ nohup nautilus & disown
 Automatic updates are only working in the home dictionary. If you've installed the script at the system-wide location, you may turn off automatic updates.
 <br/><br/>To <b>turn off automatic updates</b>, open the config file with a text editor and set the `automaticUpdates` variable to 'false'.
 To <b>manually trigger a self-update</b>, just open the .py file with a text editor and change the value of the `converterVersion` variable.
+To turn off the <b>update pop-up</b>, open the config file with a text editor and set the `showPatchNotes` variable to 'false'.
 
 ## 3.2 Shown menu items
 To turn off the <b>patch note button</b> in the context menu, open the config file with a text editor and set the `showPatchNoteButton` variable to 'false'.
@@ -23,7 +24,6 @@ Note: This option is not available in Nemo so far.
 <br/><br/>To turn off the '<b>convert to wallpaper</b>' function, open the config file with a text editor and set the `convertToWallpapers` variable to 'false'.
 
 ## 3.3 Other options
-To turn off the <b>patch note pop-up</b>, open the config file with a text editor and set the `showPatchNotes` variable to 'false'.
 <br/>To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.
 Note: This option may be a bit buggy in Nemo, I'll fix it in the future if it appears to be annoying to some users.
 <br/>To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
