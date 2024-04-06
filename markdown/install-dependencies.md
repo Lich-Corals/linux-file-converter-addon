@@ -20,6 +20,11 @@ pacman -S python-pip
 pip install Pillow
 ```
 
+[python-magic](https://pypi.org/project/python-magic/) will be used to detect the mimetypes of files:
+```bash
+pip install python-magic
+```
+
 [ffmpeg](https://ffmpeg.org/download.html#build-linux) is needed to convert audio and video.
 
 ```bash

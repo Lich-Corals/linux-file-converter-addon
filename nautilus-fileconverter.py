@@ -23,7 +23,7 @@ from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
 from pathlib import Path
 from datetime import datetime
-import mimetypes
+import magic
 import pathlib
 import os, shlex
 import urllib.request
@@ -31,6 +31,9 @@ import json
 import sys
 import ast
 import re
+
+# --- Create magic object ---
+mime = magic.Magic(mime=True)
 
 # --- Get the path to the script and if it's writeable ---
 currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
@@ -120,7 +123,9 @@ if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
-#print = lambda *wish, **verbosity: None
+print = lambda *wish, **verbosity: None
+
+print(f"pyheif: {pyheifInstalled}\njxlpy: {jxlpyInstalled}\npillow_avif: {pillow_avif_pluginInstalled}")
 
 # --- Create file format tuples and write format dict-lists? ---
 READ_FORMATS_IMAGE = ('image/jpeg',
@@ -143,7 +148,8 @@ READ_FORMATS_IMAGE = ('image/jpeg',
                       'image/webp')
 
 pyheifReadFormats = ('image/avif',
-                     'image/heif')
+                     'image/heif',
+                     'image/heic')
 
 jxlpyReadFormats = ('image/jxl')
 
@@ -323,15 +329,16 @@ class nautilusFileConverterPopup(Gtk.Window):
         _allAudios = True
         _allVideos = True
         for _arg in _nemoArgs:
-            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_IMAGE:
+            if not mime.from_file(_arg) in READ_FORMATS_IMAGE:
                 _allImages = False
-            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_AUDIO:
+            if not mime.from_file(_arg) in READ_FORMATS_AUDIO:
                 _allAudios = False
-            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_VIDEO:
+            if not mime.from_file(_arg) in READ_FORMATS_VIDEO:
                 _allVideos = False
 
         if _allImages:
             for writeFormat in WRITE_FORMATS_IMAGE:
+                print(writeFormat)
                 extensions.append([writeFormat['name'], str(writeFormat), 0])
             if _config["convertToSquares"]:
                 for writeFormat in WRITE_FORMATS_SQUARE:
