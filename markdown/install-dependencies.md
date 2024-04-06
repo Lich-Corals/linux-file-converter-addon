@@ -20,6 +20,11 @@ pacman -S python-pip
 pip install Pillow
 ```
 
+[python-magic](https://pypi.org/project/python-magic/) will be used to detect the mimetypes of files:
+```bash
+pip install python-magic
+```
+
 [ffmpeg](https://ffmpeg.org/download.html#build-linux) is needed to convert audio and video.
 
 ```bash
@@ -34,16 +39,13 @@ sudo pacman -S ffmpeg
 ```
 
 ## Optional dependencies
-### pyheif (HEIC, AVIF)
-[pyheif](https://pypi.org/project/pyheif/) is needed if you want to convert from **heif** or **avif** format.
+### pillow_heif (from HEIF, AVIF)
+[pillow_heif](https://pypi.org/project/pillow-heif/) is needed if you want to convert from **heif** or **avif** format.
 <br/> Install it using this command:
 ```bash
-pip install pyheif
+pip install pillow-heif
 ```
-You may need to install some dependencies before installing pyheif. Otherwise you could get an error installing it.
-```bash
-yum install libffi libheif-devel libde265-devel
-```
+
 ### pillow-avif-plugin (to AVIF)
 In addition, to convert *to* **avif** format you will need this [plugin for Pillow](https://pypi.org/project/pillow-avif-plugin/).
 ```bash

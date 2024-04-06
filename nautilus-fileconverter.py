@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002008" # Change the number if you want to trigger an update.
+converterVersion = "001002009" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 import gi
@@ -23,7 +23,7 @@ from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
 from pathlib import Path
 from datetime import datetime
-import mimetypes
+import magic
 import pathlib
 import os, shlex
 import urllib.request
@@ -32,21 +32,25 @@ import sys
 import ast
 import re
 
+# --- Create magic object ---
+mime = magic.Magic(mime=True)
+
 # --- Get the path to the script and if it's writeable ---
 currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
 scriptUpdateable = os.access(f"{currentPath}/{os.path.basename(__file__)}", os.W_OK)
 
 # --- Check if dependencies are installed and imported ---
-pyheifInstalled = False
+pillow_heifInstalled = False
 jxlpyInstalled = False
 pillow_avif_pluginInstalled = False
 
 try:
-    import pyheif
-    pyheifInstalled = True
+    from pillow_heif import register_heif_opener
+    register_heif_opener()
+    pillow_heifInstalled = True
 except ImportError:
-    pyheifInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(000): \"pyheif\" not found, if you want to convert from heif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information." )
+    pillow_heifInstalled = False
+    print(f"WARNING(Nautilus-file-converter)(000): \"pillow_heif\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information." )
 
 try:
     import jxlpy
@@ -54,13 +58,13 @@ try:
     jxlpyInstalled = True
 except ImportError:
     jxlpyInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found, if you want to convert from- or to jxl format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 try:
     import pillow_avif
     pillow_avif_pluginInstalled = True
 except ImportError:
-        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found, if you want to convert to avif format. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 if not scriptUpdateable:
     print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
@@ -110,7 +114,7 @@ if _config["automaticUpdates"]:
             print("Updating...")
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
             if _config["showPatchNotes"]:
-                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
+                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md\" &")
             with open(fileUpdatePath, 'w') as file:
                 file.write(onlineFile)
 
@@ -120,7 +124,9 @@ if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile
 
 # --- Disable debug printing ---
 # comment it out (using '#' in front of the line) if you wish debug printing
-#print = lambda *wish, **verbosity: None
+print = lambda *wish, **verbosity: None
+
+print(f"pyheif: {pillow_heifInstalled}\njxlpy: {jxlpyInstalled}\npillow_avif: {pillow_avif_pluginInstalled}")
 
 # --- Create file format tuples and write format dict-lists? ---
 READ_FORMATS_IMAGE = ('image/jpeg',
@@ -143,7 +149,8 @@ READ_FORMATS_IMAGE = ('image/jpeg',
                       'image/webp')
 
 pyheifReadFormats = ('image/avif',
-                     'image/heif')
+                     'image/heif',
+                     'image/heic')
 
 jxlpyReadFormats = ('image/jxl')
 
@@ -236,7 +243,7 @@ WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
                        {'name': 'MP3'},
                        {'name': 'WAV'}]
 
-if pyheifInstalled:
+if pillow_heifInstalled:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + pyheifReadFormats
 
 if jxlpyInstalled:
@@ -273,25 +280,14 @@ def convert_image(menu, format, files):
             from_file_path = file
         print(__removeTimestamp(from_file_path.stem) + from_file_path.stem)
         to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}.{format['extension'].lower()}")
-        try:
-            image = Image.open(from_file_path)
-            if (format['name']) == 'JPEG':
-                image = image.convert('RGB')
-            if 'square' in format:
-                image = image.resize((int(format['square']), int(format['square'])))
-            if 'w' in format:
-                image = image.resize((int(format['w']), int(format['h'])))
-            image.save(to_file_path, format=(format['extension']))
-        except UnidentifiedImageError:
-            try:
-                heif_file = pyheif.read(from_file_path)
-                heif_image = Image.frombytes(heif_file.mode, heif_file.size, heif_file.data, "raw", heif_file.mode, heif_file.stride,)
-                if (format['extension']) == 'JPEG':
-                    heif_image = heif_image.convert("RGB")
-                heif_image.save(to_file_path, format['extension'])
-            except UnidentifiedImageError:
-                pass
-            pass
+        image = Image.open(from_file_path)
+        if (format['name']) == 'JPEG':
+            image = image.convert('RGB')
+        if 'square' in format:
+            image = image.resize((int(format['square']), int(format['square'])))
+        if 'w' in format:
+            image = image.resize((int(format['w']), int(format['h'])))
+        image.save(to_file_path, format=(format['extension']))
 
 
 # --- Function to convert using FFMPEG (video and audio) ---
@@ -323,15 +319,16 @@ class nautilusFileConverterPopup(Gtk.Window):
         _allAudios = True
         _allVideos = True
         for _arg in _nemoArgs:
-            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_IMAGE:
+            if not mime.from_file(_arg) in READ_FORMATS_IMAGE:
                 _allImages = False
-            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_AUDIO:
+            if not mime.from_file(_arg) in READ_FORMATS_AUDIO:
                 _allAudios = False
-            if not mimetypes.guess_type(str(_arg))[0] in READ_FORMATS_VIDEO:
+            if not mime.from_file(_arg) in READ_FORMATS_VIDEO:
                 _allVideos = False
 
         if _allImages:
             for writeFormat in WRITE_FORMATS_IMAGE:
+                print(writeFormat)
                 extensions.append([writeFormat['name'], str(writeFormat), 0])
             if _config["convertToSquares"]:
                 for writeFormat in WRITE_FORMATS_SQUARE:
