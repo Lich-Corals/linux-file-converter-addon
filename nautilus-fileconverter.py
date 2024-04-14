@@ -333,7 +333,7 @@ class nautilusFileConverterPopup(Gtk.Window):
                 _allVideos = False
 
         if _config["showDummyOption"]:
-            extensions.append("-", "-", 2)
+            extensions.append(["-", "none", 2])
 
         if _allImages:
             for writeFormat in WRITE_FORMATS_IMAGE:
