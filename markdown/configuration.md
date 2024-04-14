@@ -10,23 +10,26 @@ nautilus -q
 #start it again, you can also use the normal launcher.
 nohup nautilus & disown
 ```
-## 3.1 Automatic updates
+## Automatic updates
 Automatic updates are only working in the home dictionary. If you've installed the script at the system-wide location, you may turn off automatic updates.
 <br/><br/>To <b>turn off automatic updates</b>, open the config file with a text editor and set the `automaticUpdates` variable to 'false'.
 To <b>manually trigger a self-update</b>, just open the .py file with a text editor and change the value of the `converterVersion` variable.
 To turn off the <b>update pop-up</b>, open the config file with a text editor and set the `showPatchNotes` variable to 'false'.
 
-## 3.2 Shown menu items
-To turn off the <b>patch note button</b> in the context menu, open the config file with a text editor and set the `showPatchNoteButton` variable to 'false'.
-<br/><br/>To turn off the <b>Configure NFC43 button</b> in the context menu, open the config file with a text editor and set the `showConfigHint` variable to 'false'.
-Note: This option is not available in Nemo so far.
+## Shown menu items
+To turn off the <b>patch note button</b> in the context menu and the <b>version number</b> in the adaption window, open the config file with a text editor and set the `showPatchNoteButton` variable to 'false'.
+<br/><br/>To turn off the <b>Configure NFC43 button</b> in the context menu and the <b>config hint</b> in the adaption window, open the config file with a text editor and set the `showConfigHint` variable to 'false'.
 <br/><br/>To turn off the '<b>convert to square</b>' option, open the config file with a text editor and set the `convertToSquares` variable to 'false'.
 <br/><br/>To turn off the '<b>convert to wallpaper</b>' function, open the config file with a text editor and set the `convertToWallpapers` variable to 'false'.
 
-## 3.3 Other options
+## Other options
 <br/>To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.
 Note: This option may be a bit buggy in Nemo, I'll fix it in the future if it appears to be annoying to some users.
 <br/>To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
+
+## Adaption specific options (Nemo)
+<br/>To enable the conversion of <b>application/octet-stream</b> files in the adaption version, set the `convertFromOctetStream` option to 'true'. This may allow you to convert files with unmatching mimetypes, which are in a supported- but not as such detected format. This may also allow the context menu option for other un-convertabe files, such a pdf or zip.
+<br/>To disable the <b>"-" option</b> in the dropdown-list, set the `showDummyOption` setting to 'false'.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)

@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002009" # Change the number if you want to trigger an update.
+converterVersion = "001002010" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 import gi
@@ -73,15 +73,17 @@ if not os.access(currentPath, os.W_OK):
     print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Set default configs ---
-_configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program is installed in your home dictionary.
-    "automaticUpdates": True,               # Replace the "True" with "False" if you don't want automatic updates.
-    "showPatchNotes": True,                 # Replace the "True" with "False" if you don't want to see patch notes.
-    "showPatchNoteButton": True,            # Replace the "True" with "False" if you don't want the "View patch notes" button in the converter menu.
-    "showConfigHint": True,                 # Replace the "True" with "False" if you don't want to see the config hint.
-    "convertToSquares": True,               # Replace the "True" with "False" if you don't want to convert to square formats.
-    "convertToWallpapers": True,            # Replace the "True" with "False" if you don't want to convert to wallpaper formats.
-    "checkForDoubleInstallation": True,     # Replace the "True" with "False" if you don't the script to check if there is a second installation in another dictionary.
-    "timeInNames": True                     # Replace the "True" with "False" if you don't want the script to rename the files to contain a timestamp.
+_configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program has permission to write.
+    "automaticUpdates": True,
+    "showPatchNotes": True,
+    "showPatchNoteButton": True,
+    "showConfigHint": True,
+    "convertToSquares": True,
+    "convertToWallpapers": True,
+    "checkForDoubleInstallation": True,
+    "timeInNames": True,
+    "convertFromOctetStream": False,
+    "showDummyOption": True
 }
 
 # --- Load or store configs json ---
@@ -143,7 +145,6 @@ READ_FORMATS_IMAGE = ('image/jpeg',
                       'video/fli',
                       'image/vnd.fpx',
                       'image/vnd.net-fpx',
-#                      'application/octet-stream', <-- Didn't make any problems in nautilus, but Nemo takes all files in it (.zip, .doc, .pdf, etc.) instead of only the image types.
                       'windows/metafile',
                       'image/x-xpixmap',
                       'image/webp')
@@ -184,6 +185,8 @@ READ_FORMATS_VIDEO = ('video/mp4',
                       'video/msvideo',
                       'video/x-msvideo',
                       'video/quicktime')
+
+octetStreamFormats = ('application/octet-stream',)
 
 WRITE_FORMATS_IMAGE = [{'name': 'PNG'},
                        {'name': 'JPEG'},
@@ -242,6 +245,9 @@ WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
                        {'name': 'AVI'},
                        {'name': 'MP3'},
                        {'name': 'WAV'}]
+
+if _config["convertFromOctetStream"]:
+    READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + octetStreamFormats
 
 if pillow_heifInstalled:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + pyheifReadFormats
@@ -305,14 +311,21 @@ def convert_ffmpeg(menu, format, files):
 # --- Nemo adaption ---
 class nautilusFileConverterPopup(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Convert file")
+        super().__init__(title=f"Convert file")
         self.set_border_width(15)
         self.set_default_size(200, 20)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         label = Gtk.Label(label="Select a format:")
+        label.set_justify(Gtk.Justification.CENTER)
         vbox.pack_start(label, False, False, 0)
+        versionInfo = Gtk.Label()
+        versionInfo.set_markup(f"""<span size="x-small">version {converterVersion}</span>""")
+        versionInfo.set_justify(Gtk.Justification.CENTER)
+        configHint = Gtk.Label()
+        configHint.set_justify(Gtk.Justification.CENTER)
+        configHint.set_markup(f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
 
         extensions = Gtk.ListStore(str, str, int)
         _allImages = True
@@ -325,6 +338,9 @@ class nautilusFileConverterPopup(Gtk.Window):
                 _allAudios = False
             if not mime.from_file(_arg) in READ_FORMATS_VIDEO:
                 _allVideos = False
+
+        if _config["showDummyOption"]:
+            extensions.append(["-", "none", 2])
 
         if _allImages:
             for writeFormat in WRITE_FORMATS_IMAGE:
@@ -351,9 +367,12 @@ class nautilusFileConverterPopup(Gtk.Window):
         combo.add_attribute(renderer_text, "text", 0)
         combo.connect("changed", self._nemoConvert)
         vbox.pack_start(combo, False, False, 0)
+        if _config["showPatchNoteButton"]:
+            vbox.pack_start(versionInfo, False, False, 0)
+        if _config["showConfigHint"]:
+            vbox.pack_start(configHint, True, True, 0)
 
     def _nemoConvert(self, combo):
-        self.hide()
         tree_iter = combo.get_active_iter()
         if tree_iter is not None:
             model = combo.get_model()
@@ -361,12 +380,14 @@ class nautilusFileConverterPopup(Gtk.Window):
             print(return_name, return_format, return_type)
             return_format = ast.literal_eval(return_format)
             return_paths = []
-            for retun_path in _nemoArgs:
-                return_paths.append(Path(retun_path))
-            if return_type == 0:
-                convert_image(self, return_format, return_paths)
-            elif return_type == 1:
-                convert_ffmpeg(self, return_format, return_paths)
+            if not return_type == 2:
+                self.hide()
+                for retun_path in _nemoArgs:
+                    return_paths.append(Path(retun_path))
+                if return_type == 0:
+                    convert_image(self, return_format, return_paths)
+                elif return_type == 1:
+                    convert_ffmpeg(self, return_format, return_paths)
 
 
 _nemoArgs = sys.argv[1:len(sys.argv)]
@@ -402,7 +423,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         for file in files:
             print(file.get_mime_type())
             file_mime = file.get_mime_type()
-            if file_mime in READ_FORMATS_IMAGE:
+            if file_mime in READ_FORMATS_IMAGE or file_mime == 'application/octet-stream':
                 return self.__submenu_builder(WRITE_FORMATS_IMAGE,
                                               callback=convert_image,
                                               files=files)
