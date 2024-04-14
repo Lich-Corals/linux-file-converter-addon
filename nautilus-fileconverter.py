@@ -311,14 +311,21 @@ def convert_ffmpeg(menu, format, files):
 # --- Nemo adaption ---
 class nautilusFileConverterPopup(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Convert file")
+        super().__init__(title=f"Convert file")
         self.set_border_width(15)
         self.set_default_size(200, 20)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         label = Gtk.Label(label="Select a format:")
+        label.set_justify(Gtk.Justification.CENTER)
         vbox.pack_start(label, False, False, 0)
+        versionInfo = Gtk.Label()
+        versionInfo.set_markup(f"""<span size="x-small">version {converterVersion}</span>""")
+        versionInfo.set_justify(Gtk.Justification.CENTER)
+        configHint = Gtk.Label()
+        configHint.set_justify(Gtk.Justification.CENTER)
+        configHint.set_markup(f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
 
         extensions = Gtk.ListStore(str, str, int)
         _allImages = True
@@ -360,6 +367,10 @@ class nautilusFileConverterPopup(Gtk.Window):
         combo.add_attribute(renderer_text, "text", 0)
         combo.connect("changed", self._nemoConvert)
         vbox.pack_start(combo, False, False, 0)
+        if _config["showPatchNoteButton"]:
+            vbox.pack_start(versionInfo, False, False, 0)
+        if _config["showConfigHint"]:
+            vbox.pack_start(configHint, True, True, 0)
 
     def _nemoConvert(self, combo):
         tree_iter = combo.get_active_iter()
