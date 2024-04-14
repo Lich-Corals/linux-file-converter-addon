@@ -186,6 +186,8 @@ READ_FORMATS_VIDEO = ('video/mp4',
                       'video/x-msvideo',
                       'video/quicktime')
 
+octetStreamFormats = ('application/octet-stream',)
+
 WRITE_FORMATS_IMAGE = [{'name': 'PNG'},
                        {'name': 'JPEG'},
                        {'name': 'BMP'},
@@ -245,7 +247,7 @@ WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
                        {'name': 'WAV'}]
 
 if _config["convertFromOctetStream"]:
-    READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + ('application/octet-stream')
+    READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + octetStreamFormats
 
 if pillow_heifInstalled:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + pyheifReadFormats
