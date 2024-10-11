@@ -7,8 +7,8 @@
 
 # Features
 Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus** and **Nemo** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
-The program offers many options to customise the appearance of its context menu. There are also a few extra formats, which can be added by installing optional dependencies.
-The tool has a built-in auto-update function to make sure the newest version is always provided.
+The program offers many options to customise the appearance of its context menu. There are also a few extra formats which can be added by installing optional dependencies.
+The tool has a built-in auto-update function to make sure the newest version is always installed.
 Note that the Nemo port is quite new and not as well tested as the Nautilus version. If you experience any problems, please report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
 ```mermaid
     flowchart TD
@@ -41,12 +41,12 @@ Please head over to the installation page for your file manager:
 - [Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
 
 # Updating
-If the script is installed in the home folder (~/.local/share/nautilus-python/extensions/) or has permissions to write in it's dictionary, it will update automatically as long as the automatic updates aren't disabled.
+If the script is installed in the home folder or has permissions to write in it's dictionary, it will update automatically as long as automatic updates aren't disabled.
 
 If automatic updates are disabled, you can run the installation commands again to update the program.
 # Usage
 
-Just right click on an supported file and choose the "Convert to..." option. In this sub menu you can select any file type you want to convert to.
+Just right-click on any supported file and choose the "Convert to..." option. In this sub menu you can select any file type you want to convert to.
 
 Converting a file can take some time. There is no indicator when the process is done.
 
