@@ -5,19 +5,7 @@ converterVersion = "001002010" # Change the number if you want to trigger an upd
 
 # --- Imports ---
 import gi
-try:
-    giVersion = 3 if 30 <= gi.version_info[1] < 40 else 4
-    gi.require_versions({
-        'Nautilus': '3.0' if giVersion == 3 else '4.0',
-        'Gtk': '3.0'
-    })
-except ValueError:
-    pass
-try:
-    from gi.repository import Nautilus
-except ImportError:
-    pass
-from gi.repository import GObject, Gtk
+from gi.repository import GObject, Gtk, Nautilus
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
@@ -85,6 +73,10 @@ _configPreset = {                                 # These are the pre-defined de
     "convertFromOctetStream": False,
     "showDummyOption": True
 }
+_config = {}
+for _setting in _configPreset:
+    if _setting not in _config:
+        _config[_setting] = _configPreset[_setting]
 
 # --- Load or store configs json ---
 if scriptUpdateable:
@@ -95,9 +87,6 @@ if scriptUpdateable:
             except json.decoder.JSONDecodeError:
                 configJson = _configPreset
             _config = configJson
-        for _setting in _configPreset:
-            if _setting not in _config:
-                _config[_setting] = _configPreset[_setting]
         configJson = json.dumps(_config, indent=4)
     else:
         configJson = json.dumps(_configPreset, indent=4)
@@ -111,7 +100,7 @@ if _config["automaticUpdates"]:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
         print(f"UPDATES(Nautilus-file-converter)(006): Current Version: {converterVersion}\n"
-              f"                                       Attempting to update...")
+            f"                                       Attempting to update...")
         if scriptUpdateable:
             print("Updating...")
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
@@ -132,68 +121,68 @@ print(f"pyheif: {pillow_heifInstalled}\njxlpy: {jxlpyInstalled}\npillow_avif: {p
 
 # --- Create file format tuples and write format dict-lists? ---
 READ_FORMATS_IMAGE = ('image/jpeg',
-                      'image/png',
-                      'image/bmp',
-                      'application/postscript',
-                      'image/gif',
-                      'image/x-icon',
-                      'image/x-pcx',
-                      'image/x-portable-pixmap',
-                      'image/tiff',
-                      'image/x-xbm',
-                      'image/x-xbitmap',
-                      'video/fli',
-                      'image/vnd.fpx',
-                      'image/vnd.net-fpx',
-                      'windows/metafile',
-                      'image/x-xpixmap',
-                      'image/webp')
+                    'image/png',
+                    'image/bmp',
+                    'application/postscript',
+                    'image/gif',
+                    'image/x-icon',
+                    'image/x-pcx',
+                    'image/x-portable-pixmap',
+                    'image/tiff',
+                    'image/x-xbm',
+                    'image/x-xbitmap',
+                    'video/fli',
+                    'image/vnd.fpx',
+                    'image/vnd.net-fpx',
+                    'windows/metafile',
+                    'image/x-xpixmap',
+                    'image/webp')
 
 pyheifReadFormats = ('image/avif',
-                     'image/heif',
-                     'image/heic')
+                    'image/heif',
+                    'image/heic')
 
 jxlpyReadFormats = ('image/jxl')
 
 READ_FORMATS_AUDIO = ('audio/mpeg',
-                      'audio/mpeg3',
-                      'video/x-mpeg',
-                      'audio/x-mpeg-3',
-                      'audio/x-wav',
-                      'audio/wav',
-                      'audio/wave',
-                      'audio/x-pn-wave',
-                      'audio/vnd.wave',
-                      'audio/x-mpegurl',
-                      'audio/mp4',
-                      'audio/mp4a-latm',
-                      'audio/mpeg4-generic',
-                      'audio/x-matroska',
-                      'audio/aac',
-                      'audio/aacp',
-                      'audio/3gpp',
-                      'audio/3gpp2',
-                      'audio/ogg',
-                      'audio/opus',
-                      'audio/flac',
-                      'audio/x-vorbis+ogg')
+                    'audio/mpeg3',
+                    'video/x-mpeg',
+                    'audio/x-mpeg-3',
+                    'audio/x-wav',
+                    'audio/wav',
+                    'audio/wave',
+                    'audio/x-pn-wave',
+                    'audio/vnd.wave',
+                    'audio/x-mpegurl',
+                    'audio/mp4',
+                    'audio/mp4a-latm',
+                    'audio/mpeg4-generic',
+                    'audio/x-matroska',
+                    'audio/aac',
+                    'audio/aacp',
+                    'audio/3gpp',
+                    'audio/3gpp2',
+                    'audio/ogg',
+                    'audio/opus',
+                    'audio/flac',
+                    'audio/x-vorbis+ogg')
 
 READ_FORMATS_VIDEO = ('video/mp4',
-                      'video/webm',
-                      'video/x-matroska',
-                      'video/avi',
-                      'video/msvideo',
-                      'video/x-msvideo',
-                      'video/quicktime')
+                    'video/webm',
+                    'video/x-matroska',
+                    'video/avi',
+                    'video/msvideo',
+                    'video/x-msvideo',
+                    'video/quicktime')
 
 octetStreamFormats = ('application/octet-stream',)
 
 WRITE_FORMATS_IMAGE = [{'name': 'PNG'},
-                       {'name': 'JPEG'},
-                       {'name': 'BMP'},
-                       {'name': 'GIF'},
-                       {'name': 'WebP'},
-                       {'name': 'TIFF'}]
+                    {'name': 'JPEG'},
+                    {'name': 'BMP'},
+                    {'name': 'GIF'},
+                    {'name': 'WebP'},
+                    {'name': 'TIFF'}]
 
 jxlpyWriteFormats = [{'name': 'JXL'}]
 
@@ -215,36 +204,36 @@ WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16
                         {'name': 'JPEG: 1024x1024', 'extension': 'JPEG', 'square': '1024'}]
 
 WRITE_FORMATS_WALLPAPER = [{'name': 'SD P | 480x640', 'extension': 'png', 'w': '480', 'h': '640'},
-                           {'name': 'SD L | 640x480', 'extension': 'png', 'w': '640', 'h': '480'},
-                           {'name': 'HD P | 720x1280', 'extension': 'png', 'w': '720', 'h': '1280'},
-                           {'name': 'HD L | 1280x720', 'extension': 'png', 'w': '1280', 'h': '720'},
-                           {'name': 'FHD P | 1080x1920', 'extension': 'png', 'w': '1080', 'h': '1920'},
-                           {'name': 'FHD L | 1920x1080', 'extension': 'png', 'w': '1920', 'h': '1080'},
-                           {'name': 'QHD P | 1440x2560', 'extension': 'png', 'w': '1440', 'h': '2560'},
-                           {'name': 'QHD L | 2560x1440', 'extension': 'png', 'w': '2560', 'h': '1440'},
-                           {'name': '4K-UHD P | 2160x3840', 'extension': 'png', 'w': '2160', 'h': '3840'},
-                           {'name': '4K-UHD L | 3840x2160', 'extension': 'png', 'w': '3840', 'h': '2160'},
-                           {'name': '8K-UHD P | 4320x7680', 'extension': 'png', 'w': '4320', 'h': '7680'},
-                           {'name': '8K-UHD L | 7680x4320', 'extension': 'png', 'w': '7680', 'h': '4320'},
-                           {'name': 'Galaxy S7 P | 1440x2960', 'extension': 'png', 'w': '1440', 'h': '2960'},
-                           {'name': 'Galaxy S7 L | 1440x2960', 'extension': 'png', 'w': '2960', 'h': '1440'},
-                           {'name': 'iPad Pro P | 2048x2732', 'extension': 'png', 'w': '2048', 'h': '2732'},
-                           {'name': 'iPad Pro L | 2048x2732', 'extension': 'png', 'w': '2732', 'h': '2048'}]
+                        {'name': 'SD L | 640x480', 'extension': 'png', 'w': '640', 'h': '480'},
+                        {'name': 'HD P | 720x1280', 'extension': 'png', 'w': '720', 'h': '1280'},
+                        {'name': 'HD L | 1280x720', 'extension': 'png', 'w': '1280', 'h': '720'},
+                        {'name': 'FHD P | 1080x1920', 'extension': 'png', 'w': '1080', 'h': '1920'},
+                        {'name': 'FHD L | 1920x1080', 'extension': 'png', 'w': '1920', 'h': '1080'},
+                        {'name': 'QHD P | 1440x2560', 'extension': 'png', 'w': '1440', 'h': '2560'},
+                        {'name': 'QHD L | 2560x1440', 'extension': 'png', 'w': '2560', 'h': '1440'},
+                        {'name': '4K-UHD P | 2160x3840', 'extension': 'png', 'w': '2160', 'h': '3840'},
+                        {'name': '4K-UHD L | 3840x2160', 'extension': 'png', 'w': '3840', 'h': '2160'},
+                        {'name': '8K-UHD P | 4320x7680', 'extension': 'png', 'w': '4320', 'h': '7680'},
+                        {'name': '8K-UHD L | 7680x4320', 'extension': 'png', 'w': '7680', 'h': '4320'},
+                        {'name': 'Galaxy S7 P | 1440x2960', 'extension': 'png', 'w': '1440', 'h': '2960'},
+                        {'name': 'Galaxy S7 L | 1440x2960', 'extension': 'png', 'w': '2960', 'h': '1440'},
+                        {'name': 'iPad Pro P | 2048x2732', 'extension': 'png', 'w': '2048', 'h': '2732'},
+                        {'name': 'iPad Pro L | 2048x2732', 'extension': 'png', 'w': '2732', 'h': '2048'}]
 
 WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
-                       {'name': 'WAV'},
-                       {'name': 'AAC'},
-                       {'name': 'FLAC'},
-                       {'name': 'M4A'},
-                       {'name': 'OGG'},
-                       {'name': 'OPUS'}]
+                    {'name': 'WAV'},
+                    {'name': 'AAC'},
+                    {'name': 'FLAC'},
+                    {'name': 'M4A'},
+                    {'name': 'OGG'},
+                    {'name': 'OPUS'}]
 
 WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
-                       {'name': 'WebM'},
-                       {'name': 'MKV'},
-                       {'name': 'AVI'},
-                       {'name': 'MP3'},
-                       {'name': 'WAV'}]
+                    {'name': 'WebM'},
+                    {'name': 'MKV'},
+                    {'name': 'AVI'},
+                    {'name': 'MP3'},
+                    {'name': 'WAV'}]
 
 if _config["convertFromOctetStream"]:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + octetStreamFormats
@@ -425,16 +414,16 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
             file_mime = file.get_mime_type()
             if file_mime in READ_FORMATS_IMAGE or file_mime == 'application/octet-stream':
                 return self.__submenu_builder(WRITE_FORMATS_IMAGE,
-                                              callback=convert_image,
-                                              files=files)
+                                            callback=convert_image,
+                                            files=files)
             if file_mime in READ_FORMATS_AUDIO:
                 return self.__submenu_builder(WRITE_FORMATS_AUDIO,
-                                              callback=convert_ffmpeg,
-                                              files=files)
+                                            callback=convert_ffmpeg,
+                                            files=files)
             if file_mime in READ_FORMATS_VIDEO:
                 return self.__submenu_builder(WRITE_FORMATS_VIDEO,
-                                              callback=convert_ffmpeg,
-                                              files=files)
+                                            callback=convert_ffmpeg,
+                                            files=files)
 
     # --- Build the context menu and submenus ---
     def __submenu_builder(self, formats, callback, files):
