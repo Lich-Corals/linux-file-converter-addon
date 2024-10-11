@@ -6,10 +6,10 @@
 <img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="256"/>
 
 # Features
-Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus** and **Nemo** file viewers. It adds a new option to the context menu of the file viewer to create an easy way to convert between a huge amount of file types.
-The program offers many options to customise the appearance of its context menu. There are also a few extra formats to convert with, which can be added by installing optional dependencies.
+Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus** and **Nemo** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
+The program offers many options to customise the appearance of its context menu. There are also a few extra formats, which can be added by installing optional dependencies.
 The tool has a built-in auto-update function to make sure the newest version is always provided.
-Note that the Nemo port is very new and not as well tasted as the Nautilus version. If you experience any bugs, pleas report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
+Note that the Nemo port is quite new and not as well tested as the Nautilus version. If you experience any problems, please report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
 ```mermaid
     flowchart TD
     A[Supported Image Files]
