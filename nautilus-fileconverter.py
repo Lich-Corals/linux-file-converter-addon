@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001002011" # Change the number if you want to trigger an update.
+converterVersion = "001002012" # Change the number if you want to trigger an update.
 
 # --- Imports ---
 import gi
@@ -73,24 +73,28 @@ _configPreset = {                                 # These are the pre-defined de
     "convertFromOctetStream": False,
     "showDummyOption": True
 }
+_config = _configPreset
 
 # --- Load or store configs json ---
 if scriptUpdateable:
-    if Path(f"{currentPath}/NFC43-Config.json").is_file():
-        with open(f"{currentPath}/NFC43-Config.json", 'r') as jsonFile:
-            try:
-                configJson = json.load(jsonFile)
-            except json.decoder.JSONDecodeError:
-                configJson = _configPreset
-            _config = configJson
-        for _setting in _configPreset:
-            if _setting not in _config:
-                _config[_setting] = _configPreset[_setting]
-        configJson = json.dumps(_config, indent=4)
-    else:
-        configJson = json.dumps(_configPreset, indent=4)
-    with open(f"{currentPath}/NFC43-Config.json", "w") as jsonFile:
-        jsonFile.write(configJson)
+    try:
+        if Path(f"{currentPath}/NFC43-Config.json").is_file():
+            with open(f"{currentPath}/NFC43-Config.json", 'r') as jsonFile:
+                try:
+                    configJson = json.load(jsonFile)
+                except json.decoder.JSONDecodeError:
+                    configJson = _configPreset
+                _config = configJson
+            for _setting in _configPreset:
+                if _setting not in _config:
+                    _config[_setting] = _configPreset[_setting]
+            configJson = json.dumps(_config, indent=4)
+        else:
+            configJson = json.dumps(_configPreset, indent=4)
+        with open(f"{currentPath}/NFC43-Config.json", "w") as jsonFile:
+            jsonFile.write(configJson)
+    except:
+        print("WARNING(Nautilus-file-converter): Something went wrong while loading or updating the configuration file. Consider checking the write permissions in the installation folder.")
 
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:
@@ -109,7 +113,7 @@ if _config["automaticUpdates"]:
                 file.write(onlineFile)
 
 # --- Check for duplicate script if enabled ---
-if _config["checkForDoubleInstallation"] and scriptUpdateable and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
+if _config["checkForDoubleInstallation"] and "/.local/share/" in currentPath and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
     print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Disable debug printing ---
