@@ -19,11 +19,11 @@ Note that the Nemo port is quite new and not as well tested as the Nautilus vers
     E[audio]
     F[video]
 
-    A["JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF*¹<br/>HEIC*¹<br/>JXL*²"]
+    A["JPG<br/>JPEG<br/>JPE<br/>PNG<br/>BMP<br/>AI<br/>EPS<br/>PS<br/>GIF<br/>ICO<br/>PCX<br/>PPM<br/>TIFF<br/>TIF<br/>XBM<br/>FLI<br/>FPX<br/>BIN<br/>WMF<br/>XPM<br/>WEBP<br/>AVIF¹<br/>HEIC¹<br/>JXL²"]
     B["MP3<br/>MPGA<br/>MPG<br/>MPEG<br/>WAV<br/>M3U<br/>M3U8<br/>M4A<br/>MKA<br/>AAC<br/>3GP<br/>3G2<br/>OGG<br/>OPUS"]
     C["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MOV<br/>QT"]
 
-    D["JPEG<br/>PNG<br/>BMP<br/>GIF<br/>WEBP<br/>JXL*²<br/>TIFF<br/>AVIF*³<br/>Different square sizes<br/>Different wallpaper sizes"]
+    D["JPEG<br/>PNG<br/>BMP<br/>GIF<br/>WEBP<br/>JXL²<br/>TIFF<br/>AVIF³<br/>Different square sizes<br/>Different wallpaper sizes"]
     E["MP3<br/>WAV<br/>ACC<br/>FLAC<br/>M4A<br/>OGG<br/>OPUS"]
     F["MP4<br/>WebM<br/>MKV<br/>AVI<br/>MP3<br/>WAV"]
 
@@ -31,9 +31,9 @@ Note that the Nemo port is quite new and not as well tested as the Nautilus vers
     B --> E
     C --> F
 ```
-*¹ [Needs pyheif](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#pyheif-heic-avif).
-<br/>*² [Needs jxlpy](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#jxlpy-jxl).
-<br/>*³ [Needs pillow-avif-plugin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#pillow-avif-plugin-to-avif).
+¹ [Needs pyheif](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#pyheif-heic-avif).
+<br/>² [Needs jxlpy](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#jxlpy-jxl).
+<br/>³ [Needs pillow-avif-plugin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#pillow-avif-plugin-to-avif).
 
 # Installation
 Please head over to the installation page for your file manager:
