@@ -60,13 +60,12 @@ If anything is not clear...
 <br/><b>Check if anyone had the same issue before [on this page](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=) or feel free to open a new [GitHub issue](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose)!</b>
 
 # Credits
-## Authors
 - [Linus Tibert](https://github.com/Lich-Corals)
-
-## Pull requests
-
+  <br>Maintenance, issues, support
 - [derVedro](https://github.com/derVedro)
+  <br>Pull requests, issue solving
 - [D10f](https://github.com/D10f)
+  <br>Pull requests
 
 #### All sections
 - __[Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)__
