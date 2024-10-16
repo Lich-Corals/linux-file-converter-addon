@@ -35,6 +35,7 @@ sudo pacman -Sy python-nautilus
         ```bash
         sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
         ```
+        <b>NOTE: Configuration and automatic updates are limited for root installations. I recomend the other installation option.</b>
 - Now you only have to restart Nautilus using the following commands:
     ```bash
    #Quit Nautilus
