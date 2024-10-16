@@ -35,7 +35,7 @@ sudo pacman -Sy python-nautilus
         ```bash
         sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
         ```
-        <b>NOTE: Configuration and automatic updates are limited for root installations. I recomend the other installation option.</b>
+        <b>NOTE: Configuration and automatic updates are limited for root installations.</b> I recomend the other installation option. More information in the errors and warnings section [here](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#003-no-permission-to-self-update) and [here](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#004-no-permission-to-write-configuration-file)
 - Now you only have to restart Nautilus using the following commands:
     ```bash
    #Quit Nautilus
