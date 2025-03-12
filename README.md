@@ -15,6 +15,7 @@ Note that the Nemo port is quite new and not as well tested as the Nautilus vers
 <p align="center">
     <img height="256px" src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png">
 </p>
+
 ```mermaid
     flowchart TD
     A[Supported Image Files]
