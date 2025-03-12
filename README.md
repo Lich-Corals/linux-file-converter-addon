@@ -2,14 +2,19 @@
 # linux-file-converter-addon
 [![](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Flichcorals.netlify.app%2Fgnome_look.json)](https://www.gnome-look.org/s/Gnome/p/1965601)
 
-![converterAddon-1](https://github.com/Lich-Corals/linux-file-converter-addon/assets/111392332/a248112e-1774-4e8d-a637-0302d9b67c77)
-<img src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png" alt="drawing" height="256"/>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/88826d06-2a71-4299-91fe-55a11aeb5375">
+</p>
 
 # Features
 Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus** and **Nemo** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
 The program offers many options to customise the appearance of its context menu. There are also a few extra formats which can be added by installing optional dependencies.
 The tool has a built-in auto-update function to make sure the newest version is always installed.
 Note that the Nemo port is quite new and not as well tested as the Nautilus version. If you experience any problems, please report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
+<br/>
+<p align="center">
+    <img height="256px" src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png">
+</p>
 ```mermaid
     flowchart TD
     A[Supported Image Files]
