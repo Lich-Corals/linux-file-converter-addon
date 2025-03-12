@@ -2,6 +2,8 @@
 
 # --- Version number ---
 converterVersion = "001002012" # Change the number if you want to trigger an update.
+# --- Variable to enable debug mode ---
+development_version = False
 
 # --- Imports ---
 import gi
@@ -19,6 +21,8 @@ import json
 import sys
 import ast
 import re
+from multiprocessing import Process
+import traceback
 
 # --- Create magic object ---
 mime = magic.Magic(mime=True)
@@ -116,9 +120,9 @@ if _config["automaticUpdates"]:
 if _config["checkForDoubleInstallation"] and "/.local/share/" in currentPath and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
     print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
-# --- Disable debug printing ---
-# comment it out (using '#' in front of the line) if you wish debug printing
-print = lambda *wish, **verbosity: None
+# --- Check for development status and apply settings ---
+if not development_version:
+    print = lambda *wish, **verbosity: None
 
 print(f"pyheif: {pillow_heifInstalled}\njxlpy: {jxlpyInstalled}\npillow_avif: {pillow_avif_pluginInstalled}")
 
@@ -266,27 +270,37 @@ def __removeTimestamp(_stem):
     return clearStem
 
 # --- Function to convert between image formats ---
-def convert_image(menu, format, files):
-    global file_path_to
-    print(format)
-    for file in files:
-        if 'extension' not in format:
-            format['extension'] = format['name']
-        if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
-            from_file_path = Path(unquote(urlparse(file.get_uri()).path))
-        else:
-            from_file_path = file
-        print(__removeTimestamp(from_file_path.stem) + from_file_path.stem)
-        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}.{format['extension'].lower()}")
-        image = Image.open(from_file_path)
-        if (format['name']) == 'JPEG':
-            image = image.convert('RGB')
-        if 'square' in format:
-            image = image.resize((int(format['square']), int(format['square'])))
-        if 'w' in format:
-            image = image.resize((int(format['w']), int(format['h'])))
-        image.save(to_file_path, format=(format['extension']))
+def _convert_image_process(*args, **kwargs):
+    try:
+        menu = kwargs["menu"]
+        format_ = kwargs["format"]
+        files = kwargs["files"]
+        for file in files:
+            if 'extension' not in format_:
+                format_['extension'] = format_['name']
+            if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
+                from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+            else:
+                from_file_path = file
+            print(__removeTimestamp(from_file_path.stem) + from_file_path.stem)
+            to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}.{format_['extension'].lower()}")
+            image = Image.open(from_file_path)
+            if (format_['name']) == 'JPEG':
+                image = image.convert('RGB')
+            if 'square' in format_:
+                image = image.resize((int(format_['square']), int(format_['square'])))
+            if 'w' in format_:
+                image = image.resize((int(format_['w']), int(format_['h'])))
+            image.save(to_file_path, format=(format_['extension']))
+    except:
+        print(f"ERROR IN SUBPROCESS(Nautilus-file-converter):\n{traceback.format_exc()}\nEND OF ERROR")
 
+
+# --- Function to start image conversion in a new thread ---
+def convert_image(menu, format_, files):
+    print("Starting thread")
+    subprocess = Process(target=_convert_image_process, kwargs={"menu":menu, "format": format_, "files": files})
+    subprocess.start()
 
 # --- Function to convert using FFMPEG (video and audio) ---
 def convert_ffmpeg(menu, format, files):
@@ -297,8 +311,7 @@ def convert_ffmpeg(menu, format, files):
         else:
             from_file_path = file
         to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}{__get_extension(format).lower()}")
-        os.system(
-            f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
+        os.system(f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
 
 # --- Nemo adaption ---
 class nautilusFileConverterPopup(Gtk.Window):
