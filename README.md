@@ -52,6 +52,11 @@ Converting a file can take some time. There is no indicator when the process is 
 
 If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues) page.
 
+# Contributing
+Contributions are always welcome!
+If you want to contribute to this project, take a look at the [open issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=is%3Aissue%20state%3Aopen%20) and at [issues with help-wanted tag](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22help%20wanted%22) or propose other edits to the program using a pull-request.
+The code of the project is partly commented and relatively self explaining. If you're curious about the way something is accomplished in the code, you can always ask about it in an issue and if you think there is a better way to do it, you're welcome to edit the code or share your ideas in another issue.
+
 # Any questions?
 If anything is not clear...
 <br/>If you have a problem...
