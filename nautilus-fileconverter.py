@@ -271,20 +271,26 @@ def __removeTimestamp(_stem):
 
 # --- Function to convert between image formats ---
 def _convert_image_process(*args, **kwargs):
-    try:
-        menu = kwargs["menu"]
-        format_ = kwargs["format"]
-        files = kwargs["files"]
-        for file in files:
-            if 'extension' not in format_:
-                format_['extension'] = format_['name']
-            if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
-                from_file_path = Path(unquote(urlparse(file.get_uri()).path))
-            else:
-                from_file_path = file
-            print(__removeTimestamp(from_file_path.stem) + from_file_path.stem)
-            to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}.{format_['extension'].lower()}")
+    print("EEE")
+    menu = kwargs["menu"]
+    format_ = kwargs["format"]
+    files = kwargs["files"]
+    for file in files:
+        if 'extension' not in format_:
+            format_['extension'] = format_['name']
+        if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
+            from_file_path = Path(unquote(urlparse(file.get_uri()).path))
+        else:
+            from_file_path = file
+        print(__removeTimestamp(from_file_path.stem) + from_file_path.stem)
+        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}.{format_['extension'].lower()}")
+        try:
             image = Image.open(from_file_path)
+            image_open_error = False
+        except UnidentifiedImageError:
+            print(f"(Nautilus-file-converter)(400): {from_file_path} is in an unconvertable file-format.")
+            image_open_error = True
+        if not image_open_error:
             if (format_['name']) == 'JPEG':
                 image = image.convert('RGB')
             if 'square' in format_:
@@ -292,8 +298,6 @@ def _convert_image_process(*args, **kwargs):
             if 'w' in format_:
                 image = image.resize((int(format_['w']), int(format_['h'])))
             image.save(to_file_path, format=(format_['extension']))
-    except:
-        print(f"ERROR IN SUBPROCESS(Nautilus-file-converter):\n{traceback.format_exc()}\nEND OF ERROR")
 
 
 # --- Function to start image conversion in a new thread ---
