@@ -42,7 +42,7 @@ try:
     pillow_heifInstalled = True
 except ImportError:
     pillow_heifInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(000): \"pillow_heif\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information." )
+    print(f"WARNING(Nautilus-file-converter)(100): \"pillow_heif\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information." )
 
 try:
     import jxlpy
@@ -50,19 +50,19 @@ try:
     jxlpyInstalled = True
 except ImportError:
     jxlpyInstalled = False
-    print(f"WARNING(Nautilus-file-converter)(001): \"jxlpy\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"WARNING(Nautilus-file-converter)(101): \"jxlpy\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 try:
     import pillow_avif
     pillow_avif_pluginInstalled = True
 except ImportError:
-        print(f"WARNING(Nautilus-file-converter)(002) \"pillow-avif-plugin\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+        print(f"WARNING(Nautilus-file-converter)(102) \"pillow-avif-plugin\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 if not scriptUpdateable:
-    print(f"WARNING(Nautilus-file-converter)(003): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"ERROR(Nautilus-file-converter)(402): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 if not os.access(currentPath, os.W_OK):
-    print(f"WARNING(Nautilus-file-converter)(004): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Set default configs ---
 _configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program has permission to write.
@@ -98,7 +98,8 @@ if scriptUpdateable:
         with open(f"{currentPath}/NFC43-Config.json", "w") as jsonFile:
             jsonFile.write(configJson)
     except:
-        print("WARNING(Nautilus-file-converter): Something went wrong while loading or updating the configuration file. Consider checking the write permissions in the installation folder.")
+        print("ERROR(Nautilus-file-converter)(401): Something went wrong while loading or updating the configuration file.")
+        print(f"{traceback.format_exc()}")
 
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:
@@ -106,7 +107,7 @@ if _config["automaticUpdates"]:
             "https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
-        print(f"UPDATES(Nautilus-file-converter)(006): Current Version: {converterVersion}\n"
+        print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {converterVersion}\n"
               f"                                       Attempting to update...")
         if scriptUpdateable:
             print("Updating...")
@@ -118,7 +119,7 @@ if _config["automaticUpdates"]:
 
 # --- Check for duplicate script if enabled ---
 if _config["checkForDoubleInstallation"] and "/.local/share/" in currentPath and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
-    print(f"WARNING(Nautilus-file-converter)(005): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"WARNING(Nautilus-file-converter)(103): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Check for development status and apply settings ---
 if not development_version:
