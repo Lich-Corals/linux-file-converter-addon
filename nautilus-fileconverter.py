@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001003000" # Change the number if you want to trigger an update.
+converterVersion = "001003001" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
 development_version = False
 
