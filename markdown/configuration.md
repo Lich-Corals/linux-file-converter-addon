@@ -26,6 +26,7 @@ To turn off the <b>patch note button</b> in the context menu and the <b>version 
 <br/>To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.
 Note: This option may be a bit buggy in Nemo, I'll fix it in the future if it appears to be annoying to some users.
 <br/>To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
+<br/><br/>To turn off the <b>"Conversion finished" notifications</b>, open the config file with a text editor and set the `displayFinishNotification` variable to 'false'.
 
 ## Adaption specific options (Nemo)
 <br/>To enable the conversion of <b>application/octet-stream</b> files in the adaption version, set the `convertFromOctetStream` option to 'true'. This may allow you to convert files with unmatching mimetypes, which are in a supported- but not as such detected format. This may also allow the context menu option for other un-convertabe files, such a pdf or zip.
