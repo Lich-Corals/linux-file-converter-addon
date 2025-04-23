@@ -1,13 +1,20 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001003003" # Change the number if you want to trigger an update.
+converterVersion = "001003004" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
 development_version = False
 
 # --- Imports ---
+import sys
 import gi
-from gi.repository import GObject, Gtk, Nautilus
+_nemoArgs = sys.argv[1:len(sys.argv)]
+if len(sys.argv) > 1:
+    gi.require_version("Gtk", "3.0")
+    from gi.repository import Gtk
+else:
+    from gi.repository import Gtk
+from gi.repository import GObject, Nautilus
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
@@ -18,7 +25,6 @@ import pathlib
 import os, shlex
 import urllib.request
 import json
-import sys
 import ast
 import re
 from multiprocessing import Process
