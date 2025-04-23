@@ -1,4 +1,4 @@
-# Installation for Nemo
+# Installation for Thunar
 This section will guide you through the installation to Thunar file manager.
 __Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.__
 ## Thunar specific dependencies
