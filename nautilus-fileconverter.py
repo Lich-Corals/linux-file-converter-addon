@@ -113,7 +113,8 @@ if _config["automaticUpdates"]:
             print("Updating...")
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
             if _config["showPatchNotes"]:
-                os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md\" &")
+                #os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md\" &")
+                os.system("""notify-send --app-name="linux-file-converter-addon" "Update installed." "More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"""")
             with open(fileUpdatePath, 'w') as file:
                 file.write(onlineFile)
 
