@@ -29,7 +29,7 @@ sudo pacman -S nemo
      ```
 - Give the script permission to be executed as script:
      ```bash
-     chmod +x nautilus-fileconverter.py
+     chmod +x ~/.local/share/nemo/actions/nautilus-fileconverter.py
      ```
  You may need to enable the action in Nemo's settings. To do so, you can open Nemo and go edit>Plugins (or press Alt+P) and check the checkbox labelled with "Convert to..." in the "Actions" area.
 
