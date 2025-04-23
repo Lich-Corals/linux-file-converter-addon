@@ -7,7 +7,6 @@ development_version = False
 
 # --- Imports ---
 import gi
-gi.require_version("Gtk", "3.0")
 from gi.repository import GObject, Gtk, Nautilus
 from typing import List
 from PIL import Image, UnidentifiedImageError
