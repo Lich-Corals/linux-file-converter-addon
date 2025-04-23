@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001003004" # Change the number if you want to trigger an update.
+converterVersion = "001003005" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
 development_version = False
 
@@ -427,20 +427,21 @@ if len(sys.argv) > 1:
     print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
 
     # --- Generate nemo_action ---
-    _readFormatsNemo = ""
-    _allReadFormats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
-    for _currentFormat in _allReadFormats:
-        if _currentFormat not in _readFormatsNemo:
-            _readFormatsNemo += _currentFormat + ";"
-    _nemoActionLines = ["[Nemo Action]",
-                        "Name=Convert to...",
-                        "Comment=Convert file using nautilus-fileconverter",
-                        "Exec=<nautilus-fileconverter.py %F>",
-                        "Selection=NotNone",
-                        f"Mimetypes={_readFormatsNemo}"]
-    with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
-        for _line in _nemoActionLines:
-            file.write(_line + "\n")
+    if ".local/bin" not in currentPath:
+        _readFormatsNemo = ""
+        _allReadFormats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
+        for _currentFormat in _allReadFormats:
+            if _currentFormat not in _readFormatsNemo:
+                _readFormatsNemo += _currentFormat + ";"
+        _nemoActionLines = ["[Nemo Action]",
+                            "Name=Convert to...",
+                            "Comment=Convert file using nautilus-fileconverter",
+                            "Exec=<nautilus-fileconverter.py %F>",
+                            "Selection=NotNone",
+                            f"Mimetypes={_readFormatsNemo}"]
+        with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
+            for _line in _nemoActionLines:
+                file.write(_line + "\n")
 
     _gtkPopupWindow = nautilusFileConverterPopup()
     _gtkPopupWindow.connect("destroy", Gtk.main_quit)
