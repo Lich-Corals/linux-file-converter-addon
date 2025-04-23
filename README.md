@@ -3,7 +3,7 @@
 [![](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Flichcorals.netlify.app%2Fgnome_look.json)](https://www.gnome-look.org/s/Gnome/p/1965601)
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/88826d06-2a71-4299-91fe-55a11aeb5375">
+  <img src="https://github.com/user-attachments/assets/e378456d-ec77-40b7-a83d-a2551abddc31">
 </p>
 
 # Features
