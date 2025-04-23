@@ -75,7 +75,8 @@ _configPreset = {                                 # These are the pre-defined de
     "checkForDoubleInstallation": True,
     "timeInNames": True,
     "convertFromOctetStream": False,
-    "showDummyOption": True
+    "showDummyOption": True,
+    "displayFinishNotification": True
 }
 _config = _configPreset
 
@@ -114,7 +115,7 @@ if _config["automaticUpdates"]:
             fileUpdatePath = f"{currentPath}/{os.path.basename(__file__)}"
             if _config["showPatchNotes"]:
                 #os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md\" &")
-                os.system("""notify-send --app-name="linux-file-converter-addon" "Update installed." "More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"""")
+                os.system('notify-send --app-name="linux-file-converter-addon" "Update installed." "More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"')
             with open(fileUpdatePath, 'w') as file:
                 file.write(onlineFile)
 
@@ -263,8 +264,8 @@ else:
     _addToName = ""
 
 # --- Function used to get a mimetype's extension ---
-def __get_extension(format):
-    return f".{format.get('extension', format['name'])}".lower()
+def __get_extension(format_):
+    return f".{format_.get('extension', format_['name'])}".lower()
 
 # --- Function used to remove old timestamp ---
 def __removeTimestamp(_stem):
@@ -273,10 +274,10 @@ def __removeTimestamp(_stem):
 
 # --- Function to convert between image formats ---
 def _convert_image_process(*args, **kwargs):
-    print("EEE")
     menu = kwargs["menu"]
     format_ = kwargs["format"]
     files = kwargs["files"]
+    conversion_results = {"success": 0, "fail": 0}
     for file in files:
         if 'extension' not in format_:
             format_['extension'] = format_['name']
@@ -289,9 +290,11 @@ def _convert_image_process(*args, **kwargs):
         try:
             image = Image.open(from_file_path)
             image_open_error = False
+            conversion_results["success"] += 1
         except UnidentifiedImageError:
             print(f"(Nautilus-file-converter)(400): {from_file_path} is in an unconvertable file-format.")
             image_open_error = True
+            conversion_results["fail"] += 1
         if not image_open_error:
             if (format_['name']) == 'JPEG':
                 image = image.convert('RGB')
@@ -300,25 +303,37 @@ def _convert_image_process(*args, **kwargs):
             if 'w' in format_:
                 image = image.resize((int(format_['w']), int(format_['h'])))
             image.save(to_file_path, format=(format_['extension']))
+    if _config["displayFinishNotification"]:
+        os.system(f'notify-send --app-name="linux-file-converter-addon" "Conversion finished" "Successfull: {conversion_results["success"]}\nFailed: {conversion_results["fail"]}"')
 
-
-# --- Function to start image conversion in a new thread ---
+# --- Function to start image conversion in a new subprocess ---
 def convert_image(menu, format_, files):
-    print("Starting thread")
     subprocess = Process(target=_convert_image_process, kwargs={"menu":menu, "format": format_, "files": files})
     subprocess.start()
 
+# --- Function to start ffmpeg conversion in a new subprocess ---
+def convert_ffmpeg(menu, format_, files):
+    subprocess = Process(target=_convert_ffmpeg_process, kwargs={"menu":menu, "format": format_, "files": files})
+    subprocess.start()
+
 # --- Function to convert using FFMPEG (video and audio) ---
-def convert_ffmpeg(menu, format, files):
-    print(format)
+def _convert_ffmpeg_process(*args, **kwargs):
+    menu = kwargs["menu"]
+    format_ = kwargs["format"]
+    files = kwargs["files"]
+    global __get_extension
+    converted_files = 0
     for file in files:
         if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
             from_file_path = Path(unquote(urlparse(file.get_uri()).path))
         else:
             from_file_path = file
-        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}{__get_extension(format).lower()}")
-        os.system(f"nohup ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))} | tee &")
-
+        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}{__get_extension(format_).lower()}")
+        os.system(f"ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))}")
+        converted_files += 1
+    if _config["displayFinishNotification"]:
+        os.system(f'notify-send --app-name="linux-file-converter-addon" "Conversion finished" "converted files: {converted_files}"')
+        
 # --- Nemo adaption ---
 class nautilusFileConverterPopup(Gtk.Window):
     def __init__(self):
