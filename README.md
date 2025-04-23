@@ -7,10 +7,10 @@
 </p>
 
 # Features
-Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus** and **Nemo** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
+Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus**, **Nemo** und **Thunar** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
 The program offers many options to customise the appearance of its context menu. There are also a few extra formats which can be added by installing optional dependencies.
 The tool has a built-in auto-update function to make sure the newest version is always installed.
-Note that the Nemo port is quite new and not as well tested as the Nautilus version. If you experience any problems, please report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
+Note that the Nemo and Thunar ports are quite new and not as well tested as the Nautilus version. If you experience any problems, please report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
 <br/>
 <p align="center">
     <img height="256px" src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png">
@@ -45,6 +45,7 @@ Note that the Nemo port is quite new and not as well tested as the Nautilus vers
 Please head over to the installation page for your file manager:
 - [Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
 - [Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
+- [Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
 
 # Updating
 If the script is installed in the home folder or has permissions to write in it's dictionary, it will update automatically as long as automatic updates aren't disabled.
