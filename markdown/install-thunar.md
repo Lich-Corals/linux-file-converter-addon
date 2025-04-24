@@ -23,7 +23,7 @@ __Make sure you have installed all [general dependencies](https://github.com/Lic
      ```
 
 ## Enable the action in Thunar
-- Open Thunar and navigate Edit/Configure custom actions...
+- Open Thunar and navigate Edit>Configure custom actions...
 - Click the "+" button to add a new action
 - Set the following Basic settings...
      - Name: Convert to...
@@ -38,7 +38,7 @@ __Make sure you have installed all [general dependencies](https://github.com/Lic
      - [x] Video Files
      - [ ] Other Files
 
-You should now see the 'Convert to...' action when selecting a image, audio or video file.
+You should now see the 'Convert to...' action when selecting an image, audio or video file.
 Note: It may occur to you that you don't see the action when selecting multiple files.
 
 #### All sections

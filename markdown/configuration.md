@@ -1,8 +1,8 @@
 # Configuration
-The program can be configured using the  NFC43-Config.json file, which will be created in the installation dictionary when the script is executed for the first time.
+The program can be configured using the  ~/.config/linux-file-converter-addon/config.json file, which will be created when the script is executed for the first time, as long as the program is able to write in the ~/.config directory.
 Just modify the file, by changing the 'true' and 'false' values.
-If the program is installed in a root location, you need to change the configuration inside the script.
-<b>Don't forget to save your changes, and restart Nautilus after modifying the configuration!</b>
+This configuration should apply to all installations of linux-file-converter-addon at once.
+<b>Don't forget to save your changes, and restart Nautilus after modifying the configuration!</b> Relaunching is not necessary when using the adaption version for another program.
 ```bash
 #Quit Nautilus
 nautilus -q

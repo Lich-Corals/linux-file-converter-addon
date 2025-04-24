@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001003005" # Change the number if you want to trigger an update.
+converterVersion = "001003006" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
 development_version = False
 
@@ -29,7 +29,9 @@ import ast
 import re
 from multiprocessing import Process
 import traceback
-
+config_file = "~/.config/linux-file-converter-addon/config.json"
+config_file = str(Path(config_file).expanduser())
+config_dir =  pathlib.Path(config_file).parent
 # --- Create magic object ---
 mime = magic.Magic(mime=True)
 
@@ -67,11 +69,8 @@ except ImportError:
 if not scriptUpdateable:
     print(f"ERROR(Nautilus-file-converter)(402): No permission to self-update; script at \"{currentPath}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
-if not os.access(currentPath, os.W_OK):
-    print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{currentPath}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
-
 # --- Set default configs ---
-_configPreset = {                                 # These are the pre-defined default settings; edit NFC43-Config.json if the program has permission to write.
+_configPreset = {                                 # These are the default settings and will reset with each update; edit ~/.config/linux-file-converter-addon/config.json if the program has permission to read and write it.
     "automaticUpdates": True,
     "showPatchNotes": True,
     "showPatchNoteButton": True,
@@ -84,13 +83,32 @@ _configPreset = {                                 # These are the pre-defined de
     "showDummyOption": True,
     "displayFinishNotification": True
 }
+
+# --- Move settings from old config file to new location if the old one exists ---
+if not os.path.isdir(config_dir):
+    os.system(f'mkdir "{config_dir}"')
+if Path(f"{currentPath}/NFC43-Config.json").is_file() and os.access(f"{currentPath}/NFC43-Config.json", os.W_OK):
+    with open(f"{currentPath}/NFC43-Config.json", 'r') as jsonFile:
+        try:
+            old_config = json.load(jsonFile)
+        except json.decoder.JSONDecodeError:
+            old_config = _configPreset
+        jsonFile.close()
+    _configPreset = old_config.copy()
+    with open(f"{currentPath}/NFC43-Config.json", 'w') as old_config_file:
+        old_config["comment"] = f"THIS FILE DOES NOT CONFIGURE ANYTHING ANYMORE. USE {config_file} INSTEAD!"
+        old_config = json.dumps(old_config, indent=4)
+        old_config_file.write(old_config)
+        old_config_file.close()
+    os.system(f'mv "{currentPath}/NFC43-Config.json" "{currentPath}/NFC43-Config.json.DISABLED"')
+    os.system(f'notify-send --app-name="linux-file-converter-addon" "Config file moved." "Your new config file is here:\n{config_dir}"')
 _config = _configPreset
 
 # --- Load or store configs json ---
-if scriptUpdateable:
+if os.access(config_dir, os.W_OK):
     try:
-        if Path(f"{currentPath}/NFC43-Config.json").is_file():
-            with open(f"{currentPath}/NFC43-Config.json", 'r') as jsonFile:
+        if Path(config_file).is_file():
+            with open(config_file, 'r') as jsonFile:
                 try:
                     configJson = json.load(jsonFile)
                 except json.decoder.JSONDecodeError:
@@ -102,11 +120,13 @@ if scriptUpdateable:
             configJson = json.dumps(_config, indent=4)
         else:
             configJson = json.dumps(_configPreset, indent=4)
-        with open(f"{currentPath}/NFC43-Config.json", "w") as jsonFile:
+        with open(config_file, "w") as jsonFile:
             jsonFile.write(configJson)
     except:
         print("ERROR(Nautilus-file-converter)(401): Something went wrong while loading or updating the configuration file.")
         print(f"{traceback.format_exc()}")
+else:
+    print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{config_dir}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:

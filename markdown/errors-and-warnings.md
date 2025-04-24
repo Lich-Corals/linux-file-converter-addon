@@ -57,7 +57,7 @@ An error occurred during the update process of the config file.
 <br/><br/><b>Possible Effects:</b><br/>
 The config file may be missing some settings added by an update; some settings may be out of sync or using the default value.
 <br/><br/><b>How to solve?</b><br/>
-Consider checking the write-permissions in the installation folder, specifically the NFC43-Config.json file.
+Consider checking the write-permissions for the `~/.config/linux-file-converter-addon/config.json` file.
 If you can't solve the issue on your own, you can open an issue on Github.
 
 ### (402): No permission to self-update
@@ -74,16 +74,15 @@ To remove the release popup, you may disable the corresponding setting. To do th
 
 ### (403): No permission to write configuration file
 <b>Causes:</b><br/>
-The program has no permission to write in the dictionary where it is installed.
-<br/>This warning usually occurs when the script is located at "/usr/share/nautilus-python/extensions/".
+The program has no permission to write in the `~/.config/` dictionary, or it doesn't exist.
 <br/><br/><b>Possible Effects:</b><br/>
 The self-update function may not be available.
 <br/>The script needs to be configured by editing the script itself.
-<br/>If self-updating is enabled, the script's configuration will reset when a update is performed.
+<br/>If self-updating is enabled, the script's configuration will reset when an update is performed.
 <br/><br/><b>How to solve?</b><br/>
-To fix this, the script needs the permissions to write inside the folder, where it is located. This can be done by changing the folder permissions using [chmod](https://www.man7.org/linux/man-pages/man1/chmod.1.html) or by running the script as a privileged user.
-<br/>To use the configuration file, the user, who is executing the script (by starting Nautilus) needs permissions create and edit files inside the installation dictionary.
-<br/><br/>To prevent the settings from being reset, you can add a config file to the dictionary. Note that the file will not be update if new configurations are added.
+To fix this, the script needs the permissions to write inside the folder, where it is located. This can be done by changing the folder permissions using [chmod](https://www.man7.org/linux/man-pages/man1/chmod.1.html) or the change-permission dialogue of your file manager.
+<br/>To use the configuration file, the user, who is executing the script (by starting Nautilus) needs permissions create and edit files inside the `~/.config/` dictionary.
+<br/><br/>To prevent the settings from being reset, you can add the `~/.config/linux-file-converter-addon/config.json` file manually and make sure you have permissions to write to it.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
