@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001003006" # Change the number if you want to trigger an update.
+converterVersion = "001003007" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
 development_version = False
 
@@ -284,11 +284,6 @@ if jxlpyInstalled:
 if pillow_avif_pluginInstalled:
     WRITE_FORMATS_IMAGE.extend(pillow_avif_pluginWriteFormats)
 
-if _config["timeInNames"] == True:
-    _addToName = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
-else:
-    _addToName = ""
-
 # --- Function used to get a mimetype's extension ---
 def __get_extension(format_):
     return f".{format_.get('extension', format_['name'])}".lower()
@@ -297,6 +292,16 @@ def __get_extension(format_):
 def __removeTimestamp(_stem):
     clearStem = re.sub(r'\d{4}(-\d{2}){5}', "", _stem)
     return clearStem
+
+def name_addition():
+    if _config["timeInNames"]:
+        return datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
+    else:
+        return ""
+
+def finish_conversion(conversion_results):
+    if _config["displayFinishNotification"]:
+        os.system(f'notify-send --app-name="linux-file-converter-addon" "Conversion finished" "Successfull: {conversion_results["success"]}\nFailed: {conversion_results["fail"]}"')
 
 # --- Function to convert between image formats ---
 def _convert_image_process(*args, **kwargs):
@@ -312,7 +317,7 @@ def _convert_image_process(*args, **kwargs):
         else:
             from_file_path = file
         print(__removeTimestamp(from_file_path.stem) + from_file_path.stem)
-        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}.{format_['extension'].lower()}")
+        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{name_addition()}.{format_['extension'].lower()}")
         try:
             image = Image.open(from_file_path)
             image_open_error = False
@@ -329,8 +334,7 @@ def _convert_image_process(*args, **kwargs):
             if 'w' in format_:
                 image = image.resize((int(format_['w']), int(format_['h'])))
             image.save(to_file_path, format=(format_['extension']))
-    if _config["displayFinishNotification"]:
-        os.system(f'notify-send --app-name="linux-file-converter-addon" "Conversion finished" "Successfull: {conversion_results["success"]}\nFailed: {conversion_results["fail"]}"')
+    finish_conversion(conversion_results)
 
 # --- Function to start image conversion in a new subprocess ---
 def convert_image(menu, format_, files):
@@ -348,17 +352,19 @@ def _convert_ffmpeg_process(*args, **kwargs):
     format_ = kwargs["format"]
     files = kwargs["files"]
     global __get_extension
-    converted_files = 0
+    conversion_results = {"success": 0, "fail": 0}
     for file in files:
         if str(type(file)) == "<class '__gi__.NautilusVFSFile'>":
             from_file_path = Path(unquote(urlparse(file.get_uri()).path))
         else:
             from_file_path = file
-        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{_addToName}{__get_extension(format_).lower()}")
-        os.system(f"ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))}")
-        converted_files += 1
-    if _config["displayFinishNotification"]:
-        os.system(f'notify-send --app-name="linux-file-converter-addon" "Conversion finished" "converted files: {converted_files}"')
+        to_file_path = from_file_path.with_name(f"{__removeTimestamp(from_file_path.stem)}{name_addition()}{__get_extension(format_).lower()}")
+        command_result = os.system(f"ffmpeg -i {shlex.quote(str(from_file_path))} -strict experimental -c:v libvpx-vp9 -crf 18 -preset slower -b:v 4000k {shlex.quote(str(to_file_path))}")
+        if command_result == 0:
+            conversion_results["success"] += 1
+        else:
+            conversion_results["fail"] += 1
+    finish_conversion(conversion_results)
         
 # --- Nemo adaption ---
 class nautilusFileConverterPopup(Gtk.Window):
