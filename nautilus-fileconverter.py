@@ -564,5 +564,5 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
 
     def openConfigHint(self, menu):
-        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md" &")
+        os.system(f"nohup xdg-open 'https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md' &")
         os.system(f"nohup xdg-open {config_file} &")
