@@ -16,8 +16,8 @@ config_file = str(Path(config_file).expanduser())
 config_dir = Path(config_file).parent
 _nemoArgs = sys.argv[1:len(sys.argv)]
 
-# --- Create application data location and download dependencies ---
 if len(_nemoArgs) >= 1:
+    # --- Create application data location and download dependencies ---
     if _nemoArgs[0] == "--create-venv":
         def status_print(string):
             print(f"VENV-CREATION: {string}")
@@ -64,6 +64,34 @@ if len(_nemoArgs) >= 1:
         else:
             status_print(f"ERROR: No write acces in {config_dir} - Aborting.")
             exit()
+    # --- Install self for nautilus ---
+    if _nemoArgs[0] == "--install-for-nautilus":
+        def status_print(string):
+            print(f"SELF-INSTALLATION: {string}")
+        status_print("Downloading data...")
+        from urllib import request
+        import traceback
+        downloaded_self = ""
+        try:
+            with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
+                downloaded_self = f.read().decode().strip()
+        except:
+            status_print(f"{traceback.format_exc()}\nERROR: Can't download the file. Aborting.")
+            exit()
+        try:
+            installation_path = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
+            status_print("Creating directory...")
+            os.system(f'mkdir "{os.path.expanduser("~/.local/share/nautilus-python/extensions/")}"') # This code is unsafe...
+            status_print("Creating file...")
+            os.system(f'touch "{installation_path}"')
+            status_print("Filling file...")
+            with open(installation_path, 'w') as f:
+                f.write(downloaded_self)
+                f.close()
+        except:
+            status_print(f"{traceback.format_exc()}\nERROR: Something went wrong while creating the new file or path. Aborting.")
+        status_print("Installation successfull. Consider taking a look at the configuration of the extension: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md")
+        exit()
 
 # --- Add modules installed in venv to path ---
 if os.path.isdir(f"{config_dir}/venv"):
@@ -192,8 +220,7 @@ else:
 
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:
-    with urllib.request.urlopen(
-            "https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
+    with urllib.request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
     if converterVersion not in onlineFile:
         print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {converterVersion}\n"
