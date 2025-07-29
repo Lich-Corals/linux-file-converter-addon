@@ -18,6 +18,16 @@ sudo pacman -Sy python-nautilus
 ```
 
 ## Installation
+You can either install the extension manually or with a one-liner.
+
+### One-liner installation
+Just run this command, and you are done:
+```bash
+python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-nautilus
+```
+Nautilus will quit at the end of the installation. This is intended and necessary for the extension to get activated.
+
+### Manual installation
 - Download the nautilus-fileconverter.py file from the [release page](https://github.com/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
         ```bash
@@ -35,7 +45,7 @@ sudo pacman -Sy python-nautilus
         ```bash
         sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
         ```
-        <b>NOTE: Automatic updates are limited for root installations.</b> I recomend the other installation option. More information in the errors and warnings section [here](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#003-no-permission-to-self-update).
+        <b>NOTE: Automatic updates are limited for root installations.</b> I recommend the other installation option. More information in the errors and warnings section [here](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#003-no-permission-to-self-update).
 - Now you only have to restart Nautilus using the following commands:
     ```bash
    #Quit Nautilus

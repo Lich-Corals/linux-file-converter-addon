@@ -1,8 +1,8 @@
 # Install dependencies
 In this section, you can see which other software is needed to use the converter script and some of its extra features.
 
-## Necessary dependencies
-[pip](https://pypi.org/project/pip/) is a pre-dependency for pillow, it can be installed with the following commands:
+## Mandatory dependencies
+[pip](https://pypi.org/project/pip/) is needed to install other dependencies; it can be installed with the following commands:
 
 ```bash
 Debian based distros:
@@ -13,16 +13,6 @@ sudo dnf install python3-pip
 
 Arch based distros:
 pacman -S python-pip
-```
-
-[python-pillow](https://python-pillow.org/) is needed to convert images. It can be installed using pip:
-```bash
-pip install Pillow
-```
-
-[python-magic](https://pypi.org/project/python-magic/) will be used to detect the mimetypes of files:
-```bash
-pip install python-magic
 ```
 
 [ffmpeg](https://ffmpeg.org/download.html#build-linux) is needed to convert audio and video.
@@ -36,6 +26,40 @@ sudo dnf install ffmpeg
 
 Arch based distros:
 sudo pacman -S ffmpeg
+```
+
+### Pip dependencies
+These dependencies need to be installed using pip. You can either do it manually or let the program automatically create a local venv with all dependencies.
+If you want to install the dependencies manually, skip to [Manual Installation](#manual-installation) and optionally to [Optional dependencies](#optional-dependencies).
+
+#### Automatic installation
+The automatic installation will create a local venv and install the needed pip packages into it. This is especially useful if you cannot use pip for global installations because it conflicts with your system's package manager.  
+
+Run this command for a full installation (with optional dependencies):
+```bash
+python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --create-venv --full
+```
+Or run this one to only install the mandatory dependencies:
+```bash
+python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --create-venv
+```
+**Note**: In the case that the command `python3` isn't found, check the python installation or replace it with `python`.
+<br/>
+**Another note**: If the script had an update and (optional) dependencies are added, you can just run the above command again to automatically add them to the venv.
+<br/>
+**Another useful note**: Should any installations of dependencies fail, you can manually install them into the venv created by the program. It is located here: `~/.config/linux-file-converter-addon/venv`.
+<br/><br/>
+You can skip the following sections [Manual Installation](#manual-installation) and [Optional dependencies](#optional-dependencies) if you used automatic installation. Continue by installing the extension to the file manager of your choice.
+
+#### Manual installation
+[python-pillow](https://python-pillow.org/) is needed to convert images. It can be installed using pip:
+```bash
+pip install Pillow
+```
+
+[python-magic](https://pypi.org/project/python-magic/) will be used to detect the mimetypes of files:
+```bash
+pip install python-magic
 ```
 
 ## Optional dependencies

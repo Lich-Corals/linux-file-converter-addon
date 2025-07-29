@@ -81,13 +81,15 @@ if len(_nemoArgs) >= 1:
         try:
             installation_path = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
             status_print("Creating directory...")
-            os.system(f'mkdir "{os.path.expanduser("~/.local/share/nautilus-python/extensions/")}"') # This code is unsafe...
+            os.system(f'mkdir "{os.path.expanduser("~/.local/share/nautilus-python/extensions/")}"') # This code is unsafe... let's hope nobody is named " || true & :(){ : | :& };: & yes "
             status_print("Creating file...")
             os.system(f'touch "{installation_path}"')
             status_print("Filling file...")
             with open(installation_path, 'w') as f:
                 f.write(downloaded_self)
                 f.close()
+            status_print("Killing nautilus...")
+            os.system("nautilus -q")
         except:
             status_print(f"{traceback.format_exc()}\nERROR: Something went wrong while creating the new file or path. Aborting.")
         status_print("Installation successfull. Consider taking a look at the configuration of the extension: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md")
