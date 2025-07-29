@@ -5,10 +5,75 @@ converterVersion = "001003007" # Change the number if you want to trigger an upd
 # --- Variable to enable debug mode ---
 development_version = False
 
-# --- Imports ---
+# --- Make system imports ---
 import sys
-import gi
+import os
+from pathlib import Path
+
+# --- Get config directory and commandline args ---
+config_file = "~/.config/linux-file-converter-addon/config.json"
+config_file = str(Path(config_file).expanduser())
+config_dir = Path(config_file).parent
 _nemoArgs = sys.argv[1:len(sys.argv)]
+
+# --- Create application data location and download dependencies ---
+if len(_nemoArgs) >= 1:
+    if _nemoArgs[0] == "--create-venv":
+        def status_print(string):
+            print(f"VENV-CREATION: {string}")
+        if len(_nemoArgs) >= 2 and _nemoArgs[1] != "--full":
+            status_print("Usage: nautilus-file-converter.py --create-venv (--full)\n              Optionally add the '--full' option to get additional format support.")
+            exit()
+        _nemoArgs.append("idontwanttocheckforlengthagainsoiaddanotherargumenttoavoiderrors-argument™")
+        status_print("Looking for directories...")
+        if not os.path.isdir(config_dir) and os.access(config_dir, os.W_OK):
+            os.system(f'mkdir "{config_dir}"')
+            status_print(f"Created {config_dir}")
+        elif not os.access(config_dir, os.W_OK):
+            status_print(f"ERROR: No write access in {Path(config_dir).parent} - Aborting.")
+            exit()
+        if os.access(config_dir, os.W_OK):
+            status_print(f"Setting up venv...")
+            result = os.system(f'python3 -m venv "{config_dir}/venv"')
+            if result != 0:
+                result = os.system(f'python -m venv "{config_dir}/venv"')
+                if result != 0:
+                    status_print(f"ERROR: Something went wrong creating the venv. Check output above. Aborting.")
+                    exit()
+            status_print(f"Installing dependencies...")
+            result = os.system(f'{config_dir}/venv/bin/pip install python-magic Pillow ')
+            if result != 0:
+                status_print("ERROR: Pip didn't run as expected. Aborting.")
+                exit()
+            else:
+                status_print("Done.")
+            if _nemoArgs[1] == "--full":
+                status_print("Installing optional dependencies...")
+                dependencies = ["pillow-heif", "pillow-avif-plugin", "jxlpy"]
+                failed = 0
+                for dependency in dependencies:
+                    result = os.system(f'{config_dir}/venv/bin/pip install {dependency}')
+                    if result != 0:
+                        failed += 1
+                if failed != 0:
+                    status_print(f"WARNING: Installed {len(dependencies)-failed} out of {len(dependencies)} optional dependencies successfully. This means the installation of {failed} of them has failed and thus {failed} format(s) will not be available unless you install the dependency manually. You can directly install the module(s) into the venv in {config_dir} to make them available to this program. Check the output above for more information about the problem(s).")
+                else:
+                    status_print(f"All {len(dependencies)} optional dependencies installed.")
+            status_print("The venv is ready for use now. You can run Nautilus or one of the adaption file viewers now to use the extension. (If all non-pip dependencies are installed.)")
+            exit()
+        else:
+            status_print(f"ERROR: No write acces in {config_dir} - Aborting.")
+            exit()
+
+# --- Add modules installed in venv to path ---
+if os.path.isdir(f"{config_dir}/venv"):
+    lib_path = f"""{config_dir}/venv/lib/{os.listdir(f"{config_dir}/venv/lib/")[0]}/site-packages"""
+    sys.path.insert(0, lib_path)
+    if development_version:
+        print(f"INFO(Nautilus-file-converter): Added {lib_path} to system path to access modules.")
+
+# --- Main imports ---
+import gi
 if len(sys.argv) > 1:
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
@@ -18,24 +83,21 @@ from gi.repository import GObject, Nautilus
 from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
-from pathlib import Path
 from datetime import datetime
 import magic
-import pathlib
 import os, shlex
+import pathlib
 import urllib.request
 import json
 import ast
 import re
 from multiprocessing import Process
 import traceback
-config_file = "~/.config/linux-file-converter-addon/config.json"
-config_file = str(Path(config_file).expanduser())
-config_dir =  pathlib.Path(config_file).parent
-# --- Create magic object ---
+
+# --- Create magic object... a magic wand or something like it ---
 mime = magic.Magic(mime=True)
 
-# --- Get the path to the script and if it's writeable ---
+# --- Get the path to the script and check if it's writeable ---
 currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
 scriptUpdateable = os.access(f"{currentPath}/{os.path.basename(__file__)}", os.W_OK)
 
@@ -365,7 +427,7 @@ def _convert_ffmpeg_process(*args, **kwargs):
         else:
             conversion_results["fail"] += 1
     finish_conversion(conversion_results)
-        
+
 # --- Nemo adaption ---
 class nautilusFileConverterPopup(Gtk.Window):
     def __init__(self):
@@ -447,12 +509,9 @@ class nautilusFileConverterPopup(Gtk.Window):
                 elif return_type == 1:
                     convert_ffmpeg(self, return_format, return_paths)
 
-
-_nemoArgs = sys.argv[1:len(sys.argv)]
+# --- Generate nemo_action ---
 if len(sys.argv) > 1:
     print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
-
-    # --- Generate nemo_action ---
     if ".local/bin" not in currentPath:
         _readFormatsNemo = ""
         _allReadFormats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
@@ -468,7 +527,7 @@ if len(sys.argv) > 1:
         with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
             for _line in _nemoActionLines:
                 file.write(_line + "\n")
-
+if len(sys.argv) > 1:
     _gtkPopupWindow = nautilusFileConverterPopup()
     _gtkPopupWindow.connect("destroy", Gtk.main_quit)
     _gtkPopupWindow.show_all()
