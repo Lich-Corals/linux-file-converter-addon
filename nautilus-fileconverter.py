@@ -527,6 +527,7 @@ class nautilusFileConverterPopup(Gtk.Window):
         super().__init__(title=f"Convert file")
         self.set_border_width(15)
         self.set_default_size(200, 20)
+        self.set_resizable(False)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
