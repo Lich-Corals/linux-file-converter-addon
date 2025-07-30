@@ -715,7 +715,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         if _config["showConfigHint"]:
             sub_menuitem_configHint = Nautilus.MenuItem(
                 name="configHint",
-                label=f"Configure NFC43",
+                label=f"Configure LFCA",
             )
             callback = self.openConfigHint
             sub_menuitem_configHint.connect('activate', callback,)
