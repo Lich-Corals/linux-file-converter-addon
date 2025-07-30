@@ -32,14 +32,19 @@ python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-
 ```bash
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-nemo
 ```
+Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md#enabling-the-action-in-nemo)
+
 **For Thunar:**
 ```bash
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-thunar
 ```
+Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md#enable-the-action-in-thunar)
+
 **For all of the above:**
 ```bash
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-all
 ```
+You now need to [finalize the installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md#enable-the-action-in-thunar) and [for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md#enabling-the-action-in-nemo) to be able to use the extension there.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
