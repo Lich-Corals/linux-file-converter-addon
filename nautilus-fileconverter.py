@@ -38,7 +38,7 @@ if len(_nemoArgs) >= 1:
     def copyright_notice():
         print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--license' for details.")
     if _nemoArgs[0] == "--license":
-        os.system("xdg-open https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE & disown")
+        os.system("xdg-open https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE & disown")
         exit()
     if _nemoArgs[0] == "--create-venv":
         def status_print(string):
@@ -521,7 +521,7 @@ def _convert_ffmpeg_process(*args, **kwargs):
             conversion_results["fail"] += 1
     finish_conversion(conversion_results)
 
-# --- Nemo adaption ---
+# --- Adaption class ---
 class nautilusFileConverterPopup(Gtk.Window):
     def __init__(self):
         super().__init__(title=f"Convert file")
@@ -539,6 +539,10 @@ class nautilusFileConverterPopup(Gtk.Window):
         configHint = Gtk.Label()
         configHint.set_justify(Gtk.Justification.CENTER)
         configHint.set_markup(f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
+
+        copyright_notice = Gtk.Label()
+        copyright_notice.set_justify(Gtk.Justification.CENTER)
+        copyright_notice.set_markup(f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public License</a>.</span>""")
 
         extensions = Gtk.ListStore(str, str, int)
         _allImages = True
@@ -584,6 +588,7 @@ class nautilusFileConverterPopup(Gtk.Window):
             vbox.pack_start(versionInfo, False, False, 0)
         if _config["showConfigHint"]:
             vbox.pack_start(configHint, True, True, 0)
+        vbox.pack_start(copyright_notice, True, True, 0)
 
     def _nemoConvert(self, combo):
         tree_iter = combo.get_active_iter()
