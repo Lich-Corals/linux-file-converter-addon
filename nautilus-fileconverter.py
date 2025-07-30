@@ -20,7 +20,7 @@
 # --- Version number ---
 converterVersion = "001003009" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
-development_version = False
+development_version = True
 
 # --- Make system imports ---
 import sys
@@ -529,6 +529,8 @@ class nautilusFileConverterPopup(Gtk.Window):
         self.set_default_size(200, 20)
         self.set_resizable(False)
 
+        self.connect("key-press-event",self.on_key_press_event)
+
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
         label = Gtk.Label(label="Select a format:")
@@ -608,8 +610,15 @@ class nautilusFileConverterPopup(Gtk.Window):
                 elif return_type == 1:
                     convert_ffmpeg(self, return_format, return_paths)
 
+    def on_key_press_event(self, widget, event):
+        print(f"Key pressed: {event.keyval}")
+        if event.keyval == 65307:
+            exit()
+
 # --- Generate nemo_action ---
 if len(sys.argv) > 1:
+    from gi.repository import Gdk
+
     print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
     if ".local/bin" not in currentPath:
         _readFormatsNemo = ""
