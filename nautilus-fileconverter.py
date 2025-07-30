@@ -1,5 +1,6 @@
 #! /usr/bin/python3 -OOt
 
+
 # Linux-File-Converter-Addon - Converting files from context menu
 # Copyright (C) 2025  Linus Tibert
 #
@@ -19,77 +20,83 @@
 
 # --- Version number ---
 converter_version = "001003009" # Change the number if you want to trigger an update.
-# --- Variable to enable debug mode ---
-debug_mode = False
 
-# --- Make system imports ---
+# --- Variable to enable debug mode ---
+DEBUG_MODE = False
+
+#######
+####### AUTO-INSTALLATION SECTION
+####### Used for one-liner installation. Only uses minimal imports and logic. MAY NOT HAVE EXTERNAL DEPENDENCIES BESIDES python3 AND pip
+
+# --- Make essential imports ---
 import sys
 import os
 from pathlib import Path
 from traceback import format_exc
 
 # --- Get config directory and commandline args ---
-configuration_file = "~/.config/linux-file-converter-addon/config.json"
-configuration_file = str(Path(configuration_file).expanduser())
-config_directory = Path(configuration_file).parent
-sys_arguments = sys.argv[1:len(sys.argv)]
+CONFIGURATION_FILE = "~/.config/linux-file-converter-addon/config.json"
+CONFIGURATION_FILE = str(Path(CONFIGURATION_FILE).expanduser())
+CONFIGURATION_DIRECTORY = Path(CONFIGURATION_FILE).parent
+SYSTEM_ARGUMENTS = sys.argv[1:len(sys.argv)]
 
-if len(sys_arguments) >= 1:
+if len(SYSTEM_ARGUMENTS) >= 1:
     # --- Create application data location and download dependencies ---
     def copyright_notice():
         print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--license' for details.")
-    if sys_arguments[0] == "--license":
+    if SYSTEM_ARGUMENTS[0] == "--license":
         os.system("xdg-open https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE & disown")
         exit()
-    if sys_arguments[0] == "--create-venv":
+    if SYSTEM_ARGUMENTS[0] == "--create-venv":
         def status_print(string):
             print(f"VENV-CREATION: {string}")
         copyright_notice()
-        if len(sys_arguments) >= 2 and sys_arguments[1] != "--full":
+        if len(SYSTEM_ARGUMENTS) >= 2 and SYSTEM_ARGUMENTS[1] != "--full":
             status_print("Usage: nautilus-file-converter.py --create-venv (--full)\n              Optionally add the '--full' option to get additional format support.")
             exit()
-        sys_arguments.append("idontwanttocheckforlengthagainsoiaddanotherargumenttoavoiderrors-argument™")
+        SYSTEM_ARGUMENTS.append("idontwanttocheckforlengthagainsoiaddanotherargumenttoavoiderrors-argument™")
         status_print("Looking for directories...")
-        if not os.path.isdir(config_directory) and os.access(config_directory, os.W_OK):
-            os.system(f'mkdir "{config_directory}"')
-            status_print(f"Created {config_directory}")
-        elif not os.access(config_directory, os.W_OK):
-            status_print(f"ERROR: No write access in {Path(config_directory).parent} - Aborting.")
+        if not os.path.isdir(CONFIGURATION_DIRECTORY) and os.access(CONFIGURATION_DIRECTORY, os.W_OK):
+            os.system(f'mkdir "{CONFIGURATION_DIRECTORY}"')
+            status_print(f"Created {CONFIGURATION_DIRECTORY}")
+        elif not os.access(CONFIGURATION_DIRECTORY, os.W_OK):
+            status_print(f"ERROR: No write access in {Path(CONFIGURATION_DIRECTORY).parent} - Aborting.")
             exit()
-        if os.access(config_directory, os.W_OK):
+        if os.access(CONFIGURATION_DIRECTORY, os.W_OK):
             status_print(f"Setting up venv...")
-            result = os.system(f'python3 -m venv "{config_directory}/venv"')
+            result = os.system(f'python3 -m venv "{CONFIGURATION_DIRECTORY}/venv"')
             if result != 0:
-                result = os.system(f'python -m venv "{config_directory}/venv"')
+                result = os.system(f'python -m venv "{CONFIGURATION_DIRECTORY}/venv"')
                 if result != 0:
                     status_print(f"ERROR: Something went wrong creating the venv. Check output above. Aborting.")
                     exit()
             status_print(f"Installing dependencies...")
-            result = os.system(f'{config_directory}/venv/bin/pip install python-magic Pillow ')
+            result = os.system(f'{CONFIGURATION_DIRECTORY}/venv/bin/pip install python-magic Pillow ')
             if result != 0:
                 status_print("ERROR: Pip didn't run as expected. Aborting.")
                 exit()
             else:
                 status_print("Done.")
-            if sys_arguments[1] == "--full":
+            if SYSTEM_ARGUMENTS[1] == "--full":
                 status_print("Installing optional dependencies...")
                 dependencies = ["pillow-heif", "pillow-avif-plugin", "jxlpy"]
                 failed = 0
                 for dependency in dependencies:
-                    result = os.system(f'{config_directory}/venv/bin/pip install {dependency}')
+                    result = os.system(f'{CONFIGURATION_DIRECTORY}/venv/bin/pip install {dependency}')
                     if result != 0:
                         failed += 1
                 if failed != 0:
-                    status_print(f"WARNING: Installed {len(dependencies)-failed} out of {len(dependencies)} optional dependencies successfully. This means the installation of {failed} of them has failed and thus {failed} format(s) will not be available unless you install the dependency manually. You can directly install the module(s) into the venv in {config_directory} to make them available to this program. Check the output above for more information about the problem(s).")
+                    status_print(f"WARNING: Installed {len(dependencies)-failed} out of {len(dependencies)} optional dependencies successfully. This means the installation of {failed} of them has failed and thus {failed} format(s) will not be available unless you install the dependency manually. You can directly install the module(s) into the venv in {CONFIGURATION_DIRECTORY} to make them available to this program. Check the output above for more information about the problem(s).")
                 else:
                     status_print(f"All {len(dependencies)} optional dependencies installed.")
             status_print("The venv is ready for use now. You can run Nautilus or one of the adaption file viewers now to use the extension. (If all non-pip dependencies are installed.)")
             exit()
         else:
-            status_print(f"ERROR: No write acces in {config_directory} - Aborting.")
+            status_print(f"ERROR: No write acces in {CONFIGURATION_DIRECTORY} - Aborting.")
             exit()
-    # --- Install self for ? ---
-    if "--install-for-" in sys_arguments[0]:
+
+    # --- Install self for selected file manager ---
+    if "--install-for-" in SYSTEM_ARGUMENTS[0]:
         def status_print(string):
             print(f"SELF-INSTALLATION: {string}")
         copyright_notice()
@@ -97,7 +104,7 @@ if len(sys_arguments) >= 1:
         path_nautilus = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
         path_nemo = os.path.expanduser("~/.local/share/nemo/actions/nautilus-fileconverter.py")
         path_thunar = os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")
-        match sys_arguments[0]:
+        match SYSTEM_ARGUMENTS[0]:
             case "--install-for-nautilus":
                 installation_targets = {"nautilus": path_nautilus}
             case "--install-for-nemo":
@@ -107,7 +114,7 @@ if len(sys_arguments) >= 1:
             case "--install-for-all":
                 installation_targets = {"nautilus": path_nautilus, "nemo": path_nemo, "thunar": path_thunar}
             case _:
-                status_print(f"""{sys_arguments[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
+                status_print(f"""{SYSTEM_ARGUMENTS[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
                 exit()
         status_print("Downloading data...")
         from urllib import request
@@ -159,15 +166,33 @@ if len(sys_arguments) >= 1:
         status_print("Installation successfull. Consider taking a look at the configuration of the extension: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md")
         exit()
 
-# --- Add modules installed in venv to path ---
-if os.path.isdir(f"{config_directory}/venv"):
-    lib_path = f"""{config_directory}/venv/lib/{os.listdir(f"{config_directory}/venv/lib/")[0]}/site-packages"""
+#######
+####### SELF-PREPARATION SECTION
+####### Used to prepare the script for running. Mostly imports and definition of GLOBAL_CONSTANTS
+
+#######
+####### SELF-PREPARATION SECTION  --  SYSTEM
+####### Imports, determining system conditions
+
+# --- Add modules installed in local venv to path ---
+if os.path.isdir(f"{CONFIGURATION_DIRECTORY}/venv"):
+    lib_path = f"""{CONFIGURATION_DIRECTORY}/venv/lib/{os.listdir(f"{CONFIGURATION_DIRECTORY}/venv/lib/")[0]}/site-packages"""
     sys.path.insert(0, lib_path)
-    if debug_mode:
+    if DEBUG_MODE:
         print(f"INFO(Nautilus-file-converter): Added {lib_path} to system path to access modules.")
 
 # --- Main imports ---
 import gi
+from PIL import Image, UnidentifiedImageError
+from urllib.parse import urlparse, unquote
+from urllib import request
+from datetime import datetime
+import os, shlex
+import json
+import re
+from multiprocessing import Process
+# --- Imports vary if the program is started with arguments (for the adaption version) ---
+#     Also, Gtk3 is imported instead of Gtk4 if there are arguments
 if len(sys.argv) > 1:
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk, Gdk
@@ -180,50 +205,49 @@ else:
     gi.require_version("Gtk", "4.0")
     from gi.repository import Gtk, GObject, Nautilus
     from typing import List
-from PIL import Image, UnidentifiedImageError
-from urllib.parse import urlparse, unquote
-from urllib import request
-from datetime import datetime
-import os, shlex
-import json
-import re
-from multiprocessing import Process
 
 # --- Get the path to the script and check if it's writeable ---
-application_path = str(Path(__file__).parent.resolve())  # used for config file and self-update!
-permission_to_update = os.access(f"{application_path}/{os.path.basename(__file__)}", os.W_OK)
+#     These need to be located after the auto-installation section, because __file__ can't be used when running python3 -c $(curl ...)
+APPLICATION_PATH = str(Path(__file__).parent.resolve())
+PERMISSION_TO_UPDATE = os.access(f"{APPLICATION_PATH}/{os.path.basename(__file__)}", os.W_OK)
 
-# --- Check if dependencies are installed and imported ---
-pillow_heif_installed = False
-jxlpy_installed = False
-pillow_avif_plugin_installed = False
+# --- Check if dependencies are installed and importable ---
+HEIF_AVAILABLE = False
+JXL_AVAILABLE = False
+AVIF_AVAILABLE = False
 
 try:
     from pillow_heif import register_heif_opener
     register_heif_opener()
-    pillow_heif_installed = True
+    HEIF_AVAILABLE = True
 except ImportError:
-    pillow_heif_installed = False
+    HEIF_AVAILABLE = False
     print(f"WARNING(Nautilus-file-converter)(100): \"pillow_heif\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information." )
 
 try:
     from jxlpy import JXLImagePlugin
-    jxlpy_installed = True
+    JXL_AVAILABLE = True
 except ImportError:
-    jxlpy_installed = False
+    JXL_AVAILABLE = False
     print(f"WARNING(Nautilus-file-converter)(101): \"jxlpy\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 try:
     import pillow_avif
-    pillow_avif_plugin_installed = True
+    AVIF_AVAILABLE = True
 except ImportError:
         print(f"WARNING(Nautilus-file-converter)(102) \"pillow-avif-plugin\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
-if not permission_to_update:
-    print(f"ERROR(Nautilus-file-converter)(402): No permission to self-update; script at \"{application_path}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+# --- Warn the user if there is no permission to self-update ---
+if not PERMISSION_TO_UPDATE:
+    print(f"ERROR(Nautilus-file-converter)(402): No permission to self-update; script at \"{APPLICATION_PATH}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+
+#######
+####### SELF-PREPARATION SECTION  --  CONFIGURATION
+####### Getting user configuration
 
 # --- Set default configs ---
-config_preset = {                                 # These are the default settings and will reset with each update; edit ~/.config/linux-file-converter-addon/config.json if the program has permission to read and write it.
+#     These are the default settings and will reset with each update; edit ~/.config/linux-file-converter-addon/config.json if the program has permission to read and write it.
+CONFIG_PRESET = {
     "automaticUpdates": True,
     "showPatchNotes": True,
     "showPatchNoteButton": True,
@@ -238,48 +262,52 @@ config_preset = {                                 # These are the default settin
 }
 
 # --- Move settings from old config file to new location if the old one exists ---
-if not os.path.isdir(config_directory):
-    os.system(f'mkdir "{config_directory}"')
-if Path(f"{application_path}/NFC43-Config.json").is_file() and os.access(f"{application_path}/NFC43-Config.json", os.W_OK):
-    with open(f"{application_path}/NFC43-Config.json", 'r') as file:
+if not os.path.isdir(CONFIGURATION_DIRECTORY):
+    os.system(f'mkdir "{CONFIGURATION_DIRECTORY}"')
+if Path(f"{APPLICATION_PATH}/NFC43-Config.json").is_file() and os.access(f"{APPLICATION_PATH}/NFC43-Config.json", os.W_OK):
+    with open(f"{APPLICATION_PATH}/NFC43-Config.json", 'r') as file:
         try:
             old_config = json.load(file)
         except json.decoder.JSONDecodeError:
-            old_config = config_preset
+            old_config = CONFIG_PRESET
         file.close()
-    config_preset = old_config.copy()
-    with open(f"{application_path}/NFC43-Config.json", 'w') as old_config_file:
-        old_config["comment"] = f"THIS FILE DOES NOT CONFIGURE ANYTHING ANYMORE. USE {configuration_file} INSTEAD!"
+    CONFIG_PRESET = old_config.copy()
+    with open(f"{APPLICATION_PATH}/NFC43-Config.json", 'w') as old_config_file:
+        old_config["comment"] = f"THIS FILE DOES NOT CONFIGURE ANYTHING ANYMORE. USE {CONFIGURATION_FILE} INSTEAD!"
         old_config = json.dumps(old_config, indent=4)
         old_config_file.write(old_config)
         old_config_file.close()
-    os.system(f'mv "{application_path}/NFC43-Config.json" "{application_path}/NFC43-Config.json.DISABLED"')
-    os.system(f'notify-send --app-name="linux-file-converter-addon" "Config file moved." "Your new config file is here:\n{config_directory}"')
-user_configuration = config_preset
+    os.system(f'mv "{APPLICATION_PATH}/NFC43-Config.json" "{APPLICATION_PATH}/NFC43-Config.json.DISABLED"')
+    os.system(f'notify-send --app-name="linux-file-converter-addon" "Config file moved." "Your new config file is here:\n{CONFIGURATION_DIRECTORY}"')
+user_configuration = CONFIG_PRESET
 
 # --- Load or store configs json ---
-if os.access(config_directory, os.W_OK):
+if os.access(CONFIGURATION_DIRECTORY, os.W_OK):
     try:
-        if Path(configuration_file).is_file():
-            with open(configuration_file, 'r') as file:
+        if Path(CONFIGURATION_FILE).is_file():
+            with open(CONFIGURATION_FILE, 'r') as file:
                 try:
                     loaded_json = json.load(file)
                 except json.decoder.JSONDecodeError:
-                    loaded_json = config_preset
+                    loaded_json = CONFIG_PRESET
                 user_configuration = loaded_json
-            for setting in config_preset:
+            for setting in CONFIG_PRESET:
                 if setting not in user_configuration:
-                    user_configuration[setting] = config_preset[setting]
+                    user_configuration[setting] = CONFIG_PRESET[setting]
             loaded_json = json.dumps(user_configuration, indent=4)
         else:
-            loaded_json = json.dumps(config_preset, indent=4)
-        with open(configuration_file, "w") as file:
+            loaded_json = json.dumps(CONFIG_PRESET, indent=4)
+        with open(CONFIGURATION_FILE, "w") as file:
             file.write(loaded_json)
     except:
         print("ERROR(Nautilus-file-converter)(401): Something went wrong while loading or updating the configuration file.")
         print(f"{format_exc()}")
 else:
-    print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{config_directory}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{CONFIGURATION_DIRECTORY}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+
+#######
+####### SELF-PREPARATION SECTION  --  SELF-UPDATE
+####### Pretty self explaining...
 
 # --- Check for updates and update if auto-update is enabled ---
 if user_configuration["automaticUpdates"]:
@@ -288,9 +316,9 @@ if user_configuration["automaticUpdates"]:
     if converter_version not in downloaded_data:
         print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {converter_version}\n"
               f"                                       Attempting to update...")
-        if permission_to_update:
+        if PERMISSION_TO_UPDATE:
             print("Updating...")
-            application_file_location = f"{application_path}/{os.path.basename(__file__)}"
+            application_file_location = f"{APPLICATION_PATH}/{os.path.basename(__file__)}"
             if user_configuration["showPatchNotes"]:
                 #os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md\" &")
                 os.system('notify-send --app-name="linux-file-converter-addon" "Update installed." "More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"')
@@ -298,16 +326,21 @@ if user_configuration["automaticUpdates"]:
                 file.write(downloaded_data)
 
 # --- Check for duplicate script if enabled ---
-if user_configuration["checkForDoubleInstallation"] and "/.local/share/" in application_path and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
+if user_configuration["checkForDoubleInstallation"] and "/.local/share/" in APPLICATION_PATH and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
     print(f"WARNING(Nautilus-file-converter)(103): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Check for development status and apply settings ---
-if not debug_mode:
+#     print() isn't working anymore after this command unless DEBUG_MODE is enabled
+if not DEBUG_MODE:
     print = lambda *wish, **verbosity: None
 
-print(f"pyheif: {pillow_heif_installed}\njxlpy: {jxlpy_installed}\npillow_avif: {pillow_avif_plugin_installed}")
+print(f"pyheif: {HEIF_AVAILABLE}\njxlpy: {JXL_AVAILABLE}\npillow_avif: {AVIF_AVAILABLE}")
 
-# --- Create file format tuples and write format dict-lists? ---
+#######
+####### SELF-PREPARATION SECTION  --  FORMATS
+####### Defining read- and write formats
+
+# --- Create file format tuples and write format dict-lists ---
 READ_FORMATS_IMAGE = ('image/jpeg',
                       'image/png',
                       'image/bmp',
@@ -426,15 +459,19 @@ WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
 if user_configuration["convertFromOctetStream"]:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + OCTET_STREAM_FORMATS
 
-if pillow_heif_installed:
+if HEIF_AVAILABLE:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + READ_FORMATS_PYHEIF
 
-if jxlpy_installed:
+if JXL_AVAILABLE:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + (READ_FORMATS_JXLPY,)
     WRITE_FORMATS_IMAGE.extend(WRITE_FORMATS_JXLPY)
 
-if pillow_avif_plugin_installed:
+if AVIF_AVAILABLE:
     WRITE_FORMATS_IMAGE.extend(WRITE_FORMATS_AVIF)
+
+#######
+####### SELF-PREPARATION SECTION  --  FUNCTIONS
+####### Global function definitions
 
 # --- Function used to get a mimetype's extension ---
 def get_format_extension(file_format):
@@ -445,12 +482,14 @@ def remove_timestamp(file_path_stem):
     clean_stem = re.sub(r'\d{4}(-\d{2}){5}', "", file_path_stem)
     return clean_stem
 
+# --- Adds datetime to file name if configured this way ---
 def name_addition():
     if user_configuration["timeInNames"]:
         return datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
     else:
         return ""
 
+# --- Send a system notification if the option is enabled ---
 def finish_conversion(conversion_results):
     if user_configuration["displayFinishNotification"]:
         os.system(f'notify-send --app-name="linux-file-converter-addon" "Conversion finished" "Successfull: {conversion_results["success"]}\nFailed: {conversion_results["fail"]}"')
@@ -518,104 +557,218 @@ def start_ffmpeg_conversion(menu, format_, files):
     subprocess = Process(target=convert_ffmpeg_media, kwargs={"menu":menu, "format": format_, "files": files})
     subprocess.start()
 
+#######
+####### SELF-PREPARATION SECTION  --  CLASSES
+####### Definitions of classes for Nautilus- and adaption use
+
+# --- Nautilus class ---
+if len(SYSTEM_ARGUMENTS) == 0:
+    class LinuxFileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
+        # --- Get file mime and trigger submenu building ---
+        def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
+            files = args[-1]
+            for file in files:
+                print(file.get_mime_type())
+                file_mime = file.get_mime_type()
+                if file_mime in READ_FORMATS_IMAGE or file_mime == 'application/octet-stream':
+                    return self.submenu_builder(WRITE_FORMATS_IMAGE,
+                                                callback=start_image_conversion,
+                                                files=files)
+                if file_mime in READ_FORMATS_AUDIO:
+                    return self.submenu_builder(WRITE_FORMATS_AUDIO,
+                                                callback=start_ffmpeg_conversion,
+                                                files=files)
+                if file_mime in READ_FORMATS_VIDEO:
+                    return self.submenu_builder(WRITE_FORMATS_VIDEO,
+                                                callback=start_ffmpeg_conversion,
+                                                files=files)
+
+        # --- Build the context menu and submenus ---
+        def submenu_builder(self, formats, callback, files):
+            main_menu_item = Nautilus.MenuItem(                         # Create main-submenu item
+                name="LinuxFileConverterMenuProvider::convert_to",
+                label="Convert to...",
+            )
+            main_menu = Nautilus.Menu()                                 # Create Nautilus submenu
+            main_menu_item.set_submenu(main_menu)                       # Add the item to the submenu
+
+            for file_format in formats:
+                main_menu_sub_item = Nautilus.MenuItem(
+                    name='LinuxFileConverterMenuProvider::convert_to_' + file_format['name'],
+                    label=(file_format['name']),
+                )
+                main_menu_sub_item.connect('activate', callback, file_format, files)
+                main_menu.append_item(main_menu_sub_item)               # Append sub item to menu
+
+            if formats[1]['name'] == 'JPEG':
+                if user_configuration["convertToSquares"]:
+                    main_menu_sub_menu_item_squares = Nautilus.MenuItem(
+                        name="LinuxFileConverterMenuProvider::square_format_menu",
+                        label="Square...",
+                    )
+                    main_menu_sub_menu_squares = Nautilus.Menu()
+                    main_menu_sub_menu_item_squares.set_submenu(main_menu_sub_menu_squares)
+
+                    for square_format in WRITE_FORMATS_SQUARE:
+                        main_menu_sub_menu_squares_sub_item = Nautilus.MenuItem(
+                            name='LinuxFileConverterMenuProvider::square_convert_' + square_format['name'],
+                            label=(square_format['name']),
+                        )
+                        main_menu_sub_menu_squares_sub_item.connect('activate', callback, square_format, files)
+                        main_menu_sub_menu_squares.append_item(main_menu_sub_menu_squares_sub_item)
+                    main_menu.append_item(main_menu_sub_menu_item_squares)
+
+                if user_configuration["convertToWallpapers"]:
+                    main_menu_sub_menu_item_wallpapers = Nautilus.MenuItem(
+                        name="LinuxFileConverterMenuProvider::wallpaper_format_menu",
+                        label="Wallpaper...",
+                    )
+                    main_menu_sub_menu_wallpapers = Nautilus.Menu()
+                    main_menu_sub_menu_item_wallpapers.set_submenu(main_menu_sub_menu_wallpapers)
+
+                    for wallpaper_formats in WRITE_FORMATS_WALLPAPER:
+                        main_menu_sub_menu_wallpapers_sub_item = Nautilus.MenuItem(
+                            name='LinuxFileConverterMenuProvider::wallpaper_convert_' + wallpaper_formats['name'],
+                            label=(wallpaper_formats['name']),
+                        )
+                        main_menu_sub_menu_wallpapers_sub_item.connect('activate', callback, wallpaper_formats, files)
+                        main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_wallpapers_sub_item)
+                    main_menu.append_item(main_menu_sub_menu_item_wallpapers)
+
+            if user_configuration["showPatchNoteButton"]:
+                main_menu_sub_item_patch_notes = Nautilus.MenuItem(
+                    name="LinuxFileConverterMenuProvider::patch_notes",
+                    label=f"View patch notes ({converter_version})",
+                )
+                callback = self.show_patch_notes
+                main_menu_sub_item_patch_notes.connect('activate', callback,)
+                main_menu.append_item(main_menu_sub_item_patch_notes)
+
+            if user_configuration["showConfigHint"]:
+                main_menu_sub_item_show_configuration_page = Nautilus.MenuItem(
+                    name="LinuxFileConverterMenuProvider::show_configuration_page",
+                    label=f"Configure LFCA",
+                )
+                callback = self.openConfigHint
+                main_menu_sub_item_show_configuration_page.connect('activate', callback,)
+                main_menu.append_item(main_menu_sub_item_show_configuration_page)
+
+            return [main_menu_item]
+
+        # --- openPatchNotes and openConfigHint functions for context menu options ---
+        def show_patch_notes(self, menu):
+            os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
+
+        def openConfigHint(self, menu):
+            os.system(f"nohup xdg-open 'https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md' &")
+            os.system(f"nohup xdg-open {CONFIGURATION_FILE} &")
+
 # --- Adaption class ---
-class LinuxFileConverterWindow(Gtk.Window):
-    def __init__(self):
-        super().__init__(title=f"Convert file")
-        self.set_border_width(15)
-        self.set_default_size(200, 20)
-        self.set_resizable(False)
+if len(SYSTEM_ARGUMENTS) > 0:
+    class LinuxFileConverterWindow(Gtk.Window):
+        def __init__(self):
+            super().__init__(title=f"Convert file")
+            self.set_border_width(15)
+            self.set_default_size(200, 20)
+            self.set_resizable(False)
 
-        self.connect("key-press-event",self.on_key_press_event)
+            self.connect("key-press-event",self.on_key_press_event)
 
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
-        label = Gtk.Label(label="Select a format:")
-        label.set_justify(Gtk.Justification.CENTER)
-        vbox.pack_start(label, False, False, 0)
-        version_information_label = Gtk.Label()
-        version_information_label.set_markup(f"""<span size="x-small">version {converter_version}</span>""")
-        version_information_label.set_justify(Gtk.Justification.CENTER)
-        configuration_hint_label = Gtk.Label()
-        configuration_hint_label.set_justify(Gtk.Justification.CENTER)
-        configuration_hint_label.set_markup(f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
+            label = Gtk.Label(label="Select a format:")
+            label.set_justify(Gtk.Justification.CENTER)
+            vbox.pack_start(label, False, False, 0)
+            version_information_label = Gtk.Label()
+            version_information_label.set_markup(f"""<span size="x-small">version {converter_version}</span>""")
+            version_information_label.set_justify(Gtk.Justification.CENTER)
+            configuration_hint_label = Gtk.Label()
+            configuration_hint_label.set_justify(Gtk.Justification.CENTER)
+            configuration_hint_label.set_markup(f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
 
-        copyright_notice_label = Gtk.Label()
-        copyright_notice_label.set_justify(Gtk.Justification.CENTER)
-        copyright_notice_label.set_markup(f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public License</a>.</span>""")
+            copyright_notice_label = Gtk.Label()
+            copyright_notice_label.set_justify(Gtk.Justification.CENTER)
+            copyright_notice_label.set_markup(f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public License</a>.</span>""")
 
-        extensions = Gtk.ListStore(str, str, int)
-        only_images_selected = True
-        only_audios_selected = True
-        only_videos_selected = True
-        for argument in sys_arguments:
-            if not magic_object.from_file(argument) in READ_FORMATS_IMAGE:
-                only_images_selected = False
-            if not magic_object.from_file(argument) in READ_FORMATS_AUDIO:
-                only_audios_selected = False
-            if not magic_object.from_file(argument) in READ_FORMATS_VIDEO:
-                only_videos_selected = False
+            extensions = Gtk.ListStore(str, str, int)
+            only_images_selected = True
+            only_audios_selected = True
+            only_videos_selected = True
+            for argument in SYSTEM_ARGUMENTS:
+                if not magic_object.from_file(argument) in READ_FORMATS_IMAGE:
+                    only_images_selected = False
+                if not magic_object.from_file(argument) in READ_FORMATS_AUDIO:
+                    only_audios_selected = False
+                if not magic_object.from_file(argument) in READ_FORMATS_VIDEO:
+                    only_videos_selected = False
 
-        if user_configuration["showDummyOption"]:
-            extensions.append(["-", "none", 2])
+            if user_configuration["showDummyOption"]:
+                extensions.append(["-", "none", 2])
 
-        if only_images_selected:
-            for selected_write_format in WRITE_FORMATS_IMAGE:
-                print(selected_write_format)
-                extensions.append([selected_write_format['name'], str(selected_write_format), 0])
-            if user_configuration["convertToSquares"]:
-                for selected_write_format in WRITE_FORMATS_SQUARE:
+            if only_images_selected:
+                for selected_write_format in WRITE_FORMATS_IMAGE:
+                    print(selected_write_format)
                     extensions.append([selected_write_format['name'], str(selected_write_format), 0])
-            if user_configuration["convertToWallpapers"]:
-                for selected_write_format in WRITE_FORMATS_WALLPAPER:
-                    extensions.append([selected_write_format['name'], str(selected_write_format), 0])
-        if only_audios_selected:
-            for selected_write_format in WRITE_FORMATS_AUDIO:
-                extensions.append([selected_write_format['name'], str(selected_write_format), 1])
-        if only_videos_selected:
-            for selected_write_format in WRITE_FORMATS_VIDEO:
-                extensions.append([selected_write_format['name'], str(selected_write_format), 1])
+                if user_configuration["convertToSquares"]:
+                    for selected_write_format in WRITE_FORMATS_SQUARE:
+                        extensions.append([selected_write_format['name'], str(selected_write_format), 0])
+                if user_configuration["convertToWallpapers"]:
+                    for selected_write_format in WRITE_FORMATS_WALLPAPER:
+                        extensions.append([selected_write_format['name'], str(selected_write_format), 0])
+            if only_audios_selected:
+                for selected_write_format in WRITE_FORMATS_AUDIO:
+                    extensions.append([selected_write_format['name'], str(selected_write_format), 1])
+            if only_videos_selected:
+                for selected_write_format in WRITE_FORMATS_VIDEO:
+                    extensions.append([selected_write_format['name'], str(selected_write_format), 1])
 
-        self.add(vbox)
-        combo_box = Gtk.ComboBox.new_with_model(extensions)
-        renderer_text = Gtk.CellRendererText()
-        combo_box.set_entry_text_column(0)
-        combo_box.pack_start(renderer_text, True)
-        combo_box.add_attribute(renderer_text, "text", 0)
-        combo_box.connect("changed", self.start_conversion)
-        vbox.pack_start(combo_box, False, False, 0)
-        if user_configuration["showPatchNoteButton"]:
-            vbox.pack_start(version_information_label, False, False, 0)
-        if user_configuration["showConfigHint"]:
-            vbox.pack_start(configuration_hint_label, True, True, 0)
-        vbox.pack_start(copyright_notice_label, True, True, 0)
+            self.add(vbox)
+            combo_box = Gtk.ComboBox.new_with_model(extensions)
+            renderer_text = Gtk.CellRendererText()
+            combo_box.set_entry_text_column(0)
+            combo_box.pack_start(renderer_text, True)
+            combo_box.add_attribute(renderer_text, "text", 0)
+            combo_box.connect("changed", self.start_conversion)
+            vbox.pack_start(combo_box, False, False, 0)
+            if user_configuration["showPatchNoteButton"]:
+                vbox.pack_start(version_information_label, False, False, 0)
+            if user_configuration["showConfigHint"]:
+                vbox.pack_start(configuration_hint_label, True, True, 0)
+            vbox.pack_start(copyright_notice_label, True, True, 0)
 
-    def start_conversion(self, combo):
-        tree_iter = combo.get_active_iter()
-        if tree_iter is not None:
-            model = combo.get_model()
-            return_name, return_format, return_type = model[tree_iter][:4]
-            print(return_name, return_format, return_type)
-            return_format = ast.literal_eval(return_format)
-            return_paths = []
-            if not return_type == 2:
-                self.hide()
-                for retun_path in sys_arguments:
-                    return_paths.append(Path(retun_path))
-                if return_type == 0:
-                    start_image_conversion(self, return_format, return_paths)
-                elif return_type == 1:
-                    start_ffmpeg_conversion(self, return_format, return_paths)
+        # --- Get data from combo-box and run the right conversion function ---
+        def start_conversion(self, combo):
+            tree_iter = combo.get_active_iter()
+            if tree_iter is not None:
+                model = combo.get_model()
+                return_name, return_format, return_type = model[tree_iter][:4]
+                print(return_name, return_format, return_type)
+                return_format = ast.literal_eval(return_format)
+                return_paths = []
+                if not return_type == 2:
+                    self.hide()
+                    for retun_path in SYSTEM_ARGUMENTS:
+                        return_paths.append(Path(retun_path))
+                    if return_type == 0:
+                        start_image_conversion(self, return_format, return_paths)
+                    elif return_type == 1:
+                        start_ffmpeg_conversion(self, return_format, return_paths)
+            Gtk.main_quit()
 
-    def on_key_press_event(self, widget, event):
-        print(f"Key pressed: {event.keyval}")
-        if event.keyval == 65307:
-            exit()
+        # --- Close the popup if ESC is pressed ---
+        def on_key_press_event(self, widget, event):
+            print(f"Key pressed: {event.keyval}")
+            quit_window_key_value = 65307
+            if event.keyval == quit_window_key_value:
+                exit()
 
-# --- Generate nemo_action ---
-if len(sys.argv) > 1:
-    print(f"Args: {str(sys_arguments)} \nPath:{application_path}")
-    if ".local/bin" not in application_path:
+    #######
+    ####### ADAPTION-STARTUP SECTION
+    ####### Creation of the nemo_action and finally of the Gtk Window
+
+    print("E")
+    print(f"Args: {str(SYSTEM_ARGUMENTS)} \nPath:{APPLICATION_PATH}")
+    if ".local/bin" not in APPLICATION_PATH:
         nemo_read_formats = ""
         global_read_formats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
         for media_format in global_read_formats:
@@ -627,7 +780,7 @@ if len(sys.argv) > 1:
                             "Exec=<nautilus-fileconverter.py %F>",
                             "Selection=NotNone",
                             f"Mimetypes={nemo_read_formats}"]
-        with open(f"{application_path}/nautilus-fileconverter.nemo_action", "w") as file:
+        with open(f"{APPLICATION_PATH}/nautilus-fileconverter.nemo_action", "w") as file:
             for line in nemo_action_lines:
                 file.write(line + "\n")
             file.close()
@@ -636,104 +789,3 @@ if len(sys.argv) > 1:
     gtk_popup_window_object.connect("destroy", Gtk.main_quit)
     gtk_popup_window_object.show_all()
     Gtk.main()
-
-# --- Nautilus class ---
-class LinuxFileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
-    # --- Get file mime and trigger submenu building ---
-    def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
-        files = args[-1]
-        for file in files:
-            print(file.get_mime_type())
-            file_mime = file.get_mime_type()
-            if file_mime in READ_FORMATS_IMAGE or file_mime == 'application/octet-stream':
-                return self.submenu_builder(WRITE_FORMATS_IMAGE,
-                                              callback=start_image_conversion,
-                                              files=files)
-            if file_mime in READ_FORMATS_AUDIO:
-                return self.submenu_builder(WRITE_FORMATS_AUDIO,
-                                              callback=start_ffmpeg_conversion,
-                                              files=files)
-            if file_mime in READ_FORMATS_VIDEO:
-                return self.submenu_builder(WRITE_FORMATS_VIDEO,
-                                              callback=start_ffmpeg_conversion,
-                                              files=files)
-
-    # --- Build the context menu and submenus ---
-    def submenu_builder(self, formats, callback, files):
-        main_menu_item = Nautilus.MenuItem(                         # Create main-submenu item
-            name="LinuxFileConverterMenuProvider::convert_to",
-            label="Convert to...",
-        )
-        main_menu = Nautilus.Menu()                                 # Create Nautilus submenu
-        main_menu_item.set_submenu(main_menu)                       # Add the item to the submenu
-
-        for file_format in formats:
-            main_menu_sub_item = Nautilus.MenuItem(
-                name='LinuxFileConverterMenuProvider::convert_to_' + file_format['name'],
-                label=(file_format['name']),
-            )
-            main_menu_sub_item.connect('activate', callback, file_format, files)
-            main_menu.append_item(main_menu_sub_item)               # Append sub item to menu
-
-        if formats[1]['name'] == 'JPEG':
-            if user_configuration["convertToSquares"]:
-                main_menu_sub_menu_item_squares = Nautilus.MenuItem(
-                    name="LinuxFileConverterMenuProvider::square_format_menu",
-                    label="Square...",
-                )
-                main_menu_sub_menu_squares = Nautilus.Menu()
-                main_menu_sub_menu_item_squares.set_submenu(main_menu_sub_menu_squares)
-
-                for square_format in WRITE_FORMATS_SQUARE:
-                    main_menu_sub_menu_squares_sub_item = Nautilus.MenuItem(
-                        name='LinuxFileConverterMenuProvider::square_convert_' + square_format['name'],
-                        label=(square_format['name']),
-                    )
-                    main_menu_sub_menu_squares_sub_item.connect('activate', callback, square_format, files)
-                    main_menu_sub_menu_squares.append_item(main_menu_sub_menu_squares_sub_item)
-                main_menu.append_item(main_menu_sub_menu_item_squares)
-
-            if user_configuration["convertToWallpapers"]:
-                main_menu_sub_menu_item_wallpapers = Nautilus.MenuItem(
-                    name="LinuxFileConverterMenuProvider::wallpaper_format_menu",
-                    label="Wallpaper...",
-                )
-                main_menu_sub_menu_wallpapers = Nautilus.Menu()
-                main_menu_sub_menu_item_wallpapers.set_submenu(main_menu_sub_menu_wallpapers)
-
-                for wallpaper_formats in WRITE_FORMATS_WALLPAPER:
-                    main_menu_sub_menu_wallpapers_sub_item = Nautilus.MenuItem(
-                        name='LinuxFileConverterMenuProvider::wallpaper_convert_' + wallpaper_formats['name'],
-                        label=(wallpaper_formats['name']),
-                    )
-                    main_menu_sub_menu_wallpapers_sub_item.connect('activate', callback, wallpaper_formats, files)
-                    main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_wallpapers_sub_item)
-                main_menu.append_item(main_menu_sub_menu_item_wallpapers)
-
-        if user_configuration["showPatchNoteButton"]:
-            main_menu_sub_item_patch_notes = Nautilus.MenuItem(
-                name="LinuxFileConverterMenuProvider::patch_notes",
-                label=f"View patch notes ({converter_version})",
-            )
-            callback = self.show_patch_notes
-            main_menu_sub_item_patch_notes.connect('activate', callback,)
-            main_menu.append_item(main_menu_sub_item_patch_notes)
-
-        if user_configuration["showConfigHint"]:
-            main_menu_sub_item_show_configuration_page = Nautilus.MenuItem(
-                name="LinuxFileConverterMenuProvider::show_configuration_page",
-                label=f"Configure LFCA",
-            )
-            callback = self.openConfigHint
-            main_menu_sub_item_show_configuration_page.connect('activate', callback,)
-            main_menu.append_item(main_menu_sub_item_show_configuration_page)
-
-        return [main_menu_item]
-
-    # --- openPatchNotes and openConfigHint functions for context menu options ---
-    def show_patch_notes(self, menu):
-        os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
-
-    def openConfigHint(self, menu):
-        os.system(f"nohup xdg-open 'https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md' &")
-        os.system(f"nohup xdg-open {configuration_file} &")
