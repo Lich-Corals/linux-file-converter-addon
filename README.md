@@ -14,7 +14,7 @@ The tool has a built-in auto-update function to make sure the newest version is 
 Note that the Nemo and Thunar ports are quite new and not as well tested as the Nautilus version. If you experience any problems, please report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
 <br/>
 <p align="center">
-    <img height="256px" src="https://user-images.githubusercontent.com/111392332/226464712-216ef143-6ca7-4c9d-ac15-e51e3a299550.png">
+    <img height="512px" alt="ogre" src="https://github.com/user-attachments/assets/102ec8e2-8040-49f5-8c41-879f4fdbb84c" />
 </p>
 
 ```mermaid
