@@ -20,7 +20,7 @@
 # --- Version number ---
 converterVersion = "001003009" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
-development_version = True
+development_version = False
 
 # --- Make system imports ---
 import sys
