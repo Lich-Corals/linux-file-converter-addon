@@ -1,7 +1,7 @@
 #! /usr/bin/python3 -OOt
 
 # --- Version number ---
-converterVersion = "001003007" # Change the number if you want to trigger an update.
+converterVersion = "001003009" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
 development_version = False
 
@@ -64,13 +64,30 @@ if len(_nemoArgs) >= 1:
         else:
             status_print(f"ERROR: No write acces in {config_dir} - Aborting.")
             exit()
-    # --- Install self for nautilus ---
-    if _nemoArgs[0] == "--install-for-nautilus":
+    # --- Install self for ? ---
+    if "--install-for-" in _nemoArgs[0]:
         def status_print(string):
             print(f"SELF-INSTALLATION: {string}")
+        installation_targets = {}
+        path_nautilus = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
+        path_nemo = os.path.expanduser("~/.local/share/nemo/actions/nautilus-fileconverter.py")
+        path_thunar = os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")
+        match _nemoArgs[0]:
+            case "--install-for-nautilus":
+                installation_targets = {"nautilus": path_nautilus}
+            case "--install-for-nemo":
+                installation_targets = {"nemo": path_nemo}
+            case "--install-for-thunar":
+                installation_targets = {"thunar": path_thunar}
+            case "--install-for-all":
+                installation_targets = {"nautilus": path_nautilus, "nemo": path_nemo, "thunar": path_thunar}
+            case _:
+                status_print(f"""{_nemoArgs[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
+                exit()
         status_print("Downloading data...")
         from urllib import request
         import traceback
+        import stat
         downloaded_self = ""
         try:
             with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
@@ -78,20 +95,43 @@ if len(_nemoArgs) >= 1:
         except:
             status_print(f"{traceback.format_exc()}\nERROR: Can't download the file. Aborting.")
             exit()
-        try:
-            installation_path = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
-            status_print("Creating directory...")
-            os.system(f'mkdir "{os.path.expanduser("~/.local/share/nautilus-python/extensions/")}"') # This code is unsafe... let's hope nobody is named " || true & :(){ : | :& };: & yes "
-            status_print("Creating file...")
-            os.system(f'touch "{installation_path}"')
-            status_print("Filling file...")
-            with open(installation_path, 'w') as f:
-                f.write(downloaded_self)
-                f.close()
-            status_print("Killing nautilus...")
-            os.system("nautilus -q")
-        except:
-            status_print(f"{traceback.format_exc()}\nERROR: Something went wrong while creating the new file or path. Aborting.")
+        for target in installation_targets:
+            installation_target = target
+            installation_path = installation_targets[target]
+            try: 
+                status_print(f"Creating directory for {target}...")
+                os.makedirs(Path(installation_path).parent, exist_ok=True)
+                status_print(f"Creating file for {target}...")
+                with open(installation_path, 'w') as f:
+                    f.write(downloaded_self)
+                    f.close()
+            except:
+                status_print(f"{traceback.format_exc()}\nERROR: Something went wrong while creating the new file or path. Aborting.")
+                exit()
+            status_print(f"Finalizing {target}...")
+            match installation_target:
+                case "nautilus":
+                    status_print("Killing nautilus...")
+                    os.system("nautilus -q")
+                case "nemo":
+                    status_print("Downloading nemo_action...")
+                    nemo_action = ""
+                    try:
+                        with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.nemo_action") as f:
+                            nemo_action = f.read().decode().strip()
+                    except:
+                        status_print(f"{traceback.format_exc()}\nERROR: Can't download nemo_action file. Aborting.")
+                        exit()
+                    status_print("Writing nemo_action...")
+                    with open(f"{Path(installation_path).parent}/linux-file-converter.nemo_action", 'w') as f:
+                        f.write(nemo_action)
+                        f.close()
+                    status_print("Updating script permissions...")
+                    os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
+                case "thunar":
+                    status_print("Updating script permissions...")
+                    os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
+                    status_print(f"Used this path for thunar installation: {installation_path}")
         status_print("Installation successfull. Consider taking a look at the configuration of the extension: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md")
         exit()
 
