@@ -1,5 +1,22 @@
 #! /usr/bin/python3 -OOt
 
+# Linux-File-Converter-Addon - Converting files from context menu
+# Copyright (C) 2025  Linus Tibert
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 # --- Version number ---
 converterVersion = "001003009" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
@@ -18,9 +35,15 @@ _nemoArgs = sys.argv[1:len(sys.argv)]
 
 if len(_nemoArgs) >= 1:
     # --- Create application data location and download dependencies ---
+    def copyright_notice():
+        print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--license' for details.")
+    if _nemoArgs[0] == "--license":
+        os.system("xdg-open https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE & disown")
+        exit()
     if _nemoArgs[0] == "--create-venv":
         def status_print(string):
             print(f"VENV-CREATION: {string}")
+        copyright_notice()
         if len(_nemoArgs) >= 2 and _nemoArgs[1] != "--full":
             status_print("Usage: nautilus-file-converter.py --create-venv (--full)\n              Optionally add the '--full' option to get additional format support.")
             exit()
@@ -68,6 +91,7 @@ if len(_nemoArgs) >= 1:
     if "--install-for-" in _nemoArgs[0]:
         def status_print(string):
             print(f"SELF-INSTALLATION: {string}")
+        copyright_notice()
         installation_targets = {}
         path_nautilus = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
         path_nemo = os.path.expanduser("~/.local/share/nemo/actions/nautilus-fileconverter.py")
