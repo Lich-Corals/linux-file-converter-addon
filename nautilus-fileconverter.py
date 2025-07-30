@@ -18,7 +18,7 @@
 
 
 # --- Version number ---
-converterVersion = "001003009" # Change the number if you want to trigger an update.
+converter_version = "001003009" # Change the number if you want to trigger an update.
 # --- Variable to enable debug mode ---
 development_version = False
 
@@ -26,28 +26,29 @@ development_version = False
 import sys
 import os
 from pathlib import Path
+from traceback import format_exc
 
 # --- Get config directory and commandline args ---
 config_file = "~/.config/linux-file-converter-addon/config.json"
 config_file = str(Path(config_file).expanduser())
 config_dir = Path(config_file).parent
-_nemoArgs = sys.argv[1:len(sys.argv)]
+sys_arguments = sys.argv[1:len(sys.argv)]
 
-if len(_nemoArgs) >= 1:
+if len(sys_arguments) >= 1:
     # --- Create application data location and download dependencies ---
     def copyright_notice():
         print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--license' for details.")
-    if _nemoArgs[0] == "--license":
+    if sys_arguments[0] == "--license":
         os.system("xdg-open https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE & disown")
         exit()
-    if _nemoArgs[0] == "--create-venv":
+    if sys_arguments[0] == "--create-venv":
         def status_print(string):
             print(f"VENV-CREATION: {string}")
         copyright_notice()
-        if len(_nemoArgs) >= 2 and _nemoArgs[1] != "--full":
+        if len(sys_arguments) >= 2 and sys_arguments[1] != "--full":
             status_print("Usage: nautilus-file-converter.py --create-venv (--full)\n              Optionally add the '--full' option to get additional format support.")
             exit()
-        _nemoArgs.append("idontwanttocheckforlengthagainsoiaddanotherargumenttoavoiderrors-argument™")
+        sys_arguments.append("idontwanttocheckforlengthagainsoiaddanotherargumenttoavoiderrors-argument™")
         status_print("Looking for directories...")
         if not os.path.isdir(config_dir) and os.access(config_dir, os.W_OK):
             os.system(f'mkdir "{config_dir}"')
@@ -70,7 +71,7 @@ if len(_nemoArgs) >= 1:
                 exit()
             else:
                 status_print("Done.")
-            if _nemoArgs[1] == "--full":
+            if sys_arguments[1] == "--full":
                 status_print("Installing optional dependencies...")
                 dependencies = ["pillow-heif", "pillow-avif-plugin", "jxlpy"]
                 failed = 0
@@ -88,7 +89,7 @@ if len(_nemoArgs) >= 1:
             status_print(f"ERROR: No write acces in {config_dir} - Aborting.")
             exit()
     # --- Install self for ? ---
-    if "--install-for-" in _nemoArgs[0]:
+    if "--install-for-" in sys_arguments[0]:
         def status_print(string):
             print(f"SELF-INSTALLATION: {string}")
         copyright_notice()
@@ -96,7 +97,7 @@ if len(_nemoArgs) >= 1:
         path_nautilus = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
         path_nemo = os.path.expanduser("~/.local/share/nemo/actions/nautilus-fileconverter.py")
         path_thunar = os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")
-        match _nemoArgs[0]:
+        match sys_arguments[0]:
             case "--install-for-nautilus":
                 installation_targets = {"nautilus": path_nautilus}
             case "--install-for-nemo":
@@ -106,18 +107,17 @@ if len(_nemoArgs) >= 1:
             case "--install-for-all":
                 installation_targets = {"nautilus": path_nautilus, "nemo": path_nemo, "thunar": path_thunar}
             case _:
-                status_print(f"""{_nemoArgs[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
+                status_print(f"""{sys_arguments[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
                 exit()
         status_print("Downloading data...")
         from urllib import request
-        import traceback
         import stat
         downloaded_self = ""
         try:
             with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
                 downloaded_self = f.read().decode().strip()
         except:
-            status_print(f"{traceback.format_exc()}\nERROR: Can't download the file. Aborting.")
+            status_print(f"{format_exc()}\nERROR: Can't download the file. Aborting.")
             exit()
         for target in installation_targets:
             installation_target = target
@@ -130,7 +130,7 @@ if len(_nemoArgs) >= 1:
                     f.write(downloaded_self)
                     f.close()
             except:
-                status_print(f"{traceback.format_exc()}\nERROR: Something went wrong while creating the new file or path. Aborting.")
+                status_print(f"{format_exc()}\nERROR: Something went wrong while creating the new file or path. Aborting.")
                 exit()
             status_print(f"Finalizing {target}...")
             match installation_target:
@@ -144,7 +144,7 @@ if len(_nemoArgs) >= 1:
                         with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.nemo_action") as f:
                             nemo_action = f.read().decode().strip()
                     except:
-                        status_print(f"{traceback.format_exc()}\nERROR: Can't download nemo_action file. Aborting.")
+                        status_print(f"{format_exc()}\nERROR: Can't download nemo_action file. Aborting.")
                         exit()
                     status_print("Writing nemo_action...")
                     with open(f"{Path(installation_path).parent}/linux-file-converter.nemo_action", 'w') as f:
@@ -170,29 +170,27 @@ if os.path.isdir(f"{config_dir}/venv"):
 import gi
 if len(sys.argv) > 1:
     gi.require_version("Gtk", "3.0")
-    from gi.repository import Gtk
+    from gi.repository import Gtk, Gdk
+    import magic
+    import ast
+
+    # --- Create magic object... a magic wand or something like it ---
+    mime = magic.Magic(mime=True)
 else:
-    from gi.repository import Gtk
-from gi.repository import GObject, Nautilus
-from typing import List
+    gi.require_version("Gtk", "4.0")
+    from gi.repository import Gtk, GObject, Nautilus
+    from typing import List
 from PIL import Image, UnidentifiedImageError
 from urllib.parse import urlparse, unquote
+from urllib import request
 from datetime import datetime
-import magic
 import os, shlex
-import pathlib
-import urllib.request
 import json
-import ast
 import re
 from multiprocessing import Process
-import traceback
-
-# --- Create magic object... a magic wand or something like it ---
-mime = magic.Magic(mime=True)
 
 # --- Get the path to the script and check if it's writeable ---
-currentPath = str(pathlib.Path(__file__).parent.resolve())  # used for config file and self-update!
+currentPath = str(Path(__file__).parent.resolve())  # used for config file and self-update!
 scriptUpdateable = os.access(f"{currentPath}/{os.path.basename(__file__)}", os.W_OK)
 
 # --- Check if dependencies are installed and imported ---
@@ -280,16 +278,16 @@ if os.access(config_dir, os.W_OK):
             jsonFile.write(configJson)
     except:
         print("ERROR(Nautilus-file-converter)(401): Something went wrong while loading or updating the configuration file.")
-        print(f"{traceback.format_exc()}")
+        print(f"{format_exc()}")
 else:
     print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{config_dir}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Check for updates and update if auto-update is enabled ---
 if _config["automaticUpdates"]:
-    with urllib.request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
+    with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
         onlineFile = f.read().decode().strip()
-    if converterVersion not in onlineFile:
-        print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {converterVersion}\n"
+    if converter_version not in onlineFile:
+        print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {converter_version}\n"
               f"                                       Attempting to update...")
         if scriptUpdateable:
             print("Updating...")
@@ -537,7 +535,7 @@ class nautilusFileConverterPopup(Gtk.Window):
         label.set_justify(Gtk.Justification.CENTER)
         vbox.pack_start(label, False, False, 0)
         versionInfo = Gtk.Label()
-        versionInfo.set_markup(f"""<span size="x-small">version {converterVersion}</span>""")
+        versionInfo.set_markup(f"""<span size="x-small">version {converter_version}</span>""")
         versionInfo.set_justify(Gtk.Justification.CENTER)
         configHint = Gtk.Label()
         configHint.set_justify(Gtk.Justification.CENTER)
@@ -551,7 +549,7 @@ class nautilusFileConverterPopup(Gtk.Window):
         _allImages = True
         _allAudios = True
         _allVideos = True
-        for _arg in _nemoArgs:
+        for _arg in sys_arguments:
             if not mime.from_file(_arg) in READ_FORMATS_IMAGE:
                 _allImages = False
             if not mime.from_file(_arg) in READ_FORMATS_AUDIO:
@@ -603,7 +601,7 @@ class nautilusFileConverterPopup(Gtk.Window):
             return_paths = []
             if not return_type == 2:
                 self.hide()
-                for retun_path in _nemoArgs:
+                for retun_path in sys_arguments:
                     return_paths.append(Path(retun_path))
                 if return_type == 0:
                     convert_image(self, return_format, return_paths)
@@ -617,9 +615,7 @@ class nautilusFileConverterPopup(Gtk.Window):
 
 # --- Generate nemo_action ---
 if len(sys.argv) > 1:
-    from gi.repository import Gdk
-
-    print(f"Args: {str(_nemoArgs)} \nPath:{currentPath}")
+    print(f"Args: {str(sys_arguments)} \nPath:{currentPath}")
     if ".local/bin" not in currentPath:
         _readFormatsNemo = ""
         _allReadFormats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
@@ -635,7 +631,7 @@ if len(sys.argv) > 1:
         with open(f"{currentPath}/nautilus-fileconverter.nemo_action", "w") as file:
             for _line in _nemoActionLines:
                 file.write(_line + "\n")
-if len(sys.argv) > 1:
+    
     _gtkPopupWindow = nautilusFileConverterPopup()
     _gtkPopupWindow.connect("destroy", Gtk.main_quit)
     _gtkPopupWindow.show_all()
@@ -715,7 +711,7 @@ class FileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         if _config["showPatchNoteButton"]:
             sub_menuitem_patchNotes = Nautilus.MenuItem(
                 name="patchNotes",
-                label=f"View patch notes ({converterVersion})",
+                label=f"View patch notes ({converter_version})",
             )
             callback = self.openPatchNotes
             sub_menuitem_patchNotes.connect('activate', callback,)
