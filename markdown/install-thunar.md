@@ -30,8 +30,8 @@ Now go to the [next section](#enable-the-action-in-thunar).
      mv nautilus-fileconverter.py ~/.local/bin/linux-file-converter-addon.py
      ```
 
-     > [!TIP]  
-     > You can place the file anywhere you want. The guide will continue with `.local/bin ` as the location for the script.
+> [!TIP]   
+> You can place the file anywhere you want. The guide will continue with `.local/bin ` as the location for the script.
 
 - Give the script permission to be executed as script:
      ```bash
