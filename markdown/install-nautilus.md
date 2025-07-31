@@ -40,8 +40,8 @@ Nautilus will quit at the end of the installation. This is intended and necessar
         ```
 - Move the script to the right location:
 
-    > [!CAUTION]  
-    > Only use <i>one</i> of the following commands, otherwise you will get the menu-option in Nautilus twice!</b>
+> [!CAUTION]  
+> Only use <i>one</i> of the following commands, otherwise you will get the menu-option in Nautilus twice!</b>
     
     - For a user specific installation move the file to '~/.local/share/nautilus-python/extensions/' using this command in the dictionary with the file:
       ```bash
@@ -52,8 +52,8 @@ Nautilus will quit at the end of the installation. This is intended and necessar
         sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
         ```
 
-        > [!IMPORTANT]  
-        > Automatic updates are limited for root installations; I recommend the other installation option. More information is available in the [errors and warnings section](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#003-no-permission-to-self-update).
+> [!IMPORTANT]  
+> Automatic updates are limited for root installations; I recommend the other installation option. More information is available in the [errors and warnings section](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#003-no-permission-to-self-update).
 
 - Now you only have to restart Nautilus using the following commands:
     ```bash
