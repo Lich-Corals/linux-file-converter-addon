@@ -19,7 +19,7 @@
 
 
 # --- Version number ---
-converter_version = "001003009" # Change the number if you want to trigger an update.
+CONVERTER_VERSION = "001003009" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
 DEBUG_MODE = True
@@ -328,8 +328,8 @@ else:
 if user_configuration["automaticUpdates"]:
     with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
         downloaded_data = f.read().decode().strip()
-    if converter_version not in downloaded_data:
-        print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {converter_version}\n"
+    if CONVERTER_VERSION not in downloaded_data:
+        print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {CONVERTER_VERSION}\n"
               f"                                       Attempting to update...")
         if PERMISSION_TO_UPDATE:
             print("Updating...")
@@ -651,7 +651,7 @@ if get_installation_type() == InstallationType.NAUTILUS:
                     main_menu.append_item(main_menu_sub_menu_item_wallpapers)
 
             if user_configuration["showPatchNoteButton"]:
-                self.add_sub_menu_item("patch_notes", f"View patch notes ({converter_version})", main_menu, self.show_patch_notes, {})
+                self.add_sub_menu_item("patch_notes", f"View patch notes ({CONVERTER_VERSION})", main_menu, self.show_patch_notes, {})
 
             if user_configuration["showConfigHint"]:
                 self.add_sub_menu_item("patch_notes", f"Configure LFCA", main_menu, self.show_configuration_page, {})
@@ -729,7 +729,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
             self.add_label_centered(box, "Select a format:")
             self.add_format_combo_box(box)
             if user_configuration["showPatchNoteButton"]:
-                self.add_label_centered(box, f"""<span size="x-small">version {converter_version}</span>""")
+                self.add_label_centered(box, f"""<span size="x-small">version {CONVERTER_VERSION}</span>""")
             if user_configuration["showConfigHint"]:
                 self.add_label_centered(box, f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
             self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public License</a>.</span>""")
