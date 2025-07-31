@@ -33,12 +33,23 @@ import sys
 import os
 from pathlib import Path
 from traceback import format_exc
+from enum import Enum
 
 # --- Get config directory and commandline args ---
 CONFIGURATION_FILE = "~/.config/linux-file-converter-addon/config.json"
 CONFIGURATION_FILE = str(Path(CONFIGURATION_FILE).expanduser())
 CONFIGURATION_DIRECTORY = Path(CONFIGURATION_FILE).parent
 SYSTEM_ARGUMENTS = sys.argv[1:len(sys.argv)]
+
+class InstallationType(Enum):
+    NAUTILUS = "nautilus",
+    NEMO = "nemo",
+    THUNAR = "thunar",
+    UNKNOWN = "unknown"
+
+INSTALLATION_LOCATIONS =    {InstallationType.NAUTILUS: os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py"),
+                            InstallationType.NEMO: os.path.expanduser("~/.local/share/nemo/actions/nautilus-fileconverter.py"),
+                            InstallationType.THUNAR: os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")}
 
 if len(SYSTEM_ARGUMENTS) >= 1:
     # --- Create application data location and download dependencies ---
@@ -102,21 +113,15 @@ if len(SYSTEM_ARGUMENTS) >= 1:
             print(f"SELF-INSTALLATION: {string}")
         copyright_notice()
         installation_targets = {}
-        path_nautilus = os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py")
-        path_nemo = os.path.expanduser("~/.local/share/nemo/actions/nautilus-fileconverter.py")
-        path_thunar = os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")
-        match SYSTEM_ARGUMENTS[0]:
-            case "--install-for-nautilus":
-                installation_targets = {"nautilus": path_nautilus}
-            case "--install-for-nemo":
-                installation_targets = {"nemo": path_nemo}
-            case "--install-for-thunar":
-                installation_targets = {"thunar": path_thunar}
-            case "--install-for-all":
-                installation_targets = {"nautilus": path_nautilus, "nemo": path_nemo, "thunar": path_thunar}
-            case _:
-                status_print(f"""{SYSTEM_ARGUMENTS[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
-                exit()
+        for installation_location in INSTALLATION_LOCATIONS:
+            print(installation_location.value[0])
+            if SYSTEM_ARGUMENTS[0] == f"--install-for-{installation_location.value[0]}":
+                installation_targets[installation_location] = INSTALLATION_LOCATIONS[installation_location]
+        if SYSTEM_ARGUMENTS[0] == "--install-for-all":
+            installation_targets = INSTALLATION_LOCATIONS
+        if installation_targets == {}:
+            status_print(f"""{SYSTEM_ARGUMENTS[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
+            exit()
         status_print("Downloading data...")
         from urllib import request
         import stat
@@ -142,10 +147,10 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                 exit()
             status_print(f"Finalizing {target}...")
             match installation_target:
-                case "nautilus":
+                case InstallationType.NAUTILUS:
                     status_print("Killing nautilus...")
                     os.system("nautilus -q")
-                case "nemo":
+                case InstallationType.NEMO:
                     status_print("Downloading nemo_action...")
                     nemo_action = ""
                     try:
@@ -160,7 +165,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                         f.close()
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
-                case "thunar":
+                case InstallationType.THUNAR:
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
                     status_print(f"Used this path for thunar installation: {installation_path}")
@@ -559,12 +564,23 @@ def start_ffmpeg_conversion(menu, arguments):
     subprocess = Process(target=convert_ffmpeg_media, kwargs={"menu":menu, "format": arguments["format"], "files": arguments["files"]})
     subprocess.start()
 
+def get_installation_type():
+    global APPLICATION_PATH
+    global INSTALLATION_LOCATIONS
+    detected_installation_type = InstallationType.UNKNOWN
+    for installation_location in INSTALLATION_LOCATIONS:
+        if str(Path(INSTALLATION_LOCATIONS[installation_location]).parent) in APPLICATION_PATH:
+            detected_installation_type = installation_location
+    return detected_installation_type
+
 #######
 ####### SELF-PREPARATION SECTION  --  CLASSES
 ####### Definitions of classes for Nautilus- and adaption use
 
+print(f"Detected installation type: {get_installation_type()}")
+
 # --- Nautilus class ---
-if len(SYSTEM_ARGUMENTS) == 0:
+if get_installation_type() == InstallationType.NAUTILUS:
     class LinuxFileConverterMenuProvider(GObject.GObject, Nautilus.MenuProvider):
         # --- Get file mime and trigger submenu building ---
         def get_file_items(self, *args) -> List[Nautilus.MenuItem]:
@@ -639,7 +655,7 @@ if len(SYSTEM_ARGUMENTS) == 0:
             Popen(["xdg-open", f"{CONFIGURATION_FILE}"])
 
 # --- Adaption class ---
-if len(SYSTEM_ARGUMENTS) > 0:
+if get_installation_type() != InstallationType.NAUTILUS:
     class LinuxFileConverterWindow(Gtk.Window):
         def add_label_centered(self, box, markup):
             label = Gtk.Label()
@@ -736,7 +752,7 @@ if len(SYSTEM_ARGUMENTS) > 0:
     ####### Creation of the nemo_action and finally of the Gtk Window
 
     print(f"Args: {str(SYSTEM_ARGUMENTS)} \nPath:{APPLICATION_PATH}")
-    if ".local/bin" not in APPLICATION_PATH:
+    if get_installation_type() == InstallationType.NEMO:
         nemo_read_formats = ""
         global_read_formats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
         for media_format in global_read_formats:
