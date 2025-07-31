@@ -48,7 +48,7 @@ class InstallationType(Enum):
     UNKNOWN = "unknown"
 
 INSTALLATION_LOCATIONS =    {InstallationType.NAUTILUS: os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py"),
-                            InstallationType.NEMO: os.path.expanduser("~/.local/share/nemo/actions/nautilus-fileconverter.py"),
+                            InstallationType.NEMO: os.path.expanduser("~/.local/share/nemo/actions/linux-file-converter-addon.py"),
                             InstallationType.THUNAR: os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")}
 
 if len(SYSTEM_ARGUMENTS) >= 1:
@@ -160,8 +160,8 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                         status_print(f"{format_exc()}\nERROR: Can't download nemo_action file. Aborting.")
                         exit()
                     status_print("Writing nemo_action...")
-                    with open(f"{Path(installation_path).parent}/linux-file-converter.nemo_action", 'w') as f:
-                        f.write(nemo_action)
+                    with open(f"{Path(installation_path).parent}/linux-file-converter-addon.nemo_action", 'w') as f:
+                        f.write(nemo_action.replace("Exec=<nautilus-fileconverter.py %F>", "Exec=<linux-file-converter-addon.py %F>"))
                         f.close()
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
@@ -761,11 +761,11 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 nemo_read_formats += media_format + ";"
         nemo_action_lines = ["[Nemo Action]",
                             "Name=Convert to...",
-                            "Comment=Convert file using nautilus-fileconverter",
-                            "Exec=<nautilus-fileconverter.py %F>",
+                            "Comment=Convert file using linux-file-converter-addon",
+                            f"Exec=<{os.path.basename(__file__)} %F>",
                             "Selection=NotNone",
                             f"Mimetypes={nemo_read_formats}"]
-        with open(f"{APPLICATION_PATH}/nautilus-fileconverter.nemo_action", "w") as file:
+        with open(f"{APPLICATION_PATH}/{Path(os.path.basename(__file__)).stem}.nemo_action", "w") as file:
             for line in nemo_action_lines:
                 file.write(line + "\n")
             file.close()

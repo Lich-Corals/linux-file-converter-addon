@@ -33,8 +33,8 @@ Now go to the [next section](#enabling-the-action-in-nemo).
      ```
 - Copy the files into the ~/.local/share/nemo/actions folder:
      ```bash
-     mv nautilus-fileconverter.py ~/.local/share/nemo/actions/nautilus-fileconverter.py
-     mv nautilus-fileconverter.nemo_action ~/.local/share/nemo/actions/nautilus-fileconverter.nemo_action
+     mv nautilus-fileconverter.py ~/.local/share/nemo/actions/linux-file-converter-addon.py
+     mv nautilus-fileconverter.nemo_action ~/.local/share/nemo/actions/linux-file-converter-addon.nemo_action
      ```
 - Give the script permission to be executed as script:
      ```bash
