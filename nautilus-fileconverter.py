@@ -22,7 +22,7 @@
 converter_version = "001003009" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 #######
 ####### AUTO-INSTALLATION SECTION
@@ -548,13 +548,13 @@ def convert_ffmpeg_media(*args, **kwargs):
     finish_conversion(conversion_results)
 
 # --- Function to start image conversion in a new subprocess ---
-def start_image_conversion(menu, format_, files):
-    subprocess = Process(target=convert_images, kwargs={"menu":menu, "format": format_, "files": files})
+def start_image_conversion(menu, arguments):
+    subprocess = Process(target=convert_images, kwargs={"menu":menu, "format": arguments["format"], "files": arguments["files"]})
     subprocess.start()
 
 # --- Function to start ffmpeg conversion in a new subprocess ---
-def start_ffmpeg_conversion(menu, format_, files):
-    subprocess = Process(target=convert_ffmpeg_media, kwargs={"menu":menu, "format": format_, "files": files})
+def start_ffmpeg_conversion(menu, arguments):
+    subprocess = Process(target=convert_ffmpeg_media, kwargs={"menu":menu, "format": arguments["format"], "files": arguments["files"]})
     subprocess.start()
 
 #######
@@ -571,95 +571,68 @@ if len(SYSTEM_ARGUMENTS) == 0:
                 print(file.get_mime_type())
                 file_mime = file.get_mime_type()
                 if file_mime in READ_FORMATS_IMAGE or file_mime == 'application/octet-stream':
-                    return self.submenu_builder(WRITE_FORMATS_IMAGE,
+                    return self.sub_menu_builder(WRITE_FORMATS_IMAGE,
                                                 callback=start_image_conversion,
                                                 files=files)
                 if file_mime in READ_FORMATS_AUDIO:
-                    return self.submenu_builder(WRITE_FORMATS_AUDIO,
+                    return self.sub_menu_builder(WRITE_FORMATS_AUDIO,
                                                 callback=start_ffmpeg_conversion,
                                                 files=files)
                 if file_mime in READ_FORMATS_VIDEO:
-                    return self.submenu_builder(WRITE_FORMATS_VIDEO,
+                    return self.sub_menu_builder(WRITE_FORMATS_VIDEO,
                                                 callback=start_ffmpeg_conversion,
                                                 files=files)
 
-        # --- Build the context menu and submenus ---
-        def submenu_builder(self, formats, callback, files):
-            main_menu_item = Nautilus.MenuItem(                         # Create main-submenu item
-                name="LinuxFileConverterMenuProvider::convert_to",
-                label="Convert to...",
+        def create_sub_menu_object(self, name, label):
+            menu_item = Nautilus.MenuItem(                          # Create main-submenu item
+                name=f"LinuxFileConverterMenuProvider::{name}",
+                label=label,
             )
-            main_menu = Nautilus.Menu()                                 # Create Nautilus submenu
-            main_menu_item.set_submenu(main_menu)                       # Add the item to the submenu
+            menu = Nautilus.Menu()                                  # Create Nautilus submenu
+            menu_item.set_submenu(menu)                             # Add the item to the submenu
+            return menu, menu_item
+
+        def add_sub_menu_item(self, name, label, menu, callback, arguments):
+            menu_item = Nautilus.MenuItem(
+                name=f"LinuxFileConverterMenuProvider::{name}",
+                label=label,
+            )
+            menu_item.connect('activate', callback, arguments)
+            menu.append_item(menu_item)
+
+        # --- Build the context menu and submenus ---
+        def sub_menu_builder(self, formats, callback, files):
+            main_menu, main_menu_item = self.create_sub_menu_object("convert_to_menu", "Convert to...")
 
             for file_format in formats:
-                main_menu_sub_item = Nautilus.MenuItem(
-                    name='LinuxFileConverterMenuProvider::convert_to_' + file_format['name'],
-                    label=(file_format['name']),
-                )
-                main_menu_sub_item.connect('activate', callback, file_format, files)
-                main_menu.append_item(main_menu_sub_item)               # Append sub item to menu
+                self.add_sub_menu_item(f"convert_to_{file_format['name']}", file_format['name'], main_menu, callback, {"format": file_format, "files": files})
 
-            if formats[1]['name'] == 'JPEG':
+            if callback == start_image_conversion:
                 if user_configuration["convertToSquares"]:
-                    main_menu_sub_menu_item_squares = Nautilus.MenuItem(
-                        name="LinuxFileConverterMenuProvider::square_format_menu",
-                        label="Square...",
-                    )
-                    main_menu_sub_menu_squares = Nautilus.Menu()
-                    main_menu_sub_menu_item_squares.set_submenu(main_menu_sub_menu_squares)
-
+                    main_menu_sub_menu_squares, main_menu_sub_menu_item_squares = self.create_sub_menu_object("square_format_menu", "Square...")
                     for square_format in WRITE_FORMATS_SQUARE:
-                        main_menu_sub_menu_squares_sub_item = Nautilus.MenuItem(
-                            name='LinuxFileConverterMenuProvider::square_convert_' + square_format['name'],
-                            label=(square_format['name']),
-                        )
-                        main_menu_sub_menu_squares_sub_item.connect('activate', callback, square_format, files)
-                        main_menu_sub_menu_squares.append_item(main_menu_sub_menu_squares_sub_item)
+                        self.add_sub_menu_item(f"square_convert_{square_format["name"]}", square_format["name"], main_menu_sub_menu_squares, callback, {"format": square_format, "files": files})
                     main_menu.append_item(main_menu_sub_menu_item_squares)
 
                 if user_configuration["convertToWallpapers"]:
-                    main_menu_sub_menu_item_wallpapers = Nautilus.MenuItem(
-                        name="LinuxFileConverterMenuProvider::wallpaper_format_menu",
-                        label="Wallpaper...",
-                    )
-                    main_menu_sub_menu_wallpapers = Nautilus.Menu()
-                    main_menu_sub_menu_item_wallpapers.set_submenu(main_menu_sub_menu_wallpapers)
-
-                    for wallpaper_formats in WRITE_FORMATS_WALLPAPER:
-                        main_menu_sub_menu_wallpapers_sub_item = Nautilus.MenuItem(
-                            name='LinuxFileConverterMenuProvider::wallpaper_convert_' + wallpaper_formats['name'],
-                            label=(wallpaper_formats['name']),
-                        )
-                        main_menu_sub_menu_wallpapers_sub_item.connect('activate', callback, wallpaper_formats, files)
-                        main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_wallpapers_sub_item)
+                    main_menu_sub_menu_wallpapers, main_menu_sub_menu_item_wallpapers = self.create_sub_menu_object("wallpaper_format_menu", "Wallpaper...")
+                    for wallpaper_format in WRITE_FORMATS_WALLPAPER:
+                        self.add_sub_menu_item(f"wallpaper_convert_{wallpaper_format["name"]}", wallpaper_format["name"], main_menu_sub_menu_wallpapers, callback, {"format": wallpaper_format, "files": files})
                     main_menu.append_item(main_menu_sub_menu_item_wallpapers)
 
             if user_configuration["showPatchNoteButton"]:
-                main_menu_sub_item_patch_notes = Nautilus.MenuItem(
-                    name="LinuxFileConverterMenuProvider::patch_notes",
-                    label=f"View patch notes ({converter_version})",
-                )
-                callback = self.show_patch_notes
-                main_menu_sub_item_patch_notes.connect('activate', callback,)
-                main_menu.append_item(main_menu_sub_item_patch_notes)
+                self.add_sub_menu_item("patch_notes", f"View patch notes ({converter_version})", main_menu, self.show_patch_notes, {})
 
             if user_configuration["showConfigHint"]:
-                main_menu_sub_item_show_configuration_page = Nautilus.MenuItem(
-                    name="LinuxFileConverterMenuProvider::show_configuration_page",
-                    label=f"Configure LFCA",
-                )
-                callback = self.openConfigHint
-                main_menu_sub_item_show_configuration_page.connect('activate', callback,)
-                main_menu.append_item(main_menu_sub_item_show_configuration_page)
+                self.add_sub_menu_item("patch_notes", f"Configure LFCA", main_menu, self.show_configuration_page, {})
 
             return [main_menu_item]
 
         # --- openPatchNotes and openConfigHint functions for context menu options ---
-        def show_patch_notes(self, menu):
+        def show_patch_notes(self, menu, arguments):
             os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
 
-        def openConfigHint(self, menu):
+        def show_configuration_page(self, menu, arguments):
             os.system(f"nohup xdg-open 'https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md' &")
             os.system(f"nohup xdg-open {CONFIGURATION_FILE} &")
 
@@ -750,9 +723,9 @@ if len(SYSTEM_ARGUMENTS) > 0:
                     for retun_path in SYSTEM_ARGUMENTS:
                         return_paths.append(Path(retun_path))
                     if return_type == 0:
-                        start_image_conversion(self, return_format, return_paths)
+                        start_image_conversion(self, {"format": return_format, "files": return_paths})
                     elif return_type == 1:
-                        start_ffmpeg_conversion(self, return_format, return_paths)
+                        start_ffmpeg_conversion(self, {"format": return_format, "files": return_paths})
             Gtk.main_quit()
 
         # --- Close the popup if ESC is pressed ---
