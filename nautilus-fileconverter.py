@@ -611,6 +611,7 @@ def get_installation_type() -> InstallationType:
     return detected_installation_type
 
 def start_special_image_conversion(menu, arguments):
+    print(arguments)
     subprocess = Process(target=convert_images, kwargs={"menu":menu, "format": arguments["format"], "files": arguments["files"], "dimensions": [arguments['w'], arguments['h']]})
     subprocess.start()
 
@@ -727,6 +728,14 @@ if get_installation_type() == InstallationType.NAUTILUS:
 # --- Adaption class ---
 if get_installation_type() != InstallationType.NAUTILUS:
     class LinuxFileConverterWindow(Gtk.Window):
+        class ComboBoxType(Enum):
+            WALLPAPER_LANDSCAPE = 0,
+            WALLPAPER_PORTRAIT = 1,
+            SQUARE = 2
+
+        main_box = None
+        selected_dimensions = None
+
         # --- Add a label to a selected box ---
         def add_label_centered(self, box, markup):
             label = Gtk.Label()
@@ -734,8 +743,17 @@ if get_installation_type() != InstallationType.NAUTILUS:
             label.set_justify(Gtk.Justification.CENTER)
             box.pack_start(label, True, True, 0)
 
+        def add_combo_box(self, box, list_objects, callback):
+            combo_box = Gtk.ComboBox.new_with_model(list_objects)
+            renderer_text = Gtk.CellRendererText()
+            combo_box.set_entry_text_column(0)
+            combo_box.pack_start(renderer_text, True)
+            combo_box.add_attribute(renderer_text, "text", 0)
+            combo_box.connect("changed", callback)
+            box.pack_start(combo_box, True, True, 0)
+
         # --- Generate the combo-box with all compatible formats ---
-        def add_format_combo_box(self, box):
+        def add_format_combo_boxes(self, box):
             extensions = Gtk.ListStore(str, str, int)
             only_images_selected = True
             only_audios_selected = True
@@ -749,31 +767,59 @@ if get_installation_type() != InstallationType.NAUTILUS:
                     only_videos_selected = False
 
             if user_configuration["showDummyOption"]:
-                extensions.append(["-", "none", 2])
+                extensions.append(["-", "{}", -1])
 
             if only_images_selected:
                 for selected_write_format in WRITE_FORMATS_IMAGE:
                     print(selected_write_format)
                     extensions.append([selected_write_format['name'], str(selected_write_format), 0])
-                if user_configuration["convertToSquares"]:
-                    for selected_write_format in WRITE_FORMATS_SQUARE:
-                        extensions.append([selected_write_format['name'], str(selected_write_format), 0])
-                if user_configuration["convertToWallpapers"]:
-                    for selected_write_format in WRITE_FORMATS_WALLPAPER:
-                        extensions.append([selected_write_format['name'], str(selected_write_format), 0])
             if only_audios_selected:
                 for selected_write_format in WRITE_FORMATS_AUDIO:
                     extensions.append([selected_write_format['name'], str(selected_write_format), 1])
             if only_videos_selected:
                 for selected_write_format in WRITE_FORMATS_VIDEO:
                     extensions.append([selected_write_format['name'], str(selected_write_format), 1])
-            combo_box = Gtk.ComboBox.new_with_model(extensions)
-            renderer_text = Gtk.CellRendererText()
-            combo_box.set_entry_text_column(0)
-            combo_box.pack_start(renderer_text, True)
-            combo_box.add_attribute(renderer_text, "text", 0)
-            combo_box.connect("changed", self.start_conversion)
-            box.pack_start(combo_box, True, True, 0)
+            self.add_combo_box(box, extensions, self.start_conversion)
+
+            if only_images_selected:
+                if user_configuration["convertToSquares"]:
+                    self.add_combo_box_special(self.ComboBoxType.SQUARE, {"box": box})
+                    if False:
+                        for selected_write_format in WRITE_FORMATS_SQUARE:
+                            extensions.append([selected_write_format['name'], str(selected_write_format), 0])
+                if user_configuration["convertToWallpapers"]:
+                    self.add_combo_box_special(self.ComboBoxType.WALLPAPER_LANDSCAPE, {"box": box})
+                    self.add_combo_box_special(self.ComboBoxType.WALLPAPER_PORTRAIT, {"box": box})
+                    if False:
+                        for selected_write_format in WRITE_FORMATS_WALLPAPER:
+                            extensions.append([selected_write_format['name'], str(selected_write_format), 0])
+
+        def add_combo_box_special(self, combo_box_type, arguments):
+            box = arguments["box"]
+            list_objects = Gtk.ListStore(str, str, int)
+            label_text = ""
+            if user_configuration["showDummyOption"]:
+                list_objects.append(["-", "{}", -2])
+            match combo_box_type:
+                case self.ComboBoxType.SQUARE:
+                    self.main_box = box
+                    for dimension in WRITE_DIMENSIONS_SQUARE:
+                        list_objects.append([dimension["name"], str({'w': dimension['w'], 'h': dimension['w']}), 2])
+                        label_text = "Select square size:"
+                case self.ComboBoxType.WALLPAPER_LANDSCAPE:
+                    self.main_box = box
+                    for dimension in WRITE_DIMENSIONS_WALLPAPER_LANDSCAPE:
+                        list_objects.append([dimension["name"], str({'w': dimension['w'], 'h': dimension['h']}), 2])
+                        label_text = "Landscape wallpaper dimensions:"
+                case self.ComboBoxType.WALLPAPER_PORTRAIT:
+                    self.main_box = box
+                    for dimension in WRITE_DIMENSIONS_WALLPAPER_PORTRAIT:
+                        list_objects.append([dimension["name"], str({'w': dimension['w'], 'h': dimension['h']}), 2])
+                        label_text = "Portrait wallpaper dimensions"
+            
+            self.add_label_centered(box, label_text)
+            self.add_combo_box(box, list_objects, self.start_conversion)
+            
         
         def __init__(self):
             super().__init__(title=f"Convert file")
@@ -785,7 +831,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
             self.add_label_centered(box, "Select a format:")
-            self.add_format_combo_box(box)
+            self.add_format_combo_boxes(box)
             if user_configuration["showPatchNoteButton"]:
                 self.add_label_centered(box, f"""<span size="x-small">version {CONVERTER_VERSION}</span>""")
             if user_configuration["showConfigHint"]:
@@ -800,18 +846,28 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 model = combo.get_model()
                 return_name, return_format, return_type = model[tree_iter][:4]
                 print(return_name, return_format, return_type)
-                return_format = ast.literal_eval(return_format)
-                return_paths = []
-                if not return_type == 2:
-                    self.hide()
+                if return_type >= 0:
+                    if return_type <= 1:
+                        self.hide()
+                    return_format = ast.literal_eval(return_format)
+                    return_paths = []
                     for retun_path in SYSTEM_ARGUMENTS:
                         return_paths.append(Path(retun_path))
-                    if return_type == 0:
-                        start_image_conversion(self, {"format": return_format, "files": return_paths})
-                    elif return_type == 1:
-                        start_ffmpeg_conversion(self, {"format": return_format, "files": return_paths})
-            Gtk.main_quit()
-
+                    match return_type:
+                        case 0:
+                            if self.selected_dimensions != None:
+                                start_special_image_conversion(self, {"format": return_format, "files": return_paths, 'w': self.selected_dimensions['w'], 'h': self.selected_dimensions['h']})
+                            else:
+                                start_image_conversion(self, {"format": return_format, "files": return_paths})
+                        case 1:
+                            start_ffmpeg_conversion(self, {"format": return_format, "files": return_paths})                            
+                        case 2:
+                            self.selected_dimensions = {'w': return_format['w'], 'h': return_format['h']}
+                    if return_type <= 1:
+                        Gtk.main_quit()
+                elif return_type == -2:
+                    self.selected_dimensions = None
+                        
         # --- Close the popup if ESC is pressed ---
         def on_key_press_event(self, widget, event):
             print(f"Key pressed: {event.keyval}")
