@@ -268,7 +268,6 @@ CONFIG_PRESET = {
     "showPatchNoteButton": True,
     "showConfigHint": True,
     "convertToSquares": True,
-    "checkForDoubleInstallation": True,
     "timeInNames": True,
     "convertFromOctetStream": False,
     "showDummyOption": True,
@@ -341,10 +340,6 @@ if user_configuration["automaticUpdates"]:
                 os.system('notify-send --app-name="linux-file-converter-addon" "Update installed." "More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"')
             with open(application_file_location, 'w') as file:
                 file.write(downloaded_data)
-
-# --- Check for duplicate script if enabled ---
-if user_configuration["checkForDoubleInstallation"] and "/.local/share/" in APPLICATION_PATH and os.path.isfile("/usr/share/nautilus-python/extensions/nautilus-fileconverter.py"):
-    print(f"WARNING(Nautilus-file-converter)(103): Double script installation detected. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
 
 # --- Check for development status and apply settings ---
 #     print() isn't working anymore after this command unless DEBUG_MODE is enabled
