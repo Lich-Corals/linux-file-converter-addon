@@ -424,37 +424,64 @@ WRITE_FORMATS_JXLPY = [{'name': 'JXL'}]
 
 WRITE_FORMATS_AVIF = [{ 'name': 'AVIF'}]
 
-WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16'},
-                        {'name': 'PNG: 32x32', 'extension': 'png', 'square': '32'},
-                        {'name': 'PNG: 64x64', 'extension': 'png', 'square': '64'},
-                        {'name': 'PNG: 128x128', 'extension': 'png', 'square': '128'},
-                        {'name': 'PNG: 256x256', 'extension': 'png', 'square': '256'},
-                        {'name': 'PNG: 512x512', 'extension': 'png', 'square': '512'},
-                        {'name': 'PNG: 1024x1024', 'extension': 'png', 'square': '1024'},
-                        {'name': 'JPEG: 16x16', 'extension': 'JPEG', 'square': '16'},
-                        {'name': 'JPEG: 32x32', 'extension': 'JPEG', 'square': '32'},
-                        {'name': 'JPEG: 64x64', 'extension': 'JPEG', 'square': '64'},
-                        {'name': 'JPEG: 128x128', 'extension': 'JPEG', 'square': '128'},
-                        {'name': 'JPEG: 256x256', 'extension': 'JPEG', 'square': '256'},
-                        {'name': 'JPEG: 512x512', 'extension': 'JPEG', 'square': '512'},
-                        {'name': 'JPEG: 1024x1024', 'extension': 'JPEG', 'square': '1024'}]
+if False:
+    WRITE_FORMATS_SQUARE = [{'name': 'PNG: 16x16', 'extension': 'png', 'square': '16'},
+                            {'name': 'PNG: 32x32', 'extension': 'png', 'square': '32'},
+                            {'name': 'PNG: 64x64', 'extension': 'png', 'square': '64'},
+                            {'name': 'PNG: 128x128', 'extension': 'png', 'square': '128'},
+                            {'name': 'PNG: 256x256', 'extension': 'png', 'square': '256'},
+                            {'name': 'PNG: 512x512', 'extension': 'png', 'square': '512'},
+                            {'name': 'PNG: 1024x1024', 'extension': 'png', 'square': '1024'},
+                            {'name': 'JPEG: 16x16', 'extension': 'JPEG', 'square': '16'},
+                            {'name': 'JPEG: 32x32', 'extension': 'JPEG', 'square': '32'},
+                            {'name': 'JPEG: 64x64', 'extension': 'JPEG', 'square': '64'},
+                            {'name': 'JPEG: 128x128', 'extension': 'JPEG', 'square': '128'},
+                            {'name': 'JPEG: 256x256', 'extension': 'JPEG', 'square': '256'},
+                            {'name': 'JPEG: 512x512', 'extension': 'JPEG', 'square': '512'},
+                            {'name': 'JPEG: 1024x1024', 'extension': 'JPEG', 'square': '1024'}]
 
-WRITE_FORMATS_WALLPAPER = [{'name': 'SD P | 480x640', 'extension': 'png', 'w': '480', 'h': '640'},
-                           {'name': 'SD L | 640x480', 'extension': 'png', 'w': '640', 'h': '480'},
-                           {'name': 'HD P | 720x1280', 'extension': 'png', 'w': '720', 'h': '1280'},
-                           {'name': 'HD L | 1280x720', 'extension': 'png', 'w': '1280', 'h': '720'},
-                           {'name': 'FHD P | 1080x1920', 'extension': 'png', 'w': '1080', 'h': '1920'},
-                           {'name': 'FHD L | 1920x1080', 'extension': 'png', 'w': '1920', 'h': '1080'},
-                           {'name': 'QHD P | 1440x2560', 'extension': 'png', 'w': '1440', 'h': '2560'},
-                           {'name': 'QHD L | 2560x1440', 'extension': 'png', 'w': '2560', 'h': '1440'},
-                           {'name': '4K-UHD P | 2160x3840', 'extension': 'png', 'w': '2160', 'h': '3840'},
-                           {'name': '4K-UHD L | 3840x2160', 'extension': 'png', 'w': '3840', 'h': '2160'},
-                           {'name': '8K-UHD P | 4320x7680', 'extension': 'png', 'w': '4320', 'h': '7680'},
-                           {'name': '8K-UHD L | 7680x4320', 'extension': 'png', 'w': '7680', 'h': '4320'},
-                           {'name': 'Galaxy S7 P | 1440x2960', 'extension': 'png', 'w': '1440', 'h': '2960'},
-                           {'name': 'Galaxy S7 L | 1440x2960', 'extension': 'png', 'w': '2960', 'h': '1440'},
-                           {'name': 'iPad Pro P | 2048x2732', 'extension': 'png', 'w': '2048', 'h': '2732'},
-                           {'name': 'iPad Pro L | 2048x2732', 'extension': 'png', 'w': '2732', 'h': '2048'}]
+    WRITE_FORMATS_WALLPAPER = [{'name': 'SD P | 480x640', 'extension': 'png', 'w': '480', 'h': '640'},
+                            {'name': 'SD L | 640x480', 'extension': 'png', 'w': '640', 'h': '480'},
+                            {'name': 'HD P | 720x1280', 'extension': 'png', 'w': '720', 'h': '1280'},
+                            {'name': 'HD L | 1280x720', 'extension': 'png', 'w': '1280', 'h': '720'},
+                            {'name': 'FHD P | 1080x1920', 'extension': 'png', 'w': '1080', 'h': '1920'},
+                            {'name': 'FHD L | 1920x1080', 'extension': 'png', 'w': '1920', 'h': '1080'},
+                            {'name': 'QHD P | 1440x2560', 'extension': 'png', 'w': '1440', 'h': '2560'},
+                            {'name': 'QHD L | 2560x1440', 'extension': 'png', 'w': '2560', 'h': '1440'},
+                            {'name': '4K-UHD P | 2160x3840', 'extension': 'png', 'w': '2160', 'h': '3840'},
+                            {'name': '4K-UHD L | 3840x2160', 'extension': 'png', 'w': '3840', 'h': '2160'},
+                            {'name': '8K-UHD P | 4320x7680', 'extension': 'png', 'w': '4320', 'h': '7680'},
+                            {'name': '8K-UHD L | 7680x4320', 'extension': 'png', 'w': '7680', 'h': '4320'},
+                            {'name': 'Galaxy S7 P | 1440x2960', 'extension': 'png', 'w': '1440', 'h': '2960'},
+                            {'name': 'Galaxy S7 L | 1440x2960', 'extension': 'png', 'w': '2960', 'h': '1440'},
+                            {'name': 'iPad Pro P | 2048x2732', 'extension': 'png', 'w': '2048', 'h': '2732'},
+                            {'name': 'iPad Pro L | 2048x2732', 'extension': 'png', 'w': '2732', 'h': '2048'}]
+else:
+    WRITE_DIMENSIONS_SQUARE =   [{'name': '16x16','w': '16'},
+                                {'name': '32x32', 'w': '32'},
+                                {'name': '64x64', 'w': '64'},
+                                {'name': '128x128', 'w': '128'},
+                                {'name': '256x256', 'w': '256'},
+                                {'name': '512x512', 'w': '512'},
+                                {'name': '1024x1024', 'w': '1024'}]
+
+    WRITE_DIMENSIONS_WALLPAPER_LANDSCAPE =  [{'name': 'SD | 640x480', 'w': '640', 'h': '480'},
+                                            {'name': 'HD | 1280x720', 'w': '1280', 'h': '720'},
+                                            {'name': 'FHD | 1920x1080', 'w': '1920', 'h': '1080'},
+                                            {'name': 'QHD | 2560x1440', 'w': '2560', 'h': '1440'},
+                                            {'name': '4K-UHD | 3840x2160', 'w': '3840', 'h': '2160'},
+                                            {'name': '8K-UHD | 7680x4320', 'w': '7680', 'h': '4320'},
+                                            {'name': 'Phone | 1440x2960', 'w': '2960', 'h': '1440'},
+                                            {'name': 'Tablet | 2048x2732', 'w': '2732', 'h': '2048'}]
+    
+    WRITE_DIMENSIONS_WALLPAPER_PORTRAIT =   [{'name': 'SD | 480x640', 'w': '480', 'h': '640'},
+                                            {'name': 'HD | 720x1280', 'w': '720', 'h': '1280'},
+                                            {'name': 'FHD | 1080x1920', 'w': '1080', 'h': '1920'},
+                                            {'name': 'QHD | 1440x2560', 'w': '1440', 'h': '2560'},
+                                            {'name': '4K-UHD | 2160x3840', 'w': '2160', 'h': '3840'},
+                                            {'name': '8K-UHD | 4320x7680', 'w': '4320', 'h': '7680'},
+                                            {'name': 'Phone | 1440x2960', 'w': '1440', 'h': '2960'},
+                                            {'name': 'Tablet | 2048x2732', 'w': '2048', 'h': '2732'}]
 
 WRITE_FORMATS_AUDIO = [{'name': 'MP3'},
                        {'name': 'WAV'},
@@ -583,6 +610,10 @@ def get_installation_type() -> InstallationType:
             detected_installation_type = installation_location
     return detected_installation_type
 
+def start_special_image_conversion(menu, arguments):
+    subprocess = Process(target=convert_images, kwargs={"menu":menu, "format": arguments["format"], "files": arguments["files"], "dimensions": [arguments['w'], arguments['h']]})
+    subprocess.start()
+
 #######
 ####### SELF-PREPARATION SECTION  --  CLASSES
 ####### Definitions of classes for Nautilus- and adaption use
@@ -640,15 +671,42 @@ if get_installation_type() == InstallationType.NAUTILUS:
             if callback == start_image_conversion:
                 if user_configuration["convertToSquares"]:
                     main_menu_sub_menu_squares, main_menu_sub_menu_item_squares = self.create_sub_menu_object("square_format_menu", "Square...")
-                    for square_format in WRITE_FORMATS_SQUARE:
-                        self.add_sub_menu_item(f"square_convert_{square_format["name"]}", square_format["name"], main_menu_sub_menu_squares, callback, {"format": square_format, "files": files})
+                    for square_dimension in WRITE_DIMENSIONS_SQUARE:
+                        main_menu_sub_menu_squares_sub_menu, main_menu_sub_menu_item_squares_sub_menu = self.create_sub_menu_object(f"square_format_menu_sub_menu_{square_dimension["name"]}", square_dimension["name"])
+                        main_menu_sub_menu_squares.append_item(main_menu_sub_menu_item_squares_sub_menu)
+                        for write_format in formats:
+                            self.add_sub_menu_item(f"square_format_menu_sub_menu_item_{square_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_squares_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': square_dimension['w'], 'h': square_dimension['w']})
                     main_menu.append_item(main_menu_sub_menu_item_squares)
 
+                    if False:
+                        main_menu_sub_menu_squares, main_menu_sub_menu_item_squares = self.create_sub_menu_object("square_format_menu", "Square...")
+                        for square_format in WRITE_FORMATS_SQUARE:
+                            self.add_sub_menu_item(f"square_convert_{square_format["name"]}", square_format["name"], main_menu_sub_menu_squares, callback, {"format": square_format, "files": files})
+                        main_menu.append_item(main_menu_sub_menu_item_squares)
+
                 if user_configuration["convertToWallpapers"]:
-                    main_menu_sub_menu_wallpapers, main_menu_sub_menu_item_wallpapers = self.create_sub_menu_object("wallpaper_format_menu", "Wallpaper...")
-                    for wallpaper_format in WRITE_FORMATS_WALLPAPER:
-                        self.add_sub_menu_item(f"wallpaper_convert_{wallpaper_format["name"]}", wallpaper_format["name"], main_menu_sub_menu_wallpapers, callback, {"format": wallpaper_format, "files": files})
+                    main_menu_sub_menu_wallpapers, main_menu_sub_menu_item_wallpapers = self.create_sub_menu_object("square_format_menu", "Wallpaper...")
+                    main_menu_sub_menu_landscape, main_menu_sub_menu_item_landscape = self.create_sub_menu_object("square_format_menu", "Landscape...")
+                    main_menu_sub_menu_portrait, main_menu_sub_menu_item_portrait = self.create_sub_menu_object("square_format_menu", "Portrait...")
+                    main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_item_landscape)
+                    main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_item_portrait)
+                    for landscape_dimension in WRITE_DIMENSIONS_WALLPAPER_LANDSCAPE:
+                        main_menu_sub_menu_landscape_sub_menu, main_menu_sub_menu_item_landscape_sub_menu = self.create_sub_menu_object(f"landscape_format_menu_sub_menu_{landscape_dimension["name"]}", landscape_dimension["name"])
+                        main_menu_sub_menu_landscape.append_item(main_menu_sub_menu_item_landscape_sub_menu)
+                        for write_format in formats:
+                            self.add_sub_menu_item(f"landscape_format_menu_sub_menu_item_{landscape_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_landscape_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': landscape_dimension['w'], 'h': landscape_dimension['h']})
+                    for portrait_dimension in WRITE_DIMENSIONS_WALLPAPER_PORTRAIT:
+                        main_menu_sub_menu_portrait_sub_menu, main_menu_sub_menu_item_portrait_sub_menu = self.create_sub_menu_object(f"portrait_format_menu_sub_menu_{portrait_dimension["name"]}", portrait_dimension["name"])
+                        main_menu_sub_menu_portrait.append_item(main_menu_sub_menu_item_portrait_sub_menu)
+                        for write_format in formats:
+                            self.add_sub_menu_item(f"portrait_format_menu_sub_menu_item_{portrait_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_portrait_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': portrait_dimension['w'], 'h': portrait_dimension['h']})
                     main_menu.append_item(main_menu_sub_menu_item_wallpapers)
+
+                    if False:
+                        main_menu_sub_menu_wallpapers, main_menu_sub_menu_item_wallpapers = self.create_sub_menu_object("wallpaper_format_menu", "Wallpaper...")
+                        for wallpaper_format in WRITE_FORMATS_WALLPAPER:
+                            self.add_sub_menu_item(f"wallpaper_convert_{wallpaper_format["name"]}", wallpaper_format["name"], main_menu_sub_menu_wallpapers, callback, {"format": wallpaper_format, "files": files})
+                        main_menu.append_item(main_menu_sub_menu_item_wallpapers)
 
             if user_configuration["showPatchNoteButton"]:
                 self.add_sub_menu_item("patch_notes", f"View patch notes ({CONVERTER_VERSION})", main_menu, self.show_patch_notes, {})
