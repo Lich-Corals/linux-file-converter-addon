@@ -1,6 +1,9 @@
 # Installation for Thunar
 This section will guide you through the installation to Thunar file manager.
-__Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.__
+
+> [!IMPORTANT]  
+> Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.
+
 ## Thunar specific dependencies
 [Thunar](https://github.com/neilbrown/thunar) needs to be installed.
 
@@ -26,7 +29,10 @@ Now go to the [next section](#enable-the-action-in-thunar).
      ```bash
      mv nautilus-fileconverter.py ~/.local/bin/linux-file-converter-addon.py
      ```
-     Note: you can place the file anywhere you want. The guide will continue with .local/bin location.
+
+     > [!TIP]  
+     > You can place the file anywhere you want. The guide will continue with `.local/bin ` as the location for the script.
+
 - Give the script permission to be executed as script:
      ```bash
      chmod +x ~/.local/bin/nautilus-fileconverter.py
@@ -49,7 +55,9 @@ Now go to the [next section](#enable-the-action-in-thunar).
      - [ ] Other Files
 
 You should now see the 'Convert to...' action when selecting an image, audio or video file.
-Note: It may occur to you that you don't see the action when selecting multiple files.
+
+> [!NOTE]  
+> It may occur to you that you don't see the action when selecting multiple files. This is an issue with Thunar.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)

@@ -2,14 +2,19 @@
 The program can be configured using the  ~/.config/linux-file-converter-addon/config.json file, which will be created when the script is executed for the first time, as long as the program is able to write in the ~/.config directory.
 Just modify the file, by changing the 'true' and 'false' values.
 This configuration should apply to all installations of linux-file-converter-addon at once.
-<b>Don't forget to save your changes, and restart Nautilus after modifying the configuration!</b> Relaunching is not necessary when using the adaption version for another program.
-```bash
-#Quit Nautilus
-nautilus -q
 
-#start it again, you can also use the normal launcher.
-nohup nautilus & disown
-```
+> [!IMPORTANT]  
+> Don't forget to save your changes, and restart Nautilus after modifying the configuration!
+> Relaunching is not necessary when using the adaption version for another program.
+>
+> ```bash
+> #Quit Nautilus
+> nautilus -q
+>
+> #start it again, you can also use the normal launcher.
+> nohup nautilus & disown
+> ```
+
 ## Automatic updates
 Automatic updates are only working in the home dictionary. If you've installed the script at the system-wide location, you may turn off automatic updates.
 <br/><br/>To <b>turn off automatic updates</b>, open the config file with a text editor and set the `automaticUpdates` variable to 'false'.
@@ -21,12 +26,11 @@ To turn off the <b>patch note button</b> in the context menu and the <b>version 
 <br/><br/>To turn off the <b>Configure NFC43 button</b> in the context menu and the <b>config hint</b> in the adaption window, open the config file with a text editor and set the `showConfigHint` variable to 'false'.
 <br/><br/>To turn off the '<b>convert to square</b>' option, open the config file with a text editor and set the `convertToSquares` variable to 'false'.
 <br/><br/>To turn off the '<b>convert to wallpaper</b>' functions, open the config file with a text editor and set the `convertToLandscapeWallpapers` and-or the `convertToPortraitWallpapers` variable to 'false'.
-<br/>Note: If you still have the `convertToWallpapers` option in your config.json file, you may remove it; it was replaced by the two options above and does not change anything anymore.
+
+> [!NOTE]  
+> If you still have the `convertToWallpapers` option in your config.json file, you may remove it; it was replaced by the two options above and does not change anything anymore.
 
 ## Other options
-<br/>To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.
-Note: This option may be a bit buggy in Nemo, I'll fix it in the future if it appears to be annoying to some users.
-
 To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
 <br/><br/>To turn off the <b>"Conversion finished" notifications</b>, open the config file with a text editor and set the `displayFinishNotification` variable to 'false'.
 
@@ -36,8 +40,10 @@ To turn off the __addition of timestamps__ to filenames, open the config file wi
 To disable the <b>"-" option</b> in the dropdown-list, set the `showDummyOption` setting to 'false'.
 
 If the program does not automatically generate or update the nemo_action file, you can enable the `alwaysCreateNemoAction` option to override the check if the program is installed for Nemo. 
-<br/>Note: The configuration is used globally; hence, other installations of the file converter (for Nautilus or Thunar) will also generate a nemo_action in their current directory if this option is enabled.
-<br/>To avoid this, enable this option, run the extension in Nemo once and finally disable the option again.
+
+> [!WARNING]  
+> The configuration is used globally; hence, other installations of the file converter (for Nautilus or Thunar) will also generate a nemo_action in their current directory if this option is enabled.
+> <br/>To avoid this, enable this option, run the extension in Nemo once and finally disable the option again.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)

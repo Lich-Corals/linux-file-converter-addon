@@ -43,12 +43,16 @@ Or run this one to only install the mandatory dependencies:
 ```bash
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --create-venv
 ```
-**Note**: In the case that the command `python3` isn't found, check the python installation or replace it with `python`.
-<br/>
-**Another note**: If the script had an update and (optional) dependencies are added, you can just run the above command again to automatically add them to the venv.
-<br/>
-**Another useful note**: Should any installations of dependencies fail, you can manually install them into the venv created by the program. It is located here: `~/.config/linux-file-converter-addon/venv`.
-<br/><br/>
+
+> [!TIP]  
+> In the case that the command `python3` isn't found, check the python installation or replace it with `python`.
+
+> [!TIP]  
+> If the script had an update and (optional) dependencies are added, you can just run the above command again to automatically add them to the venv.
+
+> [!TIP]  
+> Should any installations of dependencies fail, you can manually install them into the venv created by the program. It is located here: `~/.config/linux-file-converter-addon/venv`.
+
 You can skip the following sections [Manual Installation](#manual-installation) and [Optional dependencies](#optional-dependencies) if you used automatic installation. Continue by installing the extension to the file manager of your choice.
 
 #### Manual installation
@@ -82,8 +86,9 @@ pip install pillow-avif-plugin
 ```bash
 pip install jxlpy
 ```
-Note: jxlpy is in a very early state, you may have issues while installing it using pip.
-You may need to [install it manually](https://github.com/olokelo/jxlpy#build-it-yourself).
+
+> [!NOTE]
+> Jxlpy is in a very early state, you may have issues while installing it using pip. In this case you need to [install it manually](https://github.com/olokelo/jxlpy#build-it-yourself).
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)

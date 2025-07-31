@@ -1,6 +1,9 @@
 # Installation for Nemo
 This section will guide you through the installation to Nemo.
-__Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.__
+
+> [!IMPORTANT]  
+> Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.
+
 ## Nemo specific dependencies
 [Nemo](https://github.com/linuxmint/nemo) needs to be installed.
 ```bash

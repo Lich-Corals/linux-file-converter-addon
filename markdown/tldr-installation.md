@@ -1,5 +1,10 @@
 # TL;DR installation guide
-This is the fastest way to install the extension to your file manager. If anything does not work, please follow the detailed guide for your desired file manager before opening an issue... unless you've found a bug in the software!
+This is the fastest way to install the extension to your file manager. 
+
+> [!NOTE]  
+> If anything does not work as expected, please follow the detailed guide for your desired file manager.  
+> If you believe the issue is caused by the installation script, [check if anyone had the same issue before](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=) or feel free to open a new [GitHub issue](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
+
 
 ## Dependencies
 Pip and Python3, Nautilus-Python.
@@ -32,13 +37,13 @@ python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-
 ```bash
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-nemo
 ```
-Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md#enabling-the-action-in-nemo)
+Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md#enabling-the-action-in-nemo).
 
 **For Thunar:**
 ```bash
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-thunar
 ```
-Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md#enable-the-action-in-thunar)
+Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md#enable-the-action-in-thunar).
 
 **For all of the above:**
 ```bash

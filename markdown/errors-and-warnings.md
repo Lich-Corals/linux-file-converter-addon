@@ -28,14 +28,6 @@ Without pillow-avif-plugin, the converter won't be able to convert to avif file 
 To solve this warning, you need to install pillow-avif-plugin using pip.
 <br/>View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
 
-### (103): Double script installation detected
-<b>Causes:</b><br/>
-The script is installed in a home location and finds another script with the same name in the root installation folder ("/usr/share/nautilus-python/extensions/").
-<br/><br/><b>Possible Effects:</b><br/>
-The context menu may appear two times.
-<br/><br/><b>How to solve?</b><br/>
-To solve this issue, you have to remove one of the files (in "/usr/share/nautilus-python/extensions/" or in "~/.local/share/nautilus-python/extensions/")
-
 ### (104): Attempting to update
 <b>Causes:</b><br/>
 Automatic updates are enabled and there are updates available.

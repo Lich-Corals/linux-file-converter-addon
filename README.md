@@ -11,7 +11,6 @@
 Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus**, **Nemo** und **Thunar** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
 The program offers many options to customise the appearance of its context menu. There are also a few extra formats which can be added by installing optional dependencies.
 The tool has a built-in auto-update function to make sure the newest version is always installed.
-Note that the Nemo and Thunar ports are quite new and not as well tested as the Nautilus version. If you experience any problems, please report them on the [issue page](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose).
 <br/>
 <p align="center">
     <img height="512px" alt="ogre" src="https://github.com/user-attachments/assets/102ec8e2-8040-49f5-8c41-879f4fdbb84c" />
@@ -60,7 +59,8 @@ Just right-click on any supported file and choose the "Convert to..." option. In
 
 Converting a file can take some time. There is no indicator when the process is done.
 
-If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues) page.
+> [!IMPORTANT]  
+> If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues) page.
 
 # Contributing
 Contributions are always welcome!

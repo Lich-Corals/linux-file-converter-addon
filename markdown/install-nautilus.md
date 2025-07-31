@@ -1,6 +1,9 @@
 # Installation for Nautilus
 This section will guide you through the installation to Nautilus.
-__Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.__
+
+> [!IMPORTANT]  
+> Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.
+
 ## Nautilus specific dependencies
 GNOME's file viewer [Nautilus](https://apps.gnome.org/en-GB/app/org.gnome.Nautilus/) should be installed, otherwise it will be hard to install extension to it.
 
@@ -36,7 +39,10 @@ Nautilus will quit at the end of the installation. This is intended and necessar
         cd ./linux-file-converter-addon
         ```
 - Move the script to the right location:
-    <br><b>Important: Only use <i>one</i> of the following commands, otherwise you will get the menu-option twice!</b>
+
+    > [!CAUTION]  
+    > Only use <i>one</i> of the following commands, otherwise you will get the menu-option in Nautilus twice!</b>
+    
     - For a user specific installation move the file to '~/.local/share/nautilus-python/extensions/' using this command in the dictionary with the file:
       ```bash
       mv nautilus-fileconverter.py ~/.local/share/nautilus-python/extensions/nautilus-fileconverter.py
@@ -45,7 +51,10 @@ Nautilus will quit at the end of the installation. This is intended and necessar
         ```bash
         sudo mv nautilus-fileconverter.py /usr/share/nautilus-python/extensions/nautilus-fileconverter.py
         ```
-        <b>NOTE: Automatic updates are limited for root installations.</b> I recommend the other installation option. More information in the errors and warnings section [here](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#003-no-permission-to-self-update).
+
+        > [!IMPORTANT]  
+        > Automatic updates are limited for root installations; I recommend the other installation option. More information is available in the [errors and warnings section](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown%2Ferrors-and-warnings.md#003-no-permission-to-self-update).
+
 - Now you only have to restart Nautilus using the following commands:
     ```bash
    #Quit Nautilus
