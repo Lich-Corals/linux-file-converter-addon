@@ -574,8 +574,8 @@ def get_installation_type() -> InstallationType:
             detected_installation_type = installation_location
     return detected_installation_type
 
+# --- Starts the image conversion while specifying specific dimensions for the image to have. ---
 def start_special_image_conversion(menu, arguments):
-    print(arguments)
     subprocess = Process(target=convert_images, kwargs={"menu":menu, "format": arguments["format"], "files": arguments["files"], "dimensions": [arguments['w'], arguments['h']]})
     subprocess.start()
 
@@ -634,6 +634,7 @@ if get_installation_type() == InstallationType.NAUTILUS:
                 self.add_sub_menu_item(f"convert_to_{file_format['name']}", file_format['name'], main_menu, callback, {"format": file_format, "files": files})
 
             if callback == start_image_conversion:
+                # --- Create nested sub menus for square and wallpaper conversion ---
                 if user_configuration["convertToSquares"]:
                     main_menu_sub_menu_squares, main_menu_sub_menu_item_squares = self.create_sub_menu_object("square_format_menu", "Square...")
                     for square_dimension in WRITE_DIMENSIONS_SQUARE:
@@ -642,12 +643,6 @@ if get_installation_type() == InstallationType.NAUTILUS:
                         for write_format in formats:
                             self.add_sub_menu_item(f"square_format_menu_sub_menu_item_{square_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_squares_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': square_dimension['w'], 'h': square_dimension['w']})
                     main_menu.append_item(main_menu_sub_menu_item_squares)
-
-                    if False:
-                        main_menu_sub_menu_squares, main_menu_sub_menu_item_squares = self.create_sub_menu_object("square_format_menu", "Square...")
-                        for square_format in WRITE_FORMATS_SQUARE:
-                            self.add_sub_menu_item(f"square_convert_{square_format["name"]}", square_format["name"], main_menu_sub_menu_squares, callback, {"format": square_format, "files": files})
-                        main_menu.append_item(main_menu_sub_menu_item_squares)
 
                 if user_configuration["convertToWallpapers"]:
                     main_menu_sub_menu_wallpapers, main_menu_sub_menu_item_wallpapers = self.create_sub_menu_object("square_format_menu", "Wallpaper...")
@@ -666,12 +661,6 @@ if get_installation_type() == InstallationType.NAUTILUS:
                         for write_format in formats:
                             self.add_sub_menu_item(f"portrait_format_menu_sub_menu_item_{portrait_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_portrait_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': portrait_dimension['w'], 'h': portrait_dimension['h']})
                     main_menu.append_item(main_menu_sub_menu_item_wallpapers)
-
-                    if False:
-                        main_menu_sub_menu_wallpapers, main_menu_sub_menu_item_wallpapers = self.create_sub_menu_object("wallpaper_format_menu", "Wallpaper...")
-                        for wallpaper_format in WRITE_FORMATS_WALLPAPER:
-                            self.add_sub_menu_item(f"wallpaper_convert_{wallpaper_format["name"]}", wallpaper_format["name"], main_menu_sub_menu_wallpapers, callback, {"format": wallpaper_format, "files": files})
-                        main_menu.append_item(main_menu_sub_menu_item_wallpapers)
 
             if user_configuration["showPatchNoteButton"]:
                 self.add_sub_menu_item("patch_notes", f"View patch notes ({CONVERTER_VERSION})", main_menu, self.show_patch_notes, {})
@@ -748,16 +737,11 @@ if get_installation_type() != InstallationType.NAUTILUS:
             if only_images_selected:
                 if user_configuration["convertToSquares"]:
                     self.add_combo_box_special(self.ComboBoxType.SQUARE, {"box": box})
-                    if False:
-                        for selected_write_format in WRITE_FORMATS_SQUARE:
-                            extensions.append([selected_write_format['name'], str(selected_write_format), 0])
                 if user_configuration["convertToWallpapers"]:
                     self.add_combo_box_special(self.ComboBoxType.WALLPAPER_LANDSCAPE, {"box": box})
                     self.add_combo_box_special(self.ComboBoxType.WALLPAPER_PORTRAIT, {"box": box})
-                    if False:
-                        for selected_write_format in WRITE_FORMATS_WALLPAPER:
-                            extensions.append([selected_write_format['name'], str(selected_write_format), 0])
 
+        # --- Adds a specific combo-box to the specified box --- 
         def add_combo_box_special(self, combo_box_type, arguments):
             box = arguments["box"]
             list_objects = Gtk.ListStore(str, str, int)
