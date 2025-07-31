@@ -641,30 +641,13 @@ if len(SYSTEM_ARGUMENTS) == 0:
 # --- Adaption class ---
 if len(SYSTEM_ARGUMENTS) > 0:
     class LinuxFileConverterWindow(Gtk.Window):
-        def __init__(self):
-            super().__init__(title=f"Convert file")
-            self.set_border_width(15)
-            self.set_default_size(200, 20)
-            self.set_resizable(False)
-
-            self.connect("key-press-event",self.on_key_press_event)
-
-            vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-
-            label = Gtk.Label(label="Select a format:")
+        def add_label_centered(self, box, markup):
+            label = Gtk.Label()
+            label.set_markup(markup)
             label.set_justify(Gtk.Justification.CENTER)
-            vbox.pack_start(label, False, False, 0)
-            version_information_label = Gtk.Label()
-            version_information_label.set_markup(f"""<span size="x-small">version {converter_version}</span>""")
-            version_information_label.set_justify(Gtk.Justification.CENTER)
-            configuration_hint_label = Gtk.Label()
-            configuration_hint_label.set_justify(Gtk.Justification.CENTER)
-            configuration_hint_label.set_markup(f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
+            box.pack_start(label, True, True, 0)
 
-            copyright_notice_label = Gtk.Label()
-            copyright_notice_label.set_justify(Gtk.Justification.CENTER)
-            copyright_notice_label.set_markup(f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public License</a>.</span>""")
-
+        def add_format_combo_box(self, box):
             extensions = Gtk.ListStore(str, str, int)
             only_images_selected = True
             only_audios_selected = True
@@ -696,20 +679,31 @@ if len(SYSTEM_ARGUMENTS) > 0:
             if only_videos_selected:
                 for selected_write_format in WRITE_FORMATS_VIDEO:
                     extensions.append([selected_write_format['name'], str(selected_write_format), 1])
-
-            self.add(vbox)
             combo_box = Gtk.ComboBox.new_with_model(extensions)
             renderer_text = Gtk.CellRendererText()
             combo_box.set_entry_text_column(0)
             combo_box.pack_start(renderer_text, True)
             combo_box.add_attribute(renderer_text, "text", 0)
             combo_box.connect("changed", self.start_conversion)
-            vbox.pack_start(combo_box, False, False, 0)
+            box.pack_start(combo_box, True, True, 0)
+        
+        def __init__(self):
+            super().__init__(title=f"Convert file")
+            self.set_border_width(15)
+            self.set_default_size(200, 20)
+            self.set_resizable(False)
+            self.connect("key-press-event",self.on_key_press_event)
+
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+
+            self.add_label_centered(box, "Select a format:")
+            self.add_format_combo_box(box)
             if user_configuration["showPatchNoteButton"]:
-                vbox.pack_start(version_information_label, False, False, 0)
+                self.add_label_centered(box, f"""<span size="x-small">version {converter_version}</span>""")
             if user_configuration["showConfigHint"]:
-                vbox.pack_start(configuration_hint_label, True, True, 0)
-            vbox.pack_start(copyright_notice_label, True, True, 0)
+                self.add_label_centered(box, f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
+            self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public License</a>.</span>""")
+            self.add(box)
 
         # --- Get data from combo-box and run the right conversion function ---
         def start_conversion(self, combo):
@@ -741,7 +735,6 @@ if len(SYSTEM_ARGUMENTS) > 0:
     ####### ADAPTION-STARTUP SECTION
     ####### Creation of the nemo_action and finally of the Gtk Window
 
-    print("E")
     print(f"Args: {str(SYSTEM_ARGUMENTS)} \nPath:{APPLICATION_PATH}")
     if ".local/bin" not in APPLICATION_PATH:
         nemo_read_formats = ""
