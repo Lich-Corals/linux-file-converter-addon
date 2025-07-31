@@ -265,7 +265,8 @@ CONFIG_PRESET = {
     "timeInNames": True,
     "convertFromOctetStream": False,
     "showDummyOption": True,
-    "displayFinishNotification": True
+    "displayFinishNotification": True,
+    "alwaysCreateNemoAction": False
 }
 
 # --- Move settings from old config file to new location if the old one exists ---
@@ -752,7 +753,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
     ####### Creation of the nemo_action and finally of the Gtk Window
 
     print(f"Args: {str(SYSTEM_ARGUMENTS)} \nPath:{APPLICATION_PATH}")
-    if get_installation_type() == InstallationType.NEMO:
+    if get_installation_type() == InstallationType.NEMO or user_configuration["alwaysCreateNemoAction"]:
         nemo_read_formats = ""
         global_read_formats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
         for media_format in global_read_formats:

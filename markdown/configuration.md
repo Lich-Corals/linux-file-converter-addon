@@ -25,12 +25,18 @@ To turn off the <b>patch note button</b> in the context menu and the <b>version 
 ## Other options
 <br/>To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.
 Note: This option may be a bit buggy in Nemo, I'll fix it in the future if it appears to be annoying to some users.
-<br/>To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
+
+To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
 <br/><br/>To turn off the <b>"Conversion finished" notifications</b>, open the config file with a text editor and set the `displayFinishNotification` variable to 'false'.
 
-## Adaption specific options (Nemo)
+## Adaption specific options (Nemo and Thunar)
 <br/>To enable the conversion of <b>application/octet-stream</b> files in the adaption version, set the `convertFromOctetStream` option to 'true'. This may allow you to convert files with unmatching mimetypes, which are in a supported- but not as such detected format. This may also allow the context menu option for other un-convertabe files, such a pdf or zip.
-<br/>To disable the <b>"-" option</b> in the dropdown-list, set the `showDummyOption` setting to 'false'.
+
+To disable the <b>"-" option</b> in the dropdown-list, set the `showDummyOption` setting to 'false'.
+
+If the program does not automatically generate or update the nemo_action file, you can enable the `alwaysCreateNemoAction` option to override the check if the program is installed for Nemo. 
+<br/>Note: The configuration is used globally; hence, other installations of the file converter (for Nautilus or Thunar) will also generate a nemo_action in their current directory if this option is enabled.
+<br/>To avoid this, enable this option, run the extension in Nemo once and finally disable the option again.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
