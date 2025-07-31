@@ -41,24 +41,28 @@ CONFIGURATION_FILE = str(Path(CONFIGURATION_FILE).expanduser())
 CONFIGURATION_DIRECTORY = Path(CONFIGURATION_FILE).parent
 SYSTEM_ARGUMENTS = sys.argv[1:len(sys.argv)]
 
+# --- Enum to identify a spcific type of installation of the script ---
 class InstallationType(Enum):
     NAUTILUS = "nautilus",
     NEMO = "nemo",
     THUNAR = "thunar",
     UNKNOWN = "unknown"
 
+# --- A dict to connect each installation type with a location for the main script ---
 INSTALLATION_LOCATIONS =    {InstallationType.NAUTILUS: os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py"),
                             InstallationType.NEMO: os.path.expanduser("~/.local/share/nemo/actions/linux-file-converter-addon.py"),
                             InstallationType.THUNAR: os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")}
 
 if len(SYSTEM_ARGUMENTS) >= 1:
-    # --- Create application data location and download dependencies ---
+    # --- Show the copyright notice ---
     def copyright_notice():
         print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--license' for details.")
+    # --- Show the license in default browser if asked to ---
     if SYSTEM_ARGUMENTS[0] == "--license":
         from subprocess import Popen
         Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE"])
         exit()
+    # --- Create a local venv with dependencies ---
     if SYSTEM_ARGUMENTS[0] == "--create-venv":
         def status_print(string):
             print(f"VENV-CREATION: {string}")
@@ -107,8 +111,9 @@ if len(SYSTEM_ARGUMENTS) >= 1:
             status_print(f"ERROR: No write acces in {CONFIGURATION_DIRECTORY} - Aborting.")
             exit()
 
-    # --- Install self for selected file manager ---
+    # --- Install linux-file-converter-addon for selected file manager(s) ---
     if "--install-for-" in SYSTEM_ARGUMENTS[0]:
+        # --- Find out which InstallationTypes should be installed ---
         def status_print(string):
             print(f"SELF-INSTALLATION: {string}")
         copyright_notice()
@@ -122,6 +127,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
         if installation_targets == {}:
             status_print(f"""{SYSTEM_ARGUMENTS[0].replace("--install-for-", "")} not supported. Use "nautilus", "nemo", "thunar" or "all" instead.""")
             exit()
+        # --- Perform the basic script installation ---
         status_print("Downloading data...")
         from urllib import request
         import stat
@@ -146,6 +152,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                 status_print(f"{format_exc()}\nERROR: Something went wrong while creating the new file or path. Aborting.")
                 exit()
             status_print(f"Finalizing {target}...")
+            # --- InstallationType specific actions ---
             match installation_target:
                 case InstallationType.NAUTILUS:
                     status_print("Killing nautilus...")
@@ -464,6 +471,7 @@ WRITE_FORMATS_VIDEO = [{'name': 'MP4'},
                        {'name': 'MP3'},
                        {'name': 'WAV'}]
 
+# --- Add optional formats to existing lists ---
 if user_configuration["convertFromOctetStream"]:
     READ_FORMATS_IMAGE = READ_FORMATS_IMAGE + OCTET_STREAM_FORMATS
 
@@ -565,7 +573,8 @@ def start_ffmpeg_conversion(menu, arguments):
     subprocess = Process(target=convert_ffmpeg_media, kwargs={"menu":menu, "format": arguments["format"], "files": arguments["files"]})
     subprocess.start()
 
-def get_installation_type():
+# --- Find out for which program the extension is installed ---
+def get_installation_type() -> InstallationType:
     global APPLICATION_PATH
     global INSTALLATION_LOCATIONS
     detected_installation_type = InstallationType.UNKNOWN
@@ -602,15 +611,17 @@ if get_installation_type() == InstallationType.NAUTILUS:
                                                 callback=start_ffmpeg_conversion,
                                                 files=files)
 
+        # --- Create a new sub-menu ---
         def create_sub_menu_object(self, name, label):
-            menu_item = Nautilus.MenuItem(                          # Create main-submenu item
+            menu_item = Nautilus.MenuItem(
                 name=f"LinuxFileConverterMenuProvider::{name}",
                 label=label,
             )
-            menu = Nautilus.Menu()                                  # Create Nautilus submenu
-            menu_item.set_submenu(menu)                             # Add the item to the submenu
+            menu = Nautilus.Menu()
+            menu_item.set_submenu(menu)
             return menu, menu_item
 
+        # --- Add a sub-menu item to a selected sub menu with a callback function and associated arguments ---
         def add_sub_menu_item(self, name, label, menu, callback, arguments):
             menu_item = Nautilus.MenuItem(
                 name=f"LinuxFileConverterMenuProvider::{name}",
@@ -658,12 +669,14 @@ if get_installation_type() == InstallationType.NAUTILUS:
 # --- Adaption class ---
 if get_installation_type() != InstallationType.NAUTILUS:
     class LinuxFileConverterWindow(Gtk.Window):
+        # --- Add a label to a selected box ---
         def add_label_centered(self, box, markup):
             label = Gtk.Label()
             label.set_markup(markup)
             label.set_justify(Gtk.Justification.CENTER)
             box.pack_start(label, True, True, 0)
 
+        # --- Generate the combo-box with all compatible formats ---
         def add_format_combo_box(self, box):
             extensions = Gtk.ListStore(str, str, int)
             only_images_selected = True
@@ -753,6 +766,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
     ####### Creation of the nemo_action and finally of the Gtk Window
 
     print(f"Args: {str(SYSTEM_ARGUMENTS)} \nPath:{APPLICATION_PATH}")
+    # --- Create nemo_action ---
     if get_installation_type() == InstallationType.NEMO or user_configuration["alwaysCreateNemoAction"]:
         nemo_read_formats = ""
         global_read_formats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
@@ -770,6 +784,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 file.write(line + "\n")
             file.close()
     
+    # --- Create the window ---
     gtk_popup_window_object = LinuxFileConverterWindow()
     gtk_popup_window_object.connect("destroy", Gtk.main_quit)
     gtk_popup_window_object.show_all()
