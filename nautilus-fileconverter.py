@@ -45,7 +45,8 @@ if len(SYSTEM_ARGUMENTS) >= 1:
     def copyright_notice():
         print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--license' for details.")
     if SYSTEM_ARGUMENTS[0] == "--license":
-        os.system("xdg-open https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE & disown")
+        from subprocess import Popen
+        Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE"])
         exit()
     if SYSTEM_ARGUMENTS[0] == "--create-venv":
         def status_print(string):
@@ -205,6 +206,7 @@ else:
     gi.require_version("Gtk", "4.0")
     from gi.repository import Gtk, GObject, Nautilus
     from typing import List
+    from subprocess import Popen
 
 # --- Get the path to the script and check if it's writeable ---
 #     These need to be located after the auto-installation section, because __file__ can't be used when running python3 -c $(curl ...)
@@ -630,11 +632,11 @@ if len(SYSTEM_ARGUMENTS) == 0:
 
         # --- openPatchNotes and openConfigHint functions for context menu options ---
         def show_patch_notes(self, menu, arguments):
-            os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/releases\" &")
+            Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/releases"])
 
         def show_configuration_page(self, menu, arguments):
-            os.system(f"nohup xdg-open 'https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md' &")
-            os.system(f"nohup xdg-open {CONFIGURATION_FILE} &")
+            Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md"])
+            Popen(["xdg-open", f"{CONFIGURATION_FILE}"])
 
 # --- Adaption class ---
 if len(SYSTEM_ARGUMENTS) > 0:
