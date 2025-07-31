@@ -20,7 +20,8 @@ To turn off the <b>update pop-up</b>, open the config file with a text editor an
 To turn off the <b>patch note button</b> in the context menu and the <b>version number</b> in the adaption window, open the config file with a text editor and set the `showPatchNoteButton` variable to 'false'.
 <br/><br/>To turn off the <b>Configure NFC43 button</b> in the context menu and the <b>config hint</b> in the adaption window, open the config file with a text editor and set the `showConfigHint` variable to 'false'.
 <br/><br/>To turn off the '<b>convert to square</b>' option, open the config file with a text editor and set the `convertToSquares` variable to 'false'.
-<br/><br/>To turn off the '<b>convert to wallpaper</b>' function, open the config file with a text editor and set the `convertToWallpapers` variable to 'false'.
+<br/><br/>To turn off the '<b>convert to wallpaper</b>' functions, open the config file with a text editor and set the `convertToLandscapeWallpapers` and-or the `convertToPortraitWallpapers` variable to 'false'.
+<br/>Note: If you still have the `convertToWallpapers` option in your config.json file, you may remove it; it was replaced by the two options above and does not change anything anymore.
 
 ## Other options
 <br/>To turn off the <b>Double script installation Warning</b>, open the config file with a text editor and set the `checkForDoubleInstallation` variable to 'false'.

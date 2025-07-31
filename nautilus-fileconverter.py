@@ -268,13 +268,14 @@ CONFIG_PRESET = {
     "showPatchNoteButton": True,
     "showConfigHint": True,
     "convertToSquares": True,
-    "convertToWallpapers": True,
     "checkForDoubleInstallation": True,
     "timeInNames": True,
     "convertFromOctetStream": False,
     "showDummyOption": True,
     "displayFinishNotification": True,
-    "alwaysCreateNemoAction": False
+    "alwaysCreateNemoAction": False,
+    "convertToLandscapeWallpapers": True,
+    "convertToPortraitWallpapers": True
 }
 
 # --- Move settings from old config file to new location if the old one exists ---
@@ -644,22 +645,24 @@ if get_installation_type() == InstallationType.NAUTILUS:
                             self.add_sub_menu_item(f"square_format_menu_sub_menu_item_{square_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_squares_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': square_dimension['w'], 'h': square_dimension['w']})
                     main_menu.append_item(main_menu_sub_menu_item_squares)
 
-                if user_configuration["convertToWallpapers"]:
+                if user_configuration["convertToLandscapeWallpapers"] or user_configuration["convertToPortraitWallpapers"]:
                     main_menu_sub_menu_wallpapers, main_menu_sub_menu_item_wallpapers = self.create_sub_menu_object("square_format_menu", "Wallpaper...")
-                    main_menu_sub_menu_landscape, main_menu_sub_menu_item_landscape = self.create_sub_menu_object("square_format_menu", "Landscape...")
-                    main_menu_sub_menu_portrait, main_menu_sub_menu_item_portrait = self.create_sub_menu_object("square_format_menu", "Portrait...")
-                    main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_item_landscape)
-                    main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_item_portrait)
-                    for landscape_dimension in WRITE_DIMENSIONS_WALLPAPER_LANDSCAPE:
-                        main_menu_sub_menu_landscape_sub_menu, main_menu_sub_menu_item_landscape_sub_menu = self.create_sub_menu_object(f"landscape_format_menu_sub_menu_{landscape_dimension["name"]}", landscape_dimension["name"])
-                        main_menu_sub_menu_landscape.append_item(main_menu_sub_menu_item_landscape_sub_menu)
-                        for write_format in formats:
-                            self.add_sub_menu_item(f"landscape_format_menu_sub_menu_item_{landscape_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_landscape_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': landscape_dimension['w'], 'h': landscape_dimension['h']})
-                    for portrait_dimension in WRITE_DIMENSIONS_WALLPAPER_PORTRAIT:
-                        main_menu_sub_menu_portrait_sub_menu, main_menu_sub_menu_item_portrait_sub_menu = self.create_sub_menu_object(f"portrait_format_menu_sub_menu_{portrait_dimension["name"]}", portrait_dimension["name"])
-                        main_menu_sub_menu_portrait.append_item(main_menu_sub_menu_item_portrait_sub_menu)
-                        for write_format in formats:
-                            self.add_sub_menu_item(f"portrait_format_menu_sub_menu_item_{portrait_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_portrait_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': portrait_dimension['w'], 'h': portrait_dimension['h']})
+                    if user_configuration["convertToLandscapeWallpapers"]:
+                        main_menu_sub_menu_landscape, main_menu_sub_menu_item_landscape = self.create_sub_menu_object("square_format_menu", "Landscape...")
+                        main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_item_landscape)
+                        for landscape_dimension in WRITE_DIMENSIONS_WALLPAPER_LANDSCAPE:
+                            main_menu_sub_menu_landscape_sub_menu, main_menu_sub_menu_item_landscape_sub_menu = self.create_sub_menu_object(f"landscape_format_menu_sub_menu_{landscape_dimension["name"]}", landscape_dimension["name"])
+                            main_menu_sub_menu_landscape.append_item(main_menu_sub_menu_item_landscape_sub_menu)
+                            for write_format in formats:
+                                self.add_sub_menu_item(f"landscape_format_menu_sub_menu_item_{landscape_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_landscape_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': landscape_dimension['w'], 'h': landscape_dimension['h']})
+                    if user_configuration["convertToPortraitWallpapers"]:
+                        main_menu_sub_menu_portrait, main_menu_sub_menu_item_portrait = self.create_sub_menu_object("square_format_menu", "Portrait...")
+                        main_menu_sub_menu_wallpapers.append_item(main_menu_sub_menu_item_portrait)
+                        for portrait_dimension in WRITE_DIMENSIONS_WALLPAPER_PORTRAIT:
+                            main_menu_sub_menu_portrait_sub_menu, main_menu_sub_menu_item_portrait_sub_menu = self.create_sub_menu_object(f"portrait_format_menu_sub_menu_{portrait_dimension["name"]}", portrait_dimension["name"])
+                            main_menu_sub_menu_portrait.append_item(main_menu_sub_menu_item_portrait_sub_menu)
+                            for write_format in formats:
+                                self.add_sub_menu_item(f"portrait_format_menu_sub_menu_item_{portrait_dimension["name"]}_{write_format["name"]}", write_format["name"], main_menu_sub_menu_portrait_sub_menu, start_special_image_conversion, {"format": write_format, "files": files, 'w': portrait_dimension['w'], 'h': portrait_dimension['h']})
                     main_menu.append_item(main_menu_sub_menu_item_wallpapers)
 
             if user_configuration["showPatchNoteButton"]:
@@ -737,8 +740,9 @@ if get_installation_type() != InstallationType.NAUTILUS:
             if only_images_selected:
                 if user_configuration["convertToSquares"]:
                     self.add_combo_box_special(self.ComboBoxType.SQUARE, {"box": box})
-                if user_configuration["convertToWallpapers"]:
+                if user_configuration["convertToLandscapeWallpapers"]:
                     self.add_combo_box_special(self.ComboBoxType.WALLPAPER_LANDSCAPE, {"box": box})
+                if user_configuration["convertToPortraitWallpapers"]:   
                     self.add_combo_box_special(self.ComboBoxType.WALLPAPER_PORTRAIT, {"box": box})
 
         # --- Adds a specific combo-box to the specified box --- 
