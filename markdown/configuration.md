@@ -40,6 +40,7 @@ To turn off the __addition of timestamps__ to filenames, open the config file wi
 To disable the <b>"-" option</b> in the dropdown-list, set the `showDummyOption` setting to 'false'.
 
 If the program does not automatically generate or update the nemo_action file, you can enable the `alwaysCreateNemoAction` option to override the check if the program is installed for Nemo. 
+<br/>A similar option exists for Dolphin and is called `alwaysCreateDolphinServicemenu`.
 
 > [!WARNING]  
 > The configuration is used globally; hence, other installations of the file converter (for Nautilus or Thunar) will also generate a nemo_action in their current directory if this option is enabled.
