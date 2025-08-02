@@ -1,5 +1,5 @@
 # Configuration
-The program can be configured using the  ~/.config/linux-file-converter-addon/config.json file, which will be created when the script is executed for the first time, as long as the program is able to write in the ~/.config directory.
+The program can be configured using the `~/.config/linux-file-converter-addon/config.json` file, which will be created when the script is executed for the first time, as long as the program is able to write in the ~/.config directory.
 Just modify the file, by changing the 'true' and 'false' values.
 This configuration should apply to all installations of linux-file-converter-addon at once.
 
@@ -35,7 +35,7 @@ To turn off the __addition of timestamps__ to filenames, open the config file wi
 <br/><br/>To turn off the <b>"Conversion finished" notifications</b>, open the config file with a text editor and set the `displayFinishNotification` variable to 'false'.
 
 ## Adaption specific options (Nemo and Thunar)
-<br/>To enable the conversion of <b>application/octet-stream</b> files in the adaption version, set the `convertFromOctetStream` option to 'true'. This may allow you to convert files with unmatching mimetypes, which are in a supported- but not as such detected format. This may also allow the context menu option for other un-convertabe files, such a pdf or zip.
+<br/>To enable the conversion of <b>application/octet-stream</b> files in the adaption version, set the `convertFromOctetStream` option to 'true'. This may allow you to convert files with unmatching mime types, which are in a supported- but not as such detected format. This may also allow the context menu option for other un-convertabe files, such a .pdf or .zip.
 
 To disable the <b>"-" option</b> in the dropdown-list, set the `showDummyOption` setting to 'false'.
 
@@ -54,3 +54,4 @@ If the program does not automatically generate or update the nemo_action file, y
 - [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
 - [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
 - [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
+- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)

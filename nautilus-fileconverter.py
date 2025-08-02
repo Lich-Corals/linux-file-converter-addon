@@ -858,7 +858,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
 
     #######
     ####### ADAPTION-STARTUP SECTION
-    ####### Creation of the nemo_action and finally of the Gtk Window
+    ####### Creation of external triggers and finally of the Gtk Window
 
     print(f"Args: {str(SYSTEM_ARGUMENTS)} \nPath:{APPLICATION_PATH}")
     # --- Create nemo_action ---
@@ -879,6 +879,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 file.write(line + "\n")
             file.close()
 
+    # --- Create servicemenu for Dolphin ---
     if get_installation_type() == InstallationType.DOLPHIN or user_configuration["alwaysCreateDolphinServicemenu"]:
         file_read_format_string = ""
         global_read_formats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO

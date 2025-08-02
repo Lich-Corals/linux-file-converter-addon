@@ -1,5 +1,5 @@
 # Installation for Nautilus
-This section will guide you through the installation to Nautilus.
+This section will guide you through the installation for Nautilus.
 
 > [!IMPORTANT]  
 > Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.
@@ -73,3 +73,4 @@ Nautilus will quit at the end of the installation. This is intended and necessar
 - __[Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)__
 - [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
 - [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
+- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)

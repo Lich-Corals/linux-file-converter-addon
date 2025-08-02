@@ -1,11 +1,11 @@
-# Installation for Thunar
-This section will guide you through the installation for Thunar file manager.
+# Installation for Dolphin
+This section will guide you through the installation for Dolphin file manager.
 
 > [!IMPORTANT]  
 > Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.
 
-## Thunar specific dependencies
-[Thunar](https://github.com/neilbrown/thunar) needs to be installed.
+## Dolphin specific dependencies
+[Dolphin](https://apps.kde.org/en-gb/dolphin/) needs to be installed.
 
 ## Installation
 You can either install the extension manually or with a one-liner.
@@ -13,7 +13,7 @@ You can either install the extension manually or with a one-liner.
 ### One-liner installation
 Just run this command:
 ```bash
-python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-thunar
+python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-dolphin
 ```
 Now go to the [next section](#enable-the-action-in-thunar).
 
@@ -25,39 +25,22 @@ Now go to the [next section](#enable-the-action-in-thunar).
 
      cd ./linux-file-converter-addon
      ```
-- Copy the file into the ~/.local/bin folder:
+- Copy two files into the into their new directories:
      ```bash
      mv nautilus-fileconverter.py ~/.local/bin/linux-file-converter-addon.py
+     mv linux-file-converter-addon.kde_servicemenu ~/.local/share/kio/servicemenus/linux-file-converter-addon.desktop
      ```
 
 > [!TIP]   
-> You can place the file anywhere you want. The guide will continue with `.local/bin ` as the location for the script.
+> You can place the script file anywhere you want. The guide will continue with `.local/bin `.
 
-- Give the script permission to be executed as script:
+- Give the script and servicemenu permission to be executed:
      ```bash
      chmod +x ~/.local/bin/linux-file-converter-addon.py
+     chmod +x ~/.local/share/kio/servicemenus/linux-file-converter-addon.desktop
      ```
 
-## Enable the action in Thunar
-- Open Thunar and navigate Edit>Configure custom actions...
-- Click the "+" button to add a new action
-- Set the following Basic settings...
-     - Name: Convert to...
-     - Command: /home/YOUR USERNAME/.local/bin/linux-file-converter-addon.py %f
-- Set the following Appearance Conditions...
-     - File Pattern: *
-     - Range (min-max): *
-     - [ ] Directories
-     - [x] Audio Files
-     - [x] Image Files
-     - [ ] Text Files
-     - [x] Video Files
-     - [ ] Other Files
-
-You should now see the 'Convert to...' action when selecting an image, audio or video file.
-
-> [!NOTE]  
-> It may occur to you that you don't see the action when selecting multiple files. This is an issue with Thunar.
+You should now see the 'Convert to...' option when selecting an image, audio or video file in Dolphin.
 
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
@@ -67,5 +50,6 @@ You should now see the 'Convert to...' action when selecting an image, audio or 
 - [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)
 - [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
 - [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
-- __[Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)__
-- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
+- [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
+- __[Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)__
+

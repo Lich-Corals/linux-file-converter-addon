@@ -8,7 +8,7 @@ This is the fastest way to install the extension to your file manager.
 
 ## Dependencies
 Pip and Python3, Nautilus-Python.
-Nautilus-python is optional for nautilus (GNOME) users.
+Nautilus-python is optional for Nautilus (GNOME) users.
 | Package manager   | Command                                                   |
 | -                 | -                                                         |
 | apt / apt-get     | `apt install python3-pip python3 python3-nautilus`        |
@@ -44,6 +44,11 @@ Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-conve
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-thunar
 ```
 Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md#enable-the-action-in-thunar).
+
+**For Dolphin:**
+```bash
+python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-dolphin
+```
 
 **For all of the above:**
 ```bash

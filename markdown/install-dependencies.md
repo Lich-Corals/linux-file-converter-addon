@@ -61,27 +61,27 @@ You can skip the following sections [Manual Installation](#manual-installation) 
 pip install Pillow
 ```
 
-[python-magic](https://pypi.org/project/python-magic/) will be used to detect the mimetypes of files:
+[python-magic](https://pypi.org/project/python-magic/) will be used to detect the mime types of files:
 ```bash
 pip install python-magic
 ```
 
 ## Optional dependencies
 ### pillow_heif (from HEIF, AVIF)
-[pillow_heif](https://pypi.org/project/pillow-heif/) is needed if you want to convert from **heif** or **avif** format.
+[pillow_heif](https://pypi.org/project/pillow-heif/) is needed if you want to convert from **HEIF** or **AVIF** format.
 <br/> Install it using this command:
 ```bash
 pip install pillow-heif
 ```
 
 ### pillow-avif-plugin (to AVIF)
-In addition, to convert *to* **avif** format you will need this [plugin for Pillow](https://pypi.org/project/pillow-avif-plugin/).
+In addition, to convert **to AVIF** format you will need this [plugin for Pillow](https://pypi.org/project/pillow-avif-plugin/).
 ```bash
 pip install pillow-avif-plugin
 ```
 
 ### jxlpy (JXL)
-[jxlpy](https://github.com/olokelo/jxlpy) is needed if you want to convert from **jxl** format.
+[jxlpy](https://github.com/olokelo/jxlpy) is needed if you want to convert from **JXL** format.
 <br/> Install it using this command:
 ```bash
 pip install jxlpy
@@ -99,3 +99,4 @@ pip install jxlpy
 - [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
 - [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
 - [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
+- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)

@@ -5,7 +5,7 @@ This section will hopefully be helpful, if you experience problems with the plug
 <b>Causes:</b><br/>
 This warning is caused, because the script is not able to find your pillow_heif installation.
 <br/><br/><b>Possible Effects:</b><br/>
-Without pyheif, the converter won't be able to convert from heif file format.
+Without pyheif, the converter won't be able to convert from HEIF file format.
 <br/><br/><b>How to solve?</b><br/>
 To solve this warning, you need to install pillow_heif using pip.
 <br/>View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
@@ -23,7 +23,7 @@ To solve this warning, you need to install jxlpy using pip.
 <b>Causes:</b><br/>
 This warning is caused, because the script is not able to find your pillow-avif-plugin installation.
 <br/><br/><b>Possible Effects:</b><br/>
-Without pillow-avif-plugin, the converter won't be able to convert to avif file format.
+Without pillow-avif-plugin, the converter won't be able to convert to AVIF file format.
 <br/><br/><b>How to solve?</b><br/>
 To solve this warning, you need to install pillow-avif-plugin using pip.
 <br/>View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
@@ -34,7 +34,7 @@ Automatic updates are enabled and there are updates available.
 This is not an error, just information to make problems easier to solve.
 
 ## ERROR(Nautilus-file-converter)(XXX):
-### (400): is in an unconvertable file-format.
+### (400): is in a non-convertible file-format.
 <b>Causes:</b><br/>
 A file you wanted to convert can't be read by the program.
 Such a file may be in between other files you converted.
@@ -50,17 +50,17 @@ An error occurred during the update process of the config file.
 The config file may be missing some settings added by an update; some settings may be out of sync or using the default value.
 <br/><br/><b>How to solve?</b><br/>
 Consider checking the write-permissions for the `~/.config/linux-file-converter-addon/config.json` file.
-If you can't solve the issue on your own, you can open an issue on Github.
+If you can't solve the issue on your own, you can open an issue on GitHub.
 
 ### (402): No permission to self-update
 <b>Causes:</b><br/>
-The program has no permission to write it's own file.
-<br/>This warning usually occurs when the script is located at "/usr/share/nautilus-python/extensions/".
+The program has no permission to write its own file.
+<br/>This warning usually occurs when the script is located at `/usr/share/nautilus-python/extensions/`.
 <br/><br/><b>Possible Effects:</b><br/>
 The self-update function will not be available.
-<br/>The script may show the releases page on multiple startups if self-update isn't disabled.
+<br/>The script may show the release page on multiple startups if self-update isn't disabled.
 <br/><br/><b>How to solve?</b><br/>
-To remove the release popup, you may disable the corresponding setting. To do this, please follow the instructions on the [configuration page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md).
+To remove the release pop-up, you may disable the corresponding setting. To do this, please follow the instructions on the [configuration page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md).
 <br/>To get self updates, the script needs the permissions to write to itself. This can be done by changing the file permissions using [chmod](https://www.man7.org/linux/man-pages/man1/chmod.1.html) or by running the script as a privileged user.
 <br/>To be able to self-update, the user, who is executing the script (by starting Nautilus) needs permissions to edit the script itself.
 
@@ -85,3 +85,4 @@ To fix this, the script needs the permissions to write inside the folder, where 
 - [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
 - [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
 - [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
+- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)

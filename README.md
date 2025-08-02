@@ -8,8 +8,8 @@
 </p>
 
 # Features
-Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus**, **Nemo** und **Thunar** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
-The program offers many options to customise the appearance of its context menu. There are also a few extra formats which can be added by installing optional dependencies.
+Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus**, **Nemo**, **Thunar** and **Dolphin** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
+The program offers many options to customize the appearance of its context menu. There are also a few extra formats which can be added by installing optional dependencies.
 The tool has a built-in auto-update function to make sure the newest version is always installed.
 <br/>
 <p align="center">
@@ -48,16 +48,18 @@ Or you head over to the installation page for your file manager for the full ins
 - [Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
 - [Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
 - [Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
+- [Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
 
 # Updating
-If the script is installed in the home folder or has permissions to write in it's dictionary, it will update automatically as long as automatic updates aren't disabled.
+If the script is installed in the home folder or has permissions to write in its directory, it will update automatically as long as automatic updates aren't disabled.
 
 If automatic updates are disabled, you can run the installation commands again to update the program.
-# Usage
 
+# Usage
 Just right-click on any supported file and choose the "Convert to..." option. In this sub menu you can select any file type you want to convert to.
 
-Converting a file can take some time. There is no indicator when the process is done.
+> [!NOTE]   
+> Converting a file can take some time. With the default settings, there will be a notification when all files are converted.
 
 > [!IMPORTANT]  
 > If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues) page.
@@ -91,3 +93,4 @@ If anything is not clear...
 - [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
 - [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
 - [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
+- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
