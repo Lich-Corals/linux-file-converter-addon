@@ -22,7 +22,7 @@
 CONVERTER_VERSION = "001003010" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 #######
 ####### AUTO-INSTALLATION SECTION
@@ -123,7 +123,6 @@ if len(SYSTEM_ARGUMENTS) >= 1:
         copyright_notice()
         installation_targets = {}
         for installation_location in INSTALLATION_LOCATIONS:
-            print(installation_location.value[0])
             if SYSTEM_ARGUMENTS[0] == f"--install-for-{installation_location.value[0]}":
                 installation_targets[installation_location] = INSTALLATION_LOCATIONS[installation_location]
         if SYSTEM_ARGUMENTS[0] == "--install-for-all":
