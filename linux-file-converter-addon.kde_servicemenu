@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+MimeType=image/jpeg;image/png;image/bmp;application/postscript;image/gif;image/x-icon;image/x-pcx;image/x-portable-pixmap;image/tiff;image/x-xbm;image/x-xbitmap;video/fli;image/vnd.fpx;image/vnd.net-fpx;windows/metafile;image/x-xpixmap;image/webp;image/avif;image/heif;image/heic;image/jxl;audio/mpeg;audio/mpeg3;video/x-mpeg;audio/x-mpeg-3;audio/x-wav;audio/wav;audio/wave;audio/x-pn-wave;audio/vnd.wave;audio/x-mpegurl;audio/mp4;audio/mp4a-latm;audio/mpeg4-generic;audio/x-matroska;audio/aac;audio/aacp;audio/3gpp;audio/3gpp2;audio/ogg;audio/opus;audio/flac;audio/x-vorbis+ogg;video/mp4;video/webm;video/x-matroska;video/avi;video/msvideo;video/x-msvideo;video/quicktime;
+Actions=linuxFileConverterAddon
+
+[Desktop Action linuxFileConverterAddon]
+Name=Convert to...
+Exec=python3 ~/.local/bin/linux-file-converter-addon.py --dolphin-run %U

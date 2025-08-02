@@ -5,16 +5,16 @@
 # Copyright (C) 2025  Linus Tibert
 #
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published
-# by the Free Software Foundation, either version 3 of the License, or
+# it under the terms of the GNU Affero General Public Licence as published
+# by the Free Software Foundation, either version 3 of the Licence, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
+# GNU Affero General Public Licence for more details.
 #
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU Affero General Public Licence
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
@@ -22,7 +22,7 @@
 CONVERTER_VERSION = "001003010" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 #######
 ####### AUTO-INSTALLATION SECTION
@@ -39,6 +39,8 @@ from enum import Enum
 CONFIGURATION_FILE = "~/.config/linux-file-converter-addon/config.json"
 CONFIGURATION_FILE = str(Path(CONFIGURATION_FILE).expanduser())
 CONFIGURATION_DIRECTORY = Path(CONFIGURATION_FILE).parent
+LOCAL_BIN_DIRECTORY_EXEC = "~/.local/bin/linux-file-converter-addon.py"
+DOLPHIN_SERVICE_MENU_LOCATION = os.path.expanduser("~/.local/share/kio/servicemenus/linux-file-converter-addon.desktop")
 SYSTEM_ARGUMENTS = sys.argv[1:len(sys.argv)]
 
 # --- Enum to identify a spcific type of installation of the script ---
@@ -46,19 +48,21 @@ class InstallationType(Enum):
     NAUTILUS = "nautilus",
     NEMO = "nemo",
     THUNAR = "thunar",
+    DOLPHIN = "dolphin",
     UNKNOWN = "unknown"
 
 # --- A dict to connect each installation type with a location for the main script ---
 INSTALLATION_LOCATIONS =    {InstallationType.NAUTILUS: os.path.expanduser("~/.local/share/nautilus-python/extensions/linux-file-converter-addon.py"),
                             InstallationType.NEMO: os.path.expanduser("~/.local/share/nemo/actions/linux-file-converter-addon.py"),
-                            InstallationType.THUNAR: os.path.expanduser("~/.local/bin/linux-file-converter-addon.py")}
+                            InstallationType.THUNAR: os.path.expanduser(LOCAL_BIN_DIRECTORY_EXEC),
+                            InstallationType.DOLPHIN: os.path.expanduser(LOCAL_BIN_DIRECTORY_EXEC)}
 
 if len(SYSTEM_ARGUMENTS) >= 1:
     # --- Show the copyright notice ---
     def copyright_notice():
-        print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--license' for details.")
-    # --- Show the license in default browser if asked to ---
-    if SYSTEM_ARGUMENTS[0] == "--license":
+        print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--licence' for details.")
+    # --- Show the licence in default browser if asked to ---
+    if SYSTEM_ARGUMENTS[0] == "--licence":
         from subprocess import Popen
         Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE"])
         exit()
@@ -172,6 +176,25 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                         f.close()
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
+                case InstallationType.DOLPHIN:
+                    status_print("Downloading servicemenu...")
+                    servicemenu = ""
+                    try:
+                        with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/linux-file-converter-addon.kde_servicemenu") as f:
+                            servicemenu = f.read().decode().strip()
+                    except:
+                        status_print(f"{format_exc()}\nERROR: Can't download servicemenu file. Aborting.")
+                        exit()
+                    status_print("Creating servicemenu location...")
+                    os.makedirs(Path(DOLPHIN_SERVICE_MENU_LOCATION).parent, exist_ok=True)
+                    status_print("Writing servicemenu...")
+                    with open(DOLPHIN_SERVICE_MENU_LOCATION, 'w') as f:
+                        f.write(servicemenu)
+                        f.close()
+                    status_print("Updating servicemenu permissions...")
+                    os.chmod(DOLPHIN_SERVICE_MENU_LOCATION, os.stat(DOLPHIN_SERVICE_MENU_LOCATION).st_mode | stat.S_IEXEC)
+                    status_print("Updating script permissions...")
+                    os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
                 case InstallationType.THUNAR:
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
@@ -186,6 +209,15 @@ if len(SYSTEM_ARGUMENTS) >= 1:
 #######
 ####### SELF-PREPARATION SECTION  --  SYSTEM
 ####### Imports, determining system conditions
+
+# --- Remove unused argument and set installation type to DOLPHIN ---
+INSTALLATION_TYPE_CHECK_OVERRIDE = None
+try:
+    if SYSTEM_ARGUMENTS[0] == "--dolphin-run":
+        SYSTEM_ARGUMENTS = SYSTEM_ARGUMENTS[1:len(SYSTEM_ARGUMENTS)]
+        INSTALLATION_TYPE_CHECK_OVERRIDE = InstallationType.DOLPHIN
+except IndexError:
+    pass
 
 # --- Add modules installed in local venv to path ---
 if os.path.isdir(f"{CONFIGURATION_DIRECTORY}/venv"):
@@ -207,7 +239,7 @@ from multiprocessing import Process
 from pathlib import PosixPath
 # --- Imports vary if the program is started with arguments (for the adaption version) ---
 #     Also, Gtk3 is imported instead of Gtk4 if there are arguments
-if len(sys.argv) > 1:
+if len(SYSTEM_ARGUMENTS) > 0:
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk, Gdk
     from magic import Magic
@@ -273,6 +305,7 @@ CONFIG_PRESET = {
     "showDummyOption": True,
     "displayFinishNotification": True,
     "alwaysCreateNemoAction": False,
+    "alwaysCreateDolphinServicemenu": False,
     "convertToLandscapeWallpapers": True,
     "convertToPortraitWallpapers": True
 }
@@ -562,13 +595,16 @@ def start_ffmpeg_conversion(menu, arguments):
 
 # --- Find out for which program the extension is installed ---
 def get_installation_type() -> InstallationType:
-    global APPLICATION_PATH
-    global INSTALLATION_LOCATIONS
-    detected_installation_type = InstallationType.UNKNOWN
-    for installation_location in INSTALLATION_LOCATIONS:
-        if str(Path(INSTALLATION_LOCATIONS[installation_location]).parent) in APPLICATION_PATH:
-            detected_installation_type = installation_location
-    return detected_installation_type
+    if INSTALLATION_TYPE_CHECK_OVERRIDE is not None:
+        return INSTALLATION_TYPE_CHECK_OVERRIDE
+    else:
+        global APPLICATION_PATH
+        global INSTALLATION_LOCATIONS
+        detected_installation_type = InstallationType.UNKNOWN
+        for installation_location in INSTALLATION_LOCATIONS:
+            if str(Path(INSTALLATION_LOCATIONS[installation_location]).parent) in APPLICATION_PATH:
+                detected_installation_type = installation_location
+        return detected_installation_type
 
 # --- Starts the image conversion while specifying specific dimensions for the image to have. ---
 def start_special_image_conversion(menu, arguments):
@@ -782,7 +818,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 self.add_label_centered(box, f"""<span size="x-small">version {CONVERTER_VERSION}</span>""")
             if user_configuration["showConfigHint"]:
                 self.add_label_centered(box, f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
-            self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public License</a>.</span>""")
+            self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public Licence</a>.</span>""")
             self.add(box)
 
         # --- Get data from combo-box and run the right conversion function ---
@@ -843,7 +879,26 @@ if get_installation_type() != InstallationType.NAUTILUS:
             for line in nemo_action_lines:
                 file.write(line + "\n")
             file.close()
-    
+
+    if get_installation_type() == InstallationType.DOLPHIN or user_configuration["alwaysCreateDolphinServicemenu"]:
+        file_read_format_string = ""
+        global_read_formats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
+        for media_format in global_read_formats:
+            if media_format not in file_read_format_string:
+                file_read_format_string += media_format + ";"
+        servicemenu =   ("[Desktop Entry]\n"
+                        "Type=Service\n"
+                        f"MimeType={file_read_format_string}\n"
+                        "Actions=linuxFileConverterAddon\n\n"
+                        "[Desktop Action linuxFileConverterAddon]\n"
+                        "Name=Convert to...\n"
+                        f"Exec=python3 {INSTALLATION_LOCATIONS[InstallationType.DOLPHIN]} --dolphin-run %U")
+        os.makedirs(Path(DOLPHIN_SERVICE_MENU_LOCATION).parent, exist_ok=True)
+        with open(DOLPHIN_SERVICE_MENU_LOCATION, 'w') as file:
+            file.write(servicemenu)
+            file.close()
+        print("Updated servicemenu.")
+
     # --- Create the window ---
     gtk_popup_window_object = LinuxFileConverterWindow()
     gtk_popup_window_object.connect("destroy", Gtk.main_quit)
