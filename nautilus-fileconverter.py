@@ -60,11 +60,11 @@ INSTALLATION_LOCATIONS =    {InstallationType.NAUTILUS: os.path.expanduser("~/.l
 if len(SYSTEM_ARGUMENTS) >= 1:
     # --- Show the copyright notice ---
     def copyright_notice():
-        print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--licence' for details.")
+        print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--licence' for details.\n")
     # --- Show the licence in default browser if asked to ---
     if SYSTEM_ARGUMENTS[0] == "--licence":
         from subprocess import Popen
-        Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE"])
+        Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE"])
         exit()
     # --- Create a local venv with dependencies ---
     if SYSTEM_ARGUMENTS[0] == "--create-venv":
@@ -76,44 +76,40 @@ if len(SYSTEM_ARGUMENTS) >= 1:
             exit()
         SYSTEM_ARGUMENTS.append("idontwanttocheckforlengthagainsoiaddanotherargumenttoavoiderrors-argument™")
         status_print("Looking for directories...")
-        if not os.path.isdir(CONFIGURATION_DIRECTORY) and os.access(CONFIGURATION_DIRECTORY, os.W_OK):
-            os.system(f'mkdir "{CONFIGURATION_DIRECTORY}"')
-            status_print(f"Created {CONFIGURATION_DIRECTORY}")
-        elif not os.access(CONFIGURATION_DIRECTORY, os.W_OK):
-            status_print(f"ERROR: No write access in {Path(CONFIGURATION_DIRECTORY).parent} - Aborting.")
-            exit()
-        if os.access(CONFIGURATION_DIRECTORY, os.W_OK):
-            status_print(f"Setting up venv...")
-            result = os.system(f'python3 -m venv "{CONFIGURATION_DIRECTORY}/venv"')
+        if not os.path.isdir(CONFIGURATION_DIRECTORY):
+            result = os.system(f'mkdir "{CONFIGURATION_DIRECTORY}"')
             if result != 0:
-                result = os.system(f'python -m venv "{CONFIGURATION_DIRECTORY}/venv"')
-                if result != 0:
-                    status_print(f"ERROR: Something went wrong creating the venv. Check output above. Aborting.")
-                    exit()
-            status_print(f"Installing dependencies...")
-            result = os.system(f'{CONFIGURATION_DIRECTORY}/venv/bin/pip install python-magic Pillow ')
-            if result != 0:
-                status_print("ERROR: Pip didn't run as expected. Aborting.")
+                status_print(f"ERROR: Could not create {CONFIGURATION_DIRECTORY} - Aborting.")
                 exit()
-            else:
-                status_print("Done.")
-            if SYSTEM_ARGUMENTS[1] == "--full":
-                status_print("Installing optional dependencies...")
-                dependencies = ["pillow-heif", "pillow-avif-plugin", "jxlpy"]
-                failed = 0
-                for dependency in dependencies:
-                    result = os.system(f'{CONFIGURATION_DIRECTORY}/venv/bin/pip install {dependency}')
-                    if result != 0:
-                        failed += 1
-                if failed != 0:
-                    status_print(f"WARNING: Installed {len(dependencies)-failed} out of {len(dependencies)} optional dependencies successfully. This means the installation of {failed} of them has failed and thus {failed} format(s) will not be available unless you install the dependency manually. You can directly install the module(s) into the venv in {CONFIGURATION_DIRECTORY} to make them available to this program. Check the output above for more information about the problem(s).")
-                else:
-                    status_print(f"All {len(dependencies)} optional dependencies installed.")
-            status_print("The venv is ready for use now. You can run Nautilus or one of the adaption file viewers now to use the extension. (If all non-pip dependencies are installed.)")
+            status_print(f"Created {CONFIGURATION_DIRECTORY}")            
+        status_print(f"Setting up venv...")
+        result = os.system(f'python3 -m venv "{CONFIGURATION_DIRECTORY}/venv"')
+        if result != 0:
+            result = os.system(f'python -m venv "{CONFIGURATION_DIRECTORY}/venv"')
+            if result != 0:
+                status_print(f"ERROR: Something went wrong creating the venv. Check output above. Aborting.")
+                exit()
+        status_print(f"Installing dependencies...")
+        result = os.system(f'{CONFIGURATION_DIRECTORY}/venv/bin/pip install python-magic Pillow ')
+        if result != 0:
+            status_print("ERROR: Pip didn't run as expected. Aborting.")
             exit()
         else:
-            status_print(f"ERROR: No write acces in {CONFIGURATION_DIRECTORY} - Aborting.")
-            exit()
+            status_print("Done.")
+        if SYSTEM_ARGUMENTS[1] == "--full":
+            status_print("Installing optional dependencies...")
+            dependencies = ["pillow-heif", "pillow-avif-plugin", "jxlpy"]
+            failed = 0
+            for dependency in dependencies:
+                result = os.system(f'{CONFIGURATION_DIRECTORY}/venv/bin/pip install {dependency}')
+                if result != 0:
+                    failed += 1
+            if failed != 0:
+                status_print(f"WARNING: Installed {len(dependencies)-failed} out of {len(dependencies)} optional dependencies successfully. This means the installation of {failed} of them has failed and thus {failed} format(s) will not be available unless you install the dependency manually. You can directly install the module(s) into the venv in {CONFIGURATION_DIRECTORY} to make them available to this program. Check the output above for more information about the problem(s).")
+            else:
+                status_print(f"All {len(dependencies)} optional dependencies installed.")
+        status_print("The venv is ready for use now. You can run Nautilus or one of the adaption file viewers now to use the extension. (If all non-pip dependencies are installed.)")
+        exit()
 
     # --- Install linux-file-converter-addon for selected file manager(s) ---
     if "--install-for-" in SYSTEM_ARGUMENTS[0]:
@@ -817,7 +813,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 self.add_label_centered(box, f"""<span size="x-small">version {CONVERTER_VERSION}</span>""")
             if user_configuration["showConfigHint"]:
                 self.add_label_centered(box, f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
-            self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENSE">GNU Affero General Public Licence</a>.</span>""")
+            self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE">GNU Affero General Public Licence</a>.</span>""")
             self.add(box)
 
         # --- Get data from combo-box and run the right conversion function ---
