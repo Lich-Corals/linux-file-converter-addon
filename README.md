@@ -1,5 +1,5 @@
 
-# linux-file-converter-addon
+# Linux-File-Converter-Addon
 [![Gnome Look](https://img.shields.io/badge/-Gnome%20Look-4A86CF?style=for-the-badge&logo=gnome&logoColor=white)](https://www.gnome-look.org/s/Gnome/p/1965601)
 [![Coffee Logo](https://img.shields.io/badge/-Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://www.coff.ee/lichcorals)
 
