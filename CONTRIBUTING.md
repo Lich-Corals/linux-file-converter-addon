@@ -15,3 +15,6 @@ If you want to contribute by modifying or adding code, please adhere to these ru
     * Add a note to the README if necessary
 * Clean up your code before submitting a pull request
     * Remove duplicated code, debug printing, dead variables, etc.
+
+
+In every case, __don't violate the Code of Conduct__.

@@ -47,6 +47,8 @@ Contributions are always welcome!
 If you want to contribute to this project, take a look at the [open issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=is%3Aissue%20state%3Aopen%20) and at [issues with help-wanted tag](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22help%20wanted%22) or propose other edits to the program using a pull-request.
 The code of the project is partly commented and relatively self explaining. If you're curious about the way something is accomplished in the code, you can always ask about it in an issue and if you think there is a better way to do it, you're welcome to edit the code or share your ideas in another issue.
 
+Please read the [contribution guidelines](https://github.com/Lich-Corals/linux-file-converter-addon?tab=contributing-ov-file) before opening a pull request.
+
 # Any questions?
 If anything is not clear...
 <br/>If you have a problem...
