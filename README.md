@@ -5,7 +5,7 @@
 [![Coffee Logo](https://img.shields.io/badge/-Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://www.coff.ee/lichcorals)
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/39c673ac-5a7f-4347-9922-c2e7e96a66da">
+  <img src="https://github.com/user-attachments/assets/632fa0ce-3ca5-4d46-b7d3-d6f5cdf5c517">
 </p>
 
 # Features
