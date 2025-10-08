@@ -36,7 +36,10 @@ We agree to restrict the following behaviors in our community. Instances, threat
 ### Other Restrictions
 
 1. **Misleading identity.** Impersonating someone else for any reason, or pretending to be someone else to evade enforcement actions.
-2. **Failing to credit sources.** Not properly crediting the sources of content you contribute.
+2. **Failing to credit sources.** Not properly crediting the sources of content you contribute. This includes the use of AI generated content:
+    1. Please do not use AI generated content in issues, or comments for pull-requests and discussions.
+    2. Please don't add mainly AI generated code to pull-requests and if you use AI as an assistant, always ensure that the code is working and not *directly* stolen from another person's repository. 
+    3. *You* take the full responsibility for everything you add to the project in any form.
 3. **Promotional materials**. Sharing marketing or other commercial content in a way that is outside the norms of the community.
 4. **Irresponsible communication.** Failing to responsibly present content which includes, links or describes any other restricted behaviors.
 
@@ -88,5 +91,6 @@ This Code of Conduct is adapted from the Contributor Covenant, version 3.0, perm
 Contributor Covenant is stewarded by the Organization for Ethical Source and licensed under CC BY-SA 4.0. To view a copy of this license, visit [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/)
 
 This version of the Contributor Covenant Code of Conduct has been edited: The criteria 'race' and 'color' have been removed because it seemed racist to divide human beings into 'races' and 'colo(u)rs'.
+Also, *Other Restrictions 2)* and its sub-points have been edited.
 
 For answers to common questions about Contributor Covenant, see the FAQ at [https://www.contributor-covenant.org/faq](https://www.contributor-covenant.org/faq). Translations are provided at [https://www.contributor-covenant.org/translations](https://www.contributor-covenant.org/translations). Additional enforcement and community guideline resources can be found at [https://www.contributor-covenant.org/resources](https://www.contributor-covenant.org/resources). The enforcement ladder was inspired by the work of [Mozilla’s code of conduct team](https://github.com/mozilla/inclusion).
