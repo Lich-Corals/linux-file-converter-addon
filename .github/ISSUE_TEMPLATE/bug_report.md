@@ -24,16 +24,15 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **System information**
-Basic information about the used OS
- - OS Name: [e.g. Zorin OS 16.2]
- - Package manager: [e.g. apt]
- - Gnome version (If you are using Gnome): [e.g. GNOME 43.4.1]
- - Nautilus version (If you are using Nautilus) (`nautilus --version`): [e.g. GNOME nautilus 45.2.1]
- - Nemo/Thunar/Dolphin version (If you are using Nemo) (`nemo --version`, `thunar --version`, `dolphin --version`): [e.g. nemo 6.0.2]
- - Python version (`python3 --version`): [e.g. Python 3.11.2]
- - pip version (`pip --version`): [e.g. pip 23.2.1]
+__Mandatory__:
  - File converter version (specified at the start of the script and in the bottom of the adaption UI window): [e.g. 001002003 or 1.2.3]
 - UI version (if you are using the adaption; can be found at the bottom of the window): [e.g. Converter-Addon-Adaption-UI v0.1.0]
+ - Python version (`python3 --version`): [e.g. Python 3.11.2]
+__Also useful__:
+ - OS Name: [e.g. Zorin OS 16.2]
+ - Nautilus version (If you are using Nautilus) (`nautilus --version`): [e.g. GNOME nautilus 45.2.1]
+ - Nemo/Thunar/Dolphin version (If you are using Nemo) (`nemo --version`, `thunar --version`, `dolphin --version`): [e.g. nemo 6.0.2]
+ - pip version (`pip --version`): [e.g. pip 23.2.1]
 
 **Nautilus errors (If you are using Nautilus)**
 If possible, please provide the error(s) when running the `nautilus` command in the terminal.
