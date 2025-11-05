@@ -333,6 +333,8 @@ CONFIG_PRESET = {
     "alwaysCreateNemoAction": False,
     "alwaysCreateDolphinServicemenu": False,
     "convertToWallpapers": True,
+    "convertToLandscapeWallpapers": True,
+    "convertToPortraitWallpapers": True,
     "useDarkTheme": True
 }
 
@@ -927,7 +929,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
 
         #######
         ####### ADAPTION-STARTUP SECTION
-        ####### Creation of external triggers and finally of the Gtk Window
+        ####### Creation of the Gtk Window
  
         # --- Create the window ---
         gtk_popup_window_object = LinuxFileConverterWindow()
@@ -935,6 +937,11 @@ if get_installation_type() != InstallationType.NAUTILUS:
         gtk_popup_window_object.show_all()
         Gtk.main()
     else:
+        #######
+        ####### ADAPTION-STARTUP SECTION
+        ####### Creation of the new UI window 
+
+        # --- Get needed data ---
         def bool_to_int(bool):
             if bool:
                 return 1
@@ -964,9 +971,32 @@ if get_installation_type() != InstallationType.NAUTILUS:
         breaking = int(CONVERTER_VERSION[0:3])
         feature = int(CONVERTER_VERSION[3:6])
         patch = int(CONVERTER_VERSION[6:9])
-        print(breaking, feature, patch)
+        # --- Launch the application ---
         result = UI_LIBRARY.show_ui(media_type, to_wallpaper, to_square, to_jxl, to_avif, dark_theme, breaking, feature, patch)
+
+        #######
+        ####### SELECTION EVALUATION
+        ####### Analysis of the int values returned by the UI 
+
         if result.id != 0: 
             print(result.id, result.wallpaper_id, result.square_id, result.orientation_id)
+            return_paths = []
+            for retun_path in SYSTEM_ARGUMENTS:
+                return_paths.append(Path(retun_path))
+            if only_images_selected:
+                selected_format = WRITE_FORMATS_IMAGE[result.id - 1]
+                if result.wallpaper_id != 0 or result.square_id != 0:
+                    if result.wallpaper_id != 0:
+                        selected_wallpaper = WRITE_DIMENSIONS_WALLPAPER_LANDSCAPE[result.wallpaper_id - 1]
+                        if result.orientation_id == 0:
+                            wallpaper_width = selected_wallpaper["w"]
+                            selected_wallpaper["w"] = selected_wallpaper["h"]
+                            selected_wallpaper["h"] = wallpaper_width
+                        start_special_image_conversion(None, {"format": selected_format, "files": return_paths, 'w': selected_wallpaper['w'], 'h': selected_wallpaper['h']})
+                    else:
+                        selected_square = WRITE_DIMENSIONS_SQUARE[result.square_id - 1]
+                        start_special_image_conversion(None, {"format": selected_format, "files": return_paths, 'w': selected_square['w'], 'h': selected_square['w']})
+                else:
+                    start_image_conversion(None, {"format": selected_format, "files": return_paths})
         else:
             print("Selection aborted")
