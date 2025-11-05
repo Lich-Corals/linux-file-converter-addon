@@ -266,6 +266,8 @@ if len(SYSTEM_ARGUMENTS) > 0:
         UI_LIBRARY.show_ui.restype = ResultTuple
     except: 
         print(f"ERROR(Nautilus-file-converter)(404): Something went wrong loading the new UI; using legacy UI instead. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+        os.system('notify-send --app-name="linux-file-converter-addon" "WARNING (Error code 404)" "Using legacy adaption UI! Starting update... More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"')
+        update_adaption_ui()
         gi.require_version("Gtk", "3.0")
         from gi.repository import Gtk, Gdk
     from magic import Magic
