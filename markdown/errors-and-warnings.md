@@ -76,6 +76,17 @@ To fix this, the script needs the permissions to write inside the folder, where 
 <br/>To use the configuration file, the user, who is executing the script (by starting Nautilus) needs permissions create and edit files inside the `~/.config/` dictionary.
 <br/><br/>To prevent the settings from being reset, you can add the `~/.config/linux-file-converter-addon/config.json` file manually and make sure you have permissions to write to it.
 
+### (404): Something went wrong loading the new UI
+#### Causes:
+The UI library couldn't be imported; likely because the file doesn't exist.
+
+#### Possible effects:
+In version 2.0.0, the legacy UI will be used; in newer versions, the program will not launch.
+
+#### How to solve?
+Check if the UI library is in at the following location: `~/.config/linux-file-converter-addon/libconverter_addon_adaption_ui.so`
+If that's the case, try to launch the UI again, if it still doesn't work, open an issue on GitHub.
+
 #### All sections
 - [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
 - [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)

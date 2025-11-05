@@ -66,6 +66,20 @@ pip install Pillow
 pip install python-magic
 ```
 
+### Manually installed dependencies
+The adaption UI needs a binary library to run.
+It can either be downloaded [here](https://github.com/Lich-Corals/converter_addon_adaption_ui/raw/refs/heads/mistress/target/release/libconverter_addon_adaption_ui.so) or manually compiled from the source code [here](https://github.com/Lich-Corals/converter_addon_adaption_ui). For manual compilation, run `cargo build --release` in the downloaded source code's directory.
+
+The library is expected to be in the following location: `~/.config/linux-file-converter-addon/libconverter_addon_adaption_ui.so`
+
+You can copy it there by running the following command in the location where the library file is located:
+```
+cp libconverter_addon_adaption_ui.so ~/.config/linux-file-converter-addon/libconverter_addon_adaption_ui.so
+```
+
+> [!NOTE]   
+> This step may be skipped; if the file can't be found, the program will download it automatically after the first launch.
+
 ## Optional dependencies
 ### pillow_heif (from HEIF, AVIF)
 [pillow_heif](https://pypi.org/project/pillow-heif/) is needed if you want to convert from **HEIF** or **AVIF** format.

@@ -25,10 +25,7 @@ To turn off the <b>update pop-up</b>, open the config file with a text editor an
 To turn off the <b>patch note button</b> in the context menu and the <b>version number</b> in the adaption window, open the config file with a text editor and set the `showPatchNoteButton` variable to 'false'.
 <br/><br/>To turn off the <b>Configure NFC43 button</b> in the context menu and the <b>config hint</b> in the adaption window, open the config file with a text editor and set the `showConfigHint` variable to 'false'.
 <br/><br/>To turn off the '<b>convert to square</b>' option, open the config file with a text editor and set the `convertToSquares` variable to 'false'.
-<br/><br/>To turn off the '<b>convert to wallpaper</b>' functions, open the config file with a text editor and set the `convertToLandscapeWallpapers` and-or the `convertToPortraitWallpapers` variable to 'false'.
-
-> [!NOTE]  
-> If you still have the `convertToWallpapers` option in your config.json file, you may remove it; it was replaced by the two options above and does not change anything anymore.
+<br/><br/>To turn off the '<b>convert to wallpaper</b>' functions, open the config file with a text editor and set the `convertToLandscapeWallpapers` and-or the `convertToPortraitWallpapers` variable to 'false'. The new adaption UI only uses the `convertToWallpapers` which doesn't effect anything else.
 
 ## Other options
 To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
@@ -37,7 +34,7 @@ To turn off the __addition of timestamps__ to filenames, open the config file wi
 ## Adaption specific options (Nemo and Thunar)
 <br/>To enable the conversion of <b>application/octet-stream</b> files in the adaption version, set the `convertFromOctetStream` option to 'true'. This may allow you to convert files with unmatching mime types, which are in a supported- but not as such detected format. This may also allow the context menu option for other un-convertabe files, such a .pdf or .zip.
 
-To disable the <b>"-" option</b> in the dropdown-list, set the `showDummyOption` setting to 'false'.
+To disable the <b>"-" option</b> in the dropdown-list (legacy UI), set the `showDummyOption` setting to 'false'.
 
 If the program does not automatically generate or update the nemo_action file, you can enable the `alwaysCreateNemoAction` option to override the check if the program is installed for Nemo. 
 <br/>A similar option exists for Dolphin and is called `alwaysCreateDolphinServicemenu`.

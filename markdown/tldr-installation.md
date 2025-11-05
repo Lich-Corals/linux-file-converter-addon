@@ -50,7 +50,7 @@ Now, [finalize the installation](https://github.com/Lich-Corals/linux-file-conve
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-dolphin
 ```
 
-**For all of the above:**
+**For all of the above at once:**
 ```bash
 python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-all
 ```

@@ -12,6 +12,11 @@
 Convert between various image, audio and video formats using the context menu. The addon is written in Python and available for **Nautilus**, **Nemo**, **Thunar** and **Dolphin** file viewers. It adds a new option to the context menu to create an easy way to convert between a huge amount of file types.
 The program offers many options to customize the appearance of its context menu. There are also a few extra formats which can be added by installing optional dependencies.
 The tool has a built-in auto-update function to make sure the newest version is always installed.
+
+> [!IMPORTANT]   
+> The newest version (2.0.0) introduces a new UI for the adaption versions of the file-converter.
+> The old "legacy" UI, which was using Gtk3, is still available in this release but it will be removed in the future.
+
 <br/>
 <p align="center">
     <img height="512px" alt="ogre" src="https://github.com/user-attachments/assets/102ec8e2-8040-49f5-8c41-879f4fdbb84c" />
