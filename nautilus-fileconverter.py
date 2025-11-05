@@ -2,7 +2,7 @@
 
 
 # Linux-File-Converter-Addon - Converting files from context menu
-# Copyright (C) 2025  Linus Tibert
+# Copyright (C) 2025  Jax Tibert
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public Licence as published
@@ -70,7 +70,7 @@ def update_adaption_ui():
 if len(SYSTEM_ARGUMENTS) >= 1:
     # --- Show the copyright notice ---
     def copyright_notice():
-        print("Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--licence' for details.\n")
+        print("Linux-File-Converter-Addon  Copyright (C) 2025  Jax Tibert\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions; run with `--licence' for details.\n")
     # --- Show the licence in default browser if asked to ---
     if SYSTEM_ARGUMENTS[0] == "--licence":
         from subprocess import Popen
@@ -147,6 +147,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
         except:
             status_print(f"{format_exc()}\nERROR: Can't download the file. Aborting.")
             exit()
+        adaption_installation = False
         for target in installation_targets:
             installation_target = target
             installation_path = installation_targets[target]
@@ -167,6 +168,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                     status_print("Killing nautilus...")
                     os.system("nautilus -q")
                 case InstallationType.NEMO:
+                    adaption_installation = True
                     status_print("Downloading nemo_action...")
                     nemo_action = ""
                     try:
@@ -181,9 +183,8 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                         f.close()
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
-                    status_print("Getting adaption ui binary...")
-                    update_adaption_ui()
                 case InstallationType.DOLPHIN:
+                    adaption_installation = True
                     status_print("Downloading servicemenu...")
                     servicemenu = ""
                     try:
@@ -202,14 +203,14 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                     os.chmod(DOLPHIN_SERVICE_MENU_LOCATION, os.stat(DOLPHIN_SERVICE_MENU_LOCATION).st_mode | stat.S_IEXEC)
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
-                    status_print("Getting adaption ui binary...")
-                    update_adaption_ui()
                 case InstallationType.THUNAR:
+                    adaption_installation = True
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
                     status_print(f"Used this path for thunar installation: {installation_path}")
-                    status_print("Getting adaption ui binary...")
-                    update_adaption_ui()
+        if adaption_installation:
+            status_print("Getting adaption ui binary...")
+            update_adaption_ui()
         status_print("Installation successfull. Consider taking a look at the configuration of the extension: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md")
         exit()
 
@@ -829,7 +830,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 self.add_label_centered(box, f"""<span size="x-small">version {CONVERTER_VERSION}</span>""")
             if user_configuration["showConfigHint"]:
                 self.add_label_centered(box, f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
-            self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Linus Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE">GNU Affero General Public Licence</a>.</span>""")
+            self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Jax Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE">GNU Affero General Public Licence</a>.</span>""")
             self.add(box)
 
         # --- Get data from combo-box and run the right conversion function ---
