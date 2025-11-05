@@ -63,7 +63,7 @@ If anything is not clear...
 <br/><b>Check if anyone had the same issue before [on this page](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=) or feel free to open a new [GitHub issue](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose)!</b>
 
 # Credits
-- [Linus Tibert](https://github.com/Lich-Corals)
+- [Jax Tibert](https://github.com/Lich-Corals)
   <br>Maintenance, issues, support
 - [derVedro](https://github.com/derVedro)
   <br>Pull requests, issue solving
