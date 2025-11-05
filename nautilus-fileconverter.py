@@ -385,6 +385,8 @@ if user_configuration["automaticUpdates"]:
                 os.system('notify-send --app-name="linux-file-converter-addon" "Update installed." "More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"')
             with open(application_file_location, 'w') as file:
                 file.write(downloaded_data)
+        print("Updating adaption UI...")
+        update_adaption_ui()
 
 # --- Check for development status and apply settings ---
 #     print() isn't working anymore after this command unless DEBUG_MODE is enabled
