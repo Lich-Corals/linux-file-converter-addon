@@ -2,7 +2,7 @@
 name: Format request
 about: Request a new read or write format
 title: 'Format request: [format name here]'
-labels: format
+labels: ''
 assignees: Lich-Corals
 
 ---
