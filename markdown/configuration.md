@@ -27,6 +27,9 @@ To turn off the <b>patch note button</b> in the context menu and the <b>version 
 <br/><br/>To turn off the '<b>convert to square</b>' option, open the config file with a text editor and set the `convertToSquares` variable to 'false'.
 <br/><br/>To turn off the '<b>convert to wallpaper</b>' functions, open the config file with a text editor and set the `convertToLandscapeWallpapers` and-or the `convertToPortraitWallpapers` variable to 'false'. The new adaption UI only uses the `convertToWallpapers` which doesn't effect anything else.
 
+## User interface
+To enable a __light UI theme__ for the adaption UI, set the `useDarkTheme` option to `false`.
+
 ## Other options
 To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
 <br/><br/>To turn off the <b>"Conversion finished" notifications</b>, open the config file with a text editor and set the `displayFinishNotification` variable to 'false'.
