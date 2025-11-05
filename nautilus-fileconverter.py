@@ -19,10 +19,10 @@
 
 
 # --- Version number ---
-CONVERTER_VERSION = "001003011" # Change the number if you want to trigger an update.
+CONVERTER_VERSION = "002000000" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 #######
 ####### AUTO-INSTALLATION SECTION
@@ -749,6 +749,7 @@ if get_installation_type() == InstallationType.NAUTILUS:
 if get_installation_type() != InstallationType.NAUTILUS:
     # --- Create nemo_action ---
     if get_installation_type() == InstallationType.NEMO or user_configuration["alwaysCreateNemoAction"]:
+        print("updating nemo action...")
         nemo_read_formats = ""
         global_read_formats = READ_FORMATS_IMAGE + READ_FORMATS_AUDIO + READ_FORMATS_VIDEO
         for media_format in global_read_formats:
