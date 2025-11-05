@@ -19,7 +19,7 @@ The tool has a built-in auto-update function to make sure the newest version is 
 
 <br/>
 <p align="center">
-    <img height="512px" alt="ogre" src="https://github.com/user-attachments/assets/102ec8e2-8040-49f5-8c41-879f4fdbb84c" />
+    <img height="512px" alt="ogre" src="https://github.com/user-attachments/assets/1494a0dc-54b7-49ad-981a-d9c0ad5e801f" />
 </p>
 
 > [!TIP]  
