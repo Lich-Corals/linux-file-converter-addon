@@ -33,6 +33,7 @@ Basic information about the used OS
  - Python version (`python3 --version`): [e.g. Python 3.11.2]
  - pip version (`pip --version`): [e.g. pip 23.2.1]
  - File converter version (specified at the start of the script and in the bottom of the adaption UI window): [e.g. 001002003 or 1.2.3]
+- UI version (if you are using the adaption; can be found at the bottom of the window): [e.g. Converter-Addon-Adaption-UI v0.1.0]
 
 **Nautilus errors (If you are using Nautilus)**
 If possible, please provide the error(s) when running the `nautilus` command in the terminal.
