@@ -42,6 +42,7 @@ CONFIGURATION_DIRECTORY = Path(CONFIGURATION_FILE).parent
 LOCAL_BIN_DIRECTORY_EXEC = "~/.local/bin/linux-file-converter-addon.py"
 DOLPHIN_SERVICE_MENU_LOCATION = os.path.expanduser("~/.local/share/kio/servicemenus/linux-file-converter-addon.desktop")
 SYSTEM_ARGUMENTS = sys.argv[1:len(sys.argv)]
+ADAPTION_UI_BINARY_PATH = "https://github.com/Lich-Corals/converter_addon_adaption_ui/raw/refs/heads/mistress/target/release/libconverter_addon_adaption_ui.so"
 
 # --- Enum to identify a spcific type of installation of the script ---
 class InstallationType(Enum):
@@ -56,6 +57,15 @@ INSTALLATION_LOCATIONS =    {InstallationType.NAUTILUS: os.path.expanduser("~/.l
                             InstallationType.NEMO: os.path.expanduser("~/.local/share/nemo/actions/linux-file-converter-addon.py"),
                             InstallationType.THUNAR: os.path.expanduser(LOCAL_BIN_DIRECTORY_EXEC),
                             InstallationType.DOLPHIN: os.path.expanduser(LOCAL_BIN_DIRECTORY_EXEC)}
+
+def update_adaption_ui():
+    import requests
+    response = requests.get(ADAPTION_UI_BINARY_PATH)
+    if not response.ok:
+        print(f"ERROR: Download URL returned {response.status_code}")
+        exit()
+    with open(f"{CONFIGURATION_DIRECTORY}/libconverter_addon_adaption_ui.so", "wb") as file:
+        file.write(response.content)
 
 if len(SYSTEM_ARGUMENTS) >= 1:
     # --- Show the copyright notice ---
@@ -171,6 +181,8 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                         f.close()
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
+                    status_print("Getting adaption ui binary...")
+                    update_adaption_ui()
                 case InstallationType.DOLPHIN:
                     status_print("Downloading servicemenu...")
                     servicemenu = ""
@@ -190,10 +202,14 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                     os.chmod(DOLPHIN_SERVICE_MENU_LOCATION, os.stat(DOLPHIN_SERVICE_MENU_LOCATION).st_mode | stat.S_IEXEC)
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
+                    status_print("Getting adaption ui binary...")
+                    update_adaption_ui()
                 case InstallationType.THUNAR:
                     status_print("Updating script permissions...")
                     os.chmod(installation_path, os.stat(installation_path).st_mode | stat.S_IEXEC)
                     status_print(f"Used this path for thunar installation: {installation_path}")
+                    status_print("Getting adaption ui binary...")
+                    update_adaption_ui()
         status_print("Installation successfull. Consider taking a look at the configuration of the extension: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md")
         exit()
 
