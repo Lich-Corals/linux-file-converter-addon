@@ -19,10 +19,10 @@
 
 
 # --- Version number ---
-CONVERTER_VERSION = "002000000" # Change the number if you want to trigger an update.
+CONVERTER_VERSION = "002000001" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 #######
 ####### AUTO-INSTALLATION SECTION
