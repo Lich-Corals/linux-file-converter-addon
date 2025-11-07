@@ -1,3 +1,7 @@
+## [2.0.1]
+### Fixed
+- Missing video conversions in the new UI
+
 ## [2.0.0]
 ### Added
 - Changelog
