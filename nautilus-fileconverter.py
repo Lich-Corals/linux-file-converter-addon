@@ -22,7 +22,7 @@
 CONVERTER_VERSION = "002000000" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
-DEBUG_MODE = False
+DEBUG_MODE = True
 
 #######
 ####### AUTO-INSTALLATION SECTION
@@ -1001,5 +1001,13 @@ if get_installation_type() != InstallationType.NAUTILUS:
                         start_special_image_conversion(None, {"format": selected_format, "files": return_paths, 'w': selected_square['w'], 'h': selected_square['w']})
                 else:
                     start_image_conversion(None, {"format": selected_format, "files": return_paths})
+            else:
+                format = None
+                if only_audios_selected:
+                    format = WRITE_FORMATS_AUDIO[result.id - 1]
+                elif only_videos_selected:
+                    format = WRITE_FORMATS_VIDEO[result.id - 1]
+                print(format)
+                start_ffmpeg_conversion(None, {"format": format, "files": return_paths})                            
         else:
             print("Selection aborted")
