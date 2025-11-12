@@ -2,7 +2,7 @@
 This section will guide you through the installation for Nemo.
 
 > [!IMPORTANT]  
-> Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.
+> Make sure you have installed all [general dependencies](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-dependencies.md) before you try to install the script.
 
 ## Nemo specific dependencies
 [Nemo](https://github.com/linuxmint/nemo) needs to be installed.
@@ -27,7 +27,7 @@ python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-
 Now go to the [next section](#enabling-the-action-in-nemo).
 
 ### Manual installation
-- Download the nautilus-fileconverter.py and the nautilus-fileconverter.nemo_action file from the [release page](https://github.com/Lich-Corals/linux-file-converter-addon/releases).
+- Download the nautilus-fileconverter.py and the nautilus-fileconverter.nemo_action file from the [release page](https://codeberg.org/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
      ```bash
      git clone https://github.com/Lich-Corals/linux-file-converter-addon
@@ -46,14 +46,3 @@ Now go to the [next section](#enabling-the-action-in-nemo).
 
 ## Enabling the action in Nemo
  You may need to enable the action in Nemo's settings. To do so, you can open Nemo and go edit>Plugins (or press Alt+P) and check the checkbox labelled with "Convert to..." in the "Actions" area.
-
-#### All sections
-- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
-- [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
-- [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
-- [TL;DR installation guide](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/tldr-installation.md)
-- [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)
-- [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
-- __[Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)__
-- [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
-- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
