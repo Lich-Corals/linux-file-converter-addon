@@ -68,7 +68,7 @@ pip install python-magic
 
 ### Manually installed dependencies
 The adaption UI needs a binary library to run.
-It can either be downloaded [here](https://github.com/Lich-Corals/converter_addon_adaption_ui/raw/refs/heads/mistress/target/release/libconverter_addon_adaption_ui.so) or manually compiled from the source code [here](https://github.com/Lich-Corals/converter_addon_adaption_ui). For manual compilation, run `cargo build --release` in the downloaded source code's directory.
+It can either be downloaded [here](https://codeberg.org/Lich-Corals/converter_addon_adaption_ui/raw/branch/mistress/target/release/libconverter_addon_adaption_ui.so) or manually compiled from the source code [here](https://codeberg.org/Lich-Corals/converter_addon_adaption_ui). For manual compilation, run `cargo build --release` in the downloaded source code's directory.
 
 The library is expected to be in the following location: `~/.config/linux-file-converter-addon/libconverter_addon_adaption_ui.so`
 
@@ -103,14 +103,3 @@ pip install jxlpy
 
 > [!NOTE]
 > Jxlpy is in a very early state, you may have issues while installing it using pip. In this case you need to [install it manually](https://github.com/olokelo/jxlpy#build-it-yourself).
-
-#### All sections
-- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
-- [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
-- [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
-- [TL;DR installation guide](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/tldr-installation.md)
-- __[Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)__
-- [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
-- [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
-- [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
-- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
