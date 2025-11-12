@@ -1,3 +1,7 @@
+## [2.0.2]
+### Added
+- A warning in the adaption UI if a large amount of bytes is selected
+
 ## [2.0.1]
 ### Fixed
 - Missing ffmpeg conversions for the new UI
