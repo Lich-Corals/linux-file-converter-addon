@@ -48,14 +48,3 @@ If the program does not automatically generate or update the nemo_action file, y
 > [!WARNING]  
 > The configuration is used globally; hence, other installations of the file converter (for Nautilus or Thunar) will also generate a nemo_action in their current directory if this option is enabled.
 > <br/>To avoid this, enable this option, run the extension in Nemo once and finally disable the option again.
-
-#### All sections
-- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
-- __[Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)__
-- [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
-- [TL;DR installation guide](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/tldr-installation.md)
-- [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)
-- [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
-- [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
-- [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
-- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
