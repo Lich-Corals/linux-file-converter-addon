@@ -1,7 +1,6 @@
-
 # Linux-File-Converter-Addon
+[![Codeberg](https://img.shields.io/badge/-Codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white)](https://codeberg.org/Lich-Corals/linux-file-converter-addon)
 [![Gnome Look](https://img.shields.io/badge/-Gnome%20Look-4A86CF?style=for-the-badge&logo=gnome&logoColor=white)](https://www.gnome-look.org/s/Gnome/p/1965601)
-[![Sourceforge](https://img.shields.io/badge/-Sourceforge-FF6600?style=for-the-badge&logo=sourceforge&logoColor=white)](https://sourceforge.net/projects/linux-file-converter-addon/)
 [![Coffee Logo](https://img.shields.io/badge/-Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://www.coff.ee/lichcorals)
 
 > [!IMPORTANT]  
@@ -32,16 +31,16 @@ The tool has a built-in auto-update function to make sure the newest version is 
 </p>
 
 > [!TIP]  
-> You can view this [list of supported formats](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/supported-formats.md) if you are interested.
+> You can view this [list of supported formats](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/supported-formats.md) if you are interested.
 
 # Installation
-You can follow the [TL;DR installation guide](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/tldr-installation.md) for a quick and painless installation...
+You can follow the [TL;DR installation guide](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/tldr-installation.md) for a quick and painless installation...
 
 Or you head over to the installation page for your file manager for the full installation experience:
-- [Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
-- [Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
-- [Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
-- [Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
+- [Nautilus](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-nautilus.md)
+- [Nemo](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-nemo.md)
+- [Thunar](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-thunar.md)
+- [Dolphin](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-dolphin.md)
 
 # Updating
 If the script is installed in the home folder or has permissions to write in its directory, it will update automatically as long as automatic updates aren't disabled.
@@ -55,37 +54,30 @@ Just right-click on any supported file and choose the "Convert to..." option. In
 > Converting a file can take some time. With the default settings, there will be a notification when all files are converted.
 
 > [!IMPORTANT]  
-> If you experience any issues with the extension, please report it on the [issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues) page.
+> If you experience any issues with the extension, please report it on the [issues](https://codeberg.org/Lich-Corals/linux-file-converter-addon/issues) page.
 
 # Contributing
 Contributions are always welcome!
-If you want to contribute to this project, take a look at the [open issues](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=is%3Aissue%20state%3Aopen%20) and at [issues with help-wanted tag](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22help%20wanted%22) or propose other edits to the program using a pull-request.
+If you want to contribute to this project, take a look at the [open issues](https://codeberg.org/Lich-Corals/linux-file-converter-addon/issues?q=&state=open) or propose other edits to the program using a pull-request.
 The code of the project is partly commented and relatively self explaining. If you're curious about the way something is accomplished in the code, you can always ask about it in an issue and if you think there is a better way to do it, you're welcome to edit the code or share your ideas in another issue.
 
-Please read the [contribution guidelines](https://github.com/Lich-Corals/linux-file-converter-addon?tab=contributing-ov-file) before opening a pull request.
+Please read the [contribution guidelines](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/CONTRIBUTING.md) before opening a pull request.
 
 # Any questions?
 If anything is not clear...
 <br/>If you have a problem...
 <br/>If you need a specific feature...
 <br/>If any of your files are not supported...
-<br/><b>Check if anyone had the same issue before [on this page](https://github.com/Lich-Corals/linux-file-converter-addon/issues?q=) or feel free to open a new [GitHub issue](https://github.com/Lich-Corals/linux-file-converter-addon/issues/new/choose)!</b>
+<br/><b>Check if anyone had the same issue before [on this page](https://codeberg.org/Lich-Corals/linux-file-converter-addon/issues) or feel free to open a new [Codeberg issue](https://codeberg.org/Lich-Corals/linux-file-converter-addon/issues/)!</b>
 
 # Credits
-- [Jax Tibert](https://github.com/Lich-Corals)
+- [Jax Tibert](https://codeberg.org/Lich-Corals)
   <br>Maintenance, issues, support
 - [derVedro](https://github.com/derVedro)
   <br>Pull requests, issue solving
 - [D10f](https://github.com/D10f)
   <br>Pull requests
 
-#### All sections
-- __[Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)__
-- [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
-- [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
-- [TL;DR installation guide](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/tldr-installation.md)
-- [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)
-- [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
-- [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
-- [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
-- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
+#### More information
+- [Configuration](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/configuration.md)
+- [Errorrs and warnings](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/errors-and-warnings.md)
