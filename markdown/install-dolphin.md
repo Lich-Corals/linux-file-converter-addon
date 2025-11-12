@@ -13,7 +13,7 @@ You can either install the extension manually or with a one-liner.
 ### One-liner installation
 Just run this command:
 ```bash
-python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-dolphin
+python3 -c "$(curl -sS https://codeberg.org/Lich-Corals/linux-file-converter-addon/raw/branch/main/nautilus-fileconverter.py)" --install-for-dolphin
 ```
 Now go to the [next section](#enable-the-action-in-thunar).
 
