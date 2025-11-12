@@ -26,7 +26,7 @@ You can either install the extension manually or with a one-liner.
 ### One-liner installation
 Just run this command, and you are done:
 ```bash
-python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-nautilus
+python3 -c "$(curl -sS https://codeberg.org/Lich-Corals/linux-file-converter-addon/raw/branch/main/nautilus-fileconverter.py)" --install-for-nautilus
 ```
 Nautilus will quit at the end of the installation. This is intended and necessary for the extension to get activated.
 
