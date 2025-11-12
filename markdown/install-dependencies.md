@@ -37,11 +37,11 @@ The automatic installation will create a local venv and install the needed pip p
 
 Run this command for a full installation (with optional dependencies):
 ```bash
-python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --create-venv --full
+python3 -c "$(curl -sS https://codeberg.org/Lich-Corals/linux-file-converter-addon/raw/branch/main/nautilus-fileconverter.py)" --create-venv --full
 ```
 Or run this one to only install the mandatory dependencies:
 ```bash
-python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --create-venv
+python3 -c "$(curl -sS https://codeberg.org/Lich-Corals/linux-file-converter-addon/raw/branch/main/nautilus-fileconverter.py)" --create-venv
 ```
 
 > [!TIP]  
