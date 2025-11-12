@@ -8,7 +8,7 @@
 > For and Microsoft- and _other_-Reasons, this project will migrate to Codeberg soon.
 > Automatic updates will be updated to retrive resources from codeberg in one of the next releases.
 >
-> If you still want to support this project, consider starring it on Codeberghttps://codeberg.org/Lich-Corals/linux-file-converter-addon.
+> If you still want to support this project, consider starring it on Codeberg.
 > 
 > [![Codeberg](https://img.shields.io/badge/-view_on_codeberg-2185D0?style=for-the-badge&logo=Codeberg&logoColor=white)](https://codeberg.org/Lich-Corals/linux-file-converter-addon)
 
