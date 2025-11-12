@@ -30,6 +30,9 @@ To turn off the <b>patch note button</b> in the context menu and the <b>version 
 ## User interface
 To enable a __light UI theme__ for the adaption UI, set the `useDarkTheme` option to `false`.
 
+<br/>
+To change the file size where the adaption UI __warns about large data amounts__, adjust the `largeDataWarningLimit` value, which is an amount in KiB. The default is 3072 KiB (3 MiB).
+
 ## Other options
 To turn off the __addition of timestamps__ to filenames, open the config file with a text editor and set the `timeInNames` variable to ‘false’.
 <br/><br/>To turn off the <b>"Conversion finished" notifications</b>, open the config file with a text editor and set the `displayFinishNotification` variable to 'false'.
