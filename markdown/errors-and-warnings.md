@@ -8,7 +8,7 @@ This warning is caused, because the script is not able to find your pillow_heif 
 Without pyheif, the converter won't be able to convert from HEIF file format.
 <br/><br/><b>How to solve?</b><br/>
 To solve this warning, you need to install pillow_heif using pip.
-<br/>View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
+<br/>View the [Optional dependencies](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
 
 ### (101): "jxlpy" not found
 <b>Causes:</b><br/>
@@ -17,7 +17,7 @@ This warning is caused, because the script is not able to find your jxlpy instal
 Without jxlpy, the converter won't be able to convert from- or to jxl file format.
 <br/><br/><b>How to solve?</b><br/>
 To solve this warning, you need to install jxlpy using pip.
-<br/>View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
+<br/>View the [Optional dependencies](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
 
 ### (102): "pillow-avif-plugin" not found
 <b>Causes:</b><br/>
@@ -26,7 +26,7 @@ This warning is caused, because the script is not able to find your pillow-avif-
 Without pillow-avif-plugin, the converter won't be able to convert to AVIF file format.
 <br/><br/><b>How to solve?</b><br/>
 To solve this warning, you need to install pillow-avif-plugin using pip.
-<br/>View the [Optional dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
+<br/>View the [Optional dependencies](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-dependencies.md#optional-dependencies) section to get installation instructions.
 
 ### (104): Attempting to update
 <b>Causes:</b><br/>
@@ -60,7 +60,7 @@ The program has no permission to write its own file.
 The self-update function will not be available.
 <br/>The script may show the release page on multiple startups if self-update isn't disabled.
 <br/><br/><b>How to solve?</b><br/>
-To remove the release pop-up, you may disable the corresponding setting. To do this, please follow the instructions on the [configuration page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md).
+To remove the release pop-up, you may disable the corresponding setting. To do this, please follow the instructions on the [configuration page](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/configuration.md).
 <br/>To get self updates, the script needs the permissions to write to itself. This can be done by changing the file permissions using [chmod](https://www.man7.org/linux/man-pages/man1/chmod.1.html) or by running the script as a privileged user.
 <br/>To be able to self-update, the user, who is executing the script (by starting Nautilus) needs permissions to edit the script itself.
 
@@ -85,15 +85,4 @@ In version 2.0.0, the legacy UI will be used; in newer versions, the program wil
 
 #### How to solve?
 Check if the UI library is in at the following location: `~/.config/linux-file-converter-addon/libconverter_addon_adaption_ui.so`
-If that's the case, try to launch the UI again, if it still doesn't work, open an issue on GitHub.
-
-#### All sections
-- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
-- [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
-- __[Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)__
-- [TL;DR installation guide](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/tldr-installation.md)
-- [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)
-- [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
-- [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
-- [Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)
-- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
+If that's the case, try to launch the UI again, if it still doesn't work, open an issue on Codeberg.
