@@ -2,7 +2,7 @@
 This section will guide you through the installation for Thunar file manager.
 
 > [!IMPORTANT]  
-> Make sure you have installed all [general dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md) before you try to install the script.
+> Make sure you have installed all [general dependencies](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-dependencies.md) before you try to install the script.
 
 ## Thunar specific dependencies
 [Thunar](https://github.com/neilbrown/thunar) needs to be installed.
@@ -18,7 +18,7 @@ python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-
 Now go to the [next section](#enable-the-action-in-thunar).
 
 ### Manual installation
-- Download the nautilus-fileconverter.py file from the [release page](https://github.com/Lich-Corals/linux-file-converter-addon/releases).
+- Download the nautilus-fileconverter.py file from the [release page](https://codeberg.org/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
      ```bash
      git clone https://github.com/Lich-Corals/linux-file-converter-addon
@@ -58,14 +58,3 @@ You should now see the 'Convert to...' action when selecting an image, audio or 
 
 > [!NOTE]  
 > It may occur to you that you don't see the action when selecting multiple files. This is an issue with Thunar.
-
-#### All sections
-- [Main page](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/README.md)
-- [Configuration](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md)
-- [Errorrs and warnings](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md)
-- [TL;DR installation guide](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/tldr-installation.md)
-- [Install dependencies](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dependencies.md)
-- [Installation for Nautilus](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nautilus.md)
-- [Installation for Nemo](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-nemo.md)
-- __[Installation for Thunar](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-thunar.md)__
-- [Installation for Dolphin](https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/install-dolphin.md)
