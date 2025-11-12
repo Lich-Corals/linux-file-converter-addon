@@ -1,7 +1,7 @@
 # A simple list of supported media read and write formats (including those added by optional dependencies) with quite a long headline
 
 > [!IMPORTANT]  
-> If you need a format which is not on this list, you can always [open an issue](https://github.com/Lich-Corals/linux-file-converter-addon/issues) with the format request template. In most cases it is easily possible to add support for a specific format.
+> If you need a format which is not on this list, you can always [open an issue](https://codeberg.org/Lich-Corals/linux-file-converter-addon/issues) with the format request template. In most cases it is easily possible to add support for a specific format.
 
 ## Read formats
 ### Image
