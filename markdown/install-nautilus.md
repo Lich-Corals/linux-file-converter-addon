@@ -34,7 +34,7 @@ Nautilus will quit at the end of the installation. This is intended and necessar
 - Download the nautilus-fileconverter.py file from the [release page](https://codeberg.org/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
         ```bash
-        git clone https://github.com/Lich-Corals/linux-file-converter-addon
+        git clone https://codeberg.org/Lich-Corals/linux-file-converter-addon
 
         cd ./linux-file-converter-addon
         ```
