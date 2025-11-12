@@ -22,7 +22,7 @@ You can either install the extension manually or with a one-liner.
 ### One-liner installation
 Just run this command:
 ```bash
-python3 -c "$(curl -sS https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py)" --install-for-nemo
+python3 -c "$(curl -sS https://codeberg.org/Lich-Corals/linux-file-converter-addon/raw/branch/main/nautilus-fileconverter.py)" --install-for-nemo
 ```
 Now go to the [next section](#enabling-the-action-in-nemo).
 
