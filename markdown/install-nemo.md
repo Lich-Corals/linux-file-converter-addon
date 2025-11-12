@@ -30,7 +30,7 @@ Now go to the [next section](#enabling-the-action-in-nemo).
 - Download the nautilus-fileconverter.py and the nautilus-fileconverter.nemo_action file from the [release page](https://codeberg.org/Lich-Corals/linux-file-converter-addon/releases).
     - Git users can also get the repository with these commands[:](https://bit.ly/3BlS71b)
      ```bash
-     git clone https://github.com/Lich-Corals/linux-file-converter-addon
+     git clone https://codeberg.org/Lich-Corals/linux-file-converter-addon
 
      cd ./linux-file-converter-addon
      ```
