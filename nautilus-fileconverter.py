@@ -337,7 +337,8 @@ CONFIG_PRESET = {
     "convertToWallpapers": True,
     "convertToLandscapeWallpapers": True,
     "convertToPortraitWallpapers": True,
-    "useDarkTheme": True
+    "useDarkTheme": True,
+    "largeDataWarningLimit": 3072
 }
 
 # --- Move settings from old config file to new location if the old one exists ---
@@ -950,6 +951,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 return 1
             else:
                 return 0
+
         only_images_selected = True
         only_audios_selected = True
         only_videos_selected = True
@@ -966,6 +968,17 @@ if get_installation_type() != InstallationType.NAUTILUS:
             media_type = 1
         elif only_videos_selected:
             media_type = 2
+
+        large_files = 0
+        selected_kibibytes = 0
+        for f in SYSTEM_ARGUMENTS:
+            selected_kibibytes += int(os.path.getsize(f) / 1024) 
+            if selected_kibibytes > user_configuration["largeDataWarningLimit"]:
+                print("Large data amount detected.")
+                large_files = 1
+                break
+        print(f"{selected_kibibytes} KiB counted.") 
+
         to_wallpaper = bool_to_int(user_configuration["convertToWallpapers"])
         to_square = bool_to_int(user_configuration["convertToSquares"])
         to_jxl = bool_to_int(JXL_AVAILABLE)
@@ -975,7 +988,7 @@ if get_installation_type() != InstallationType.NAUTILUS:
         feature = int(CONVERTER_VERSION[3:6])
         patch = int(CONVERTER_VERSION[6:9])
         # --- Launch the application ---
-        result = UI_LIBRARY.show_ui(media_type, to_wallpaper, to_square, to_jxl, to_avif, dark_theme, breaking, feature, patch)
+        result = UI_LIBRARY.show_ui(media_type, to_wallpaper, to_square, to_jxl, to_avif, dark_theme, breaking, feature, patch, large_files)
 
         #######
         ####### SELECTION EVALUATION
