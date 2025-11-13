@@ -4,7 +4,7 @@
 [![Coffee Logo](https://img.shields.io/badge/-Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buymeacoffee&logoColor=black)](https://www.coff.ee/lichcorals)
 
 > [!IMPORTANT]  
-> For and Microsoft- and _other_ reasons, this project has been moved to Codeberg.
+> For Microsoft- and _other_ reasons, this project has been moved to Codeberg.
 > Automatic updates are retrieving resources from Codeberg from version 2.1.0.
 >
 > If you still want to support this project, consider giving it a star on Codeberg.
