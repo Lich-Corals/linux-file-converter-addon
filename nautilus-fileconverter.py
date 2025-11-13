@@ -19,7 +19,7 @@
 
 
 # --- Version number ---
-CONVERTER_VERSION = "002000002" # Change the number if you want to trigger an update.
+CONVERTER_VERSION = "002001000" # Change the number if you want to trigger an update.
 
 # --- Variable to enable debug mode ---
 DEBUG_MODE = False
@@ -42,7 +42,14 @@ CONFIGURATION_DIRECTORY = Path(CONFIGURATION_FILE).parent
 LOCAL_BIN_DIRECTORY_EXEC = "~/.local/bin/linux-file-converter-addon.py"
 DOLPHIN_SERVICE_MENU_LOCATION = os.path.expanduser("~/.local/share/kio/servicemenus/linux-file-converter-addon.desktop")
 SYSTEM_ARGUMENTS = sys.argv[1:len(sys.argv)]
-ADAPTION_UI_BINARY_PATH = "https://github.com/Lich-Corals/converter_addon_adaption_ui/raw/refs/heads/mistress/target/release/libconverter_addon_adaption_ui.so"
+ADAPTION_UI_BINARY_PATH = "https://codeberg.org/Lich-Corals/converter_addon_adaption_ui/raw/branch/mistress/target/release/libconverter_addon_adaption_ui.so"
+LICENCE_URL = "https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/LICENCE"
+MAIN_SCRIPT_URL = "https://codeberg.org/Lich-Corals/linux-file-converter-addon/raw/branch/mistress/nautilus-fileconverter.py"
+NEMO_ACTION_URL = "https://codeberg.org/Lich-Corals/linux-file-converter-addon/raw/branch/mistress/nautilus-fileconverter.nemo_action"
+SERVICEMENU_URL = "https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/linux-file-converter-addon.kde_servicemenu"
+CONFIG_URL = "https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/configuration.md"
+ERRORS_URL = "https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/errors-and-warnings.md"
+RELEASE_URL = "https://codeberg.org/Lich-Corals/linux-file-converter-addon/releases"
 
 # --- Enum to identify a spcific type of installation of the script ---
 class InstallationType(Enum):
@@ -74,7 +81,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
     # --- Show the licence in default browser if asked to ---
     if SYSTEM_ARGUMENTS[0] == "--licence":
         from subprocess import Popen
-        Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE"])
+        Popen(["xdg-open", LICENCE_URL])
         exit()
     # --- Create a local venv with dependencies ---
     if SYSTEM_ARGUMENTS[0] == "--create-venv":
@@ -142,7 +149,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
         import stat
         downloaded_self = ""
         try:
-            with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
+            with request.urlopen(MAIN_SCRIPT_URL) as f:
                 downloaded_self = f.read().decode().strip()
         except:
             status_print(f"{format_exc()}\nERROR: Can't download the file. Aborting.")
@@ -172,7 +179,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                     status_print("Downloading nemo_action...")
                     nemo_action = ""
                     try:
-                        with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.nemo_action") as f:
+                        with request.urlopen(NEMO_ACTION_URL) as f:
                             nemo_action = f.read().decode().strip()
                     except:
                         status_print(f"{format_exc()}\nERROR: Can't download nemo_action file. Aborting.")
@@ -188,7 +195,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
                     status_print("Downloading servicemenu...")
                     servicemenu = ""
                     try:
-                        with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/linux-file-converter-addon.kde_servicemenu") as f:
+                        with request.urlopen(SERVICEMENU_URL) as f:
                             servicemenu = f.read().decode().strip()
                     except:
                         status_print(f"{format_exc()}\nERROR: Can't download servicemenu file. Aborting.")
@@ -211,7 +218,7 @@ if len(SYSTEM_ARGUMENTS) >= 1:
         if adaption_installation:
             status_print("Getting adaption ui binary...")
             update_adaption_ui()
-        status_print("Installation successfull. Consider taking a look at the configuration of the extension: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md")
+        status_print(f"Installation successfull. Consider taking a look at the configuration of the extension: {CONFIG_URL}")
         exit()
 
 #######
@@ -265,8 +272,8 @@ if len(SYSTEM_ARGUMENTS) > 0:
                     ("orientation_id", c_uint16)]
         UI_LIBRARY.show_ui.restype = ResultTuple
     except: 
-        print(f"ERROR(Nautilus-file-converter)(404): Something went wrong loading the new UI; using legacy UI instead. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
-        os.system('notify-send --app-name="linux-file-converter-addon" "WARNING (Error code 404)" "Using legacy adaption UI! Starting update... More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"')
+        print(f"ERROR(Nautilus-file-converter)(404): Something went wrong loading the new UI; using legacy UI instead. View {ERRORS_URL} for more information.")
+        os.system('notify-send --app-name="linux-file-converter-addon" "WARNING (Error code 404)" "Using legacy adaption UI! Starting update..."')
         update_adaption_ui()
         gi.require_version("Gtk", "3.0")
         from gi.repository import Gtk, Gdk
@@ -297,24 +304,24 @@ try:
     HEIF_AVAILABLE = True
 except ImportError:
     HEIF_AVAILABLE = False
-    print(f"WARNING(Nautilus-file-converter)(100): \"pillow_heif\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information." )
+    print(f"WARNING(Nautilus-file-converter)(100): \"pillow_heif\" not found. View {ERRORS_URL} for more information." )
 
 try:
     from jxlpy import JXLImagePlugin
     JXL_AVAILABLE = True
 except ImportError:
     JXL_AVAILABLE = False
-    print(f"WARNING(Nautilus-file-converter)(101): \"jxlpy\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"WARNING(Nautilus-file-converter)(101): \"jxlpy\" not found. View {ERRORS_URL} for more information.")
 
 try:
     import pillow_avif
     AVIF_AVAILABLE = True
 except ImportError:
-        print(f"WARNING(Nautilus-file-converter)(102) \"pillow-avif-plugin\" not found. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+        print(f"WARNING(Nautilus-file-converter)(102) \"pillow-avif-plugin\" not found. View {ERRORS_URL} for more information.")
 
 # --- Warn the user if there is no permission to self-update ---
 if not PERMISSION_TO_UPDATE:
-    print(f"ERROR(Nautilus-file-converter)(402): No permission to self-update; script at \"{APPLICATION_PATH}/{os.path.basename(__file__)}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"ERROR(Nautilus-file-converter)(402): No permission to self-update; script at \"{APPLICATION_PATH}/{os.path.basename(__file__)}\" is not writeable. View {ERRORS_URL} for more information.")
 
 #######
 ####### SELF-PREPARATION SECTION  --  CONFIGURATION
@@ -383,7 +390,7 @@ if os.access(CONFIGURATION_DIRECTORY, os.W_OK):
         print("ERROR(Nautilus-file-converter)(401): Something went wrong while loading or updating the configuration file.")
         print(f"{format_exc()}")
 else:
-    print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{CONFIGURATION_DIRECTORY}\" is not writeable. View https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/errors-and-warnings.md for more information.")
+    print(f"ERROR(Nautilus-file-converter)(403): No permission to write configuration file; \"{CONFIGURATION_DIRECTORY}\" is not writeable. View {ERRORS_URL} for more information.")
 
 #######
 ####### SELF-PREPARATION SECTION  --  SELF-UPDATE
@@ -391,7 +398,7 @@ else:
 
 # --- Check for updates and update if auto-update is enabled ---
 if user_configuration["automaticUpdates"]:
-    with request.urlopen("https://raw.githubusercontent.com/Lich-Corals/linux-file-converter-addon/main/nautilus-fileconverter.py") as f:
+    with request.urlopen(MAIN_SCRIPT_URL) as f:
         downloaded_data = f.read().decode().strip()
     if CONVERTER_VERSION not in downloaded_data:
         print(f"UPDATES(Nautilus-file-converter)(104): Current Version: {CONVERTER_VERSION}\n"
@@ -400,8 +407,7 @@ if user_configuration["automaticUpdates"]:
             print("Updating...")
             application_file_location = f"{APPLICATION_PATH}/{os.path.basename(__file__)}"
             if user_configuration["showPatchNotes"]:
-                #os.system(f"nohup xdg-open \"https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md\" &")
-                os.system('notify-send --app-name="linux-file-converter-addon" "Update installed." "More info: https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/update-notification.md"')
+                os.system(f'notify-send --app-name="linux-file-converter-addon" "Update installed." ""')
             with open(application_file_location, 'w') as file:
                 file.write(downloaded_data)
         if len(SYSTEM_ARGUMENTS) > 0:
@@ -740,10 +746,10 @@ if get_installation_type() == InstallationType.NAUTILUS:
 
         # --- openPatchNotes and openConfigHint functions for context menu options ---
         def show_patch_notes(self, menu, arguments):
-            Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/releases"])
+            Popen(["xdg-open", RELEASE_URL])
 
         def show_configuration_page(self, menu, arguments):
-            Popen(["xdg-open", "https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md"])
+            Popen(["xdg-open", CONFIG_URL])
             Popen(["xdg-open", f"{CONFIGURATION_FILE}"])
 
 # --- Adaption class ---
@@ -891,8 +897,8 @@ if get_installation_type() != InstallationType.NAUTILUS:
                 if user_configuration["showPatchNoteButton"]:
                     self.add_label_centered(box, f"""<span size="x-small">version {CONVERTER_VERSION}</span>""")
                 if user_configuration["showConfigHint"]:
-                    self.add_label_centered(box, f"""<span size="x-small">View <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/markdown/configuration.md">the config documentation</a>\nto configure the script and hide this text.</span>""")
-                self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Jax Tibert\nunder the <a href="https://github.com/Lich-Corals/linux-file-converter-addon/blob/main/LICENCE">GNU Affero General Public Licence</a>.</span>""")
+                    self.add_label_centered(box, f"""<span size="x-small">View <a href="{CONFIG_URL}">the config documentation</a>\nto configure the script and hide this text.</span>""")
+                self.add_label_centered(box, f"""<span color="#696969" size="x-small">Linux-File-Converter-Addon  Copyright (C) 2025  Jax Tibert\nunder the <a href="{LICENCE_URL}">GNU Affero General Public Licence</a>.</span>""")
                 self.add(box)
 
             # --- Get data from combo-box and run the right conversion function ---
