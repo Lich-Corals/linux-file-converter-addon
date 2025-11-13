@@ -1,3 +1,9 @@
+## [2.1.0]
+### Changed
+- Sources and resource links in the main script
+
+This update migrates the project to Codeberg.
+
 ## [2.0.2]
 ### Added
 - A warning in the adaption UI if a large amount of bytes is selected
