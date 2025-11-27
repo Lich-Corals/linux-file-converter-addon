@@ -31,16 +31,16 @@ The tool has a built-in auto-update function to make sure the newest version is 
 </p>
 
 > [!TIP]  
-> You can view this [list of supported formats](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/supported-formats.md) if you are interested.
+> You can view this [list of supported formats](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/supported-formats.md) if you are interested.
 
 # Installation
-You can follow the [TL;DR installation guide](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/tldr-installation.md) for a quick and painless installation...
+You can follow the [TL;DR installation guide](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/tldr-installation.md) for a quick and painless installation...
 
 Or you head over to the installation page for your file manager for the full installation experience:
-- [Nautilus](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-nautilus.md)
-- [Nemo](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-nemo.md)
-- [Thunar](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-thunar.md)
-- [Dolphin](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/install-dolphin.md)
+- [Nautilus](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/install-nautilus.md)
+- [Nemo](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/install-nemo.md)
+- [Thunar](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/install-thunar.md)
+- [Dolphin](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/install-dolphin.md)
 
 # Updating
 If the script is installed in the home folder or has permissions to write in its directory, it will update automatically as long as automatic updates aren't disabled.
@@ -61,7 +61,7 @@ Contributions are always welcome!
 If you want to contribute to this project, take a look at the [open issues](https://codeberg.org/Lich-Corals/linux-file-converter-addon/issues?q=&state=open) or propose other edits to the program using a pull-request.
 The code of the project is partly commented and relatively self explaining. If you're curious about the way something is accomplished in the code, you can always ask about it in an issue and if you think there is a better way to do it, you're welcome to edit the code or share your ideas in another issue.
 
-Please read the [contribution guidelines](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/CONTRIBUTING.md) before opening a pull request.
+Please read the [contribution guidelines](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/CONTRIBUTING.md) before opening a pull request.
 
 # Any questions?
 If anything is not clear...
@@ -79,5 +79,5 @@ If anything is not clear...
   <br>Pull requests
 
 #### More information
-- [Configuration](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/configuration.md)
-- [Errorrs and warnings](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/main/markdown/errors-and-warnings.md)
+- [Configuration](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/configuration.md)
+- [Errorrs and warnings](https://codeberg.org/Lich-Corals/linux-file-converter-addon/src/branch/mistress/markdown/errors-and-warnings.md)
